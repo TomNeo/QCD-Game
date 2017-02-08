@@ -26,7 +26,6 @@ public class Deuterium extends Circles {
         lifeSpan = lifeSpan - deltaTime;
         color[1] = 1 - ((lifeSpan / 5f) * .8f);
         color[2] = 1 - ((lifeSpan / 5f) * .5f);
-
     }
 
     @Override

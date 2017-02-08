@@ -14,7 +14,7 @@ public class Helion extends Circles {
     public Helion(float x, float y){
         this.pos = new Vector2(x,y);
         this.radius = RADIUS;
-        this.color = new float[] {0,0,.5f,1};
+        this.color = new float[] {0,0,.3f,1};
     }
 
     @Override
@@ -23,7 +23,7 @@ public class Helion extends Circles {
             kill = true;
         }
         lifeSpan = lifeSpan - deltaTime;
-        color[2] = 1 - ((lifeSpan/5f) * .5f);
+        color[2] = 1 - ((lifeSpan/5f) * .7f);
     }
 
 }

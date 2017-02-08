@@ -27,9 +27,6 @@ public abstract class Circles {
     public Vector2 getPosition(){
         return pos;
     }
-    public float[] getColorInt(){
-        return color;
-    }
 
     /***
      *
