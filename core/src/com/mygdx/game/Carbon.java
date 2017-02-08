@@ -3,19 +3,18 @@ package com.mygdx.game;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * Created by User on 1/19/2017.
+ * Created by User on 2/8/2017.
  */
 
-public class Proton extends Circles{
+public class Carbon extends Circles {
 
-    public static float RADIUS = 50f;
-    public float lifeSpan = 3;
-    //boolean kill = false;
+    public static float RADIUS =  Proton.RADIUS / .1547f;
+    public float lifeSpan = 4;
 
-    public  Proton(float x, float y){
+    public Carbon(float x, float y){
         this.pos = new Vector2(x,y);
         this.radius = RADIUS;
-        this.color = new float[] {0,1,0,1};
+        this.color = new float[] {1,0,0,1};
     }
 
     @Override
@@ -24,8 +23,7 @@ public class Proton extends Circles{
             kill = true;
         }
         lifeSpan = lifeSpan - deltaTime;
-        color[1] = lifeSpan/3f;
-        color[0] = (3 - lifeSpan)/3f;
+        color[2] = lifeSpan/4f;
+        color[0] = (4 - lifeSpan)/4f;
     }
-
 }
