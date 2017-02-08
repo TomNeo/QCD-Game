@@ -8,12 +8,13 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Proton extends Circles{
 
+    public static float SMALLEST_RADIUS = 30f;
     public float lifeSpan = 3;
     //boolean kill = false;
 
     public  Proton(float x, float y){
         this.pos = new Vector2(x,y);
-        this.radius = 15f;
+        this.radius = SMALLEST_RADIUS;
         this.color = new float[] {0,1,0,1};
     }
 
@@ -24,6 +25,7 @@ public class Proton extends Circles{
         }
         lifeSpan = lifeSpan - deltaTime;
         color[1] = lifeSpan/3f;
+        color[0] = (3 - lifeSpan)/3f;
     }
 
 }
