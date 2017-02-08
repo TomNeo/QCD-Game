@@ -8,12 +8,12 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Helion extends Circles {
 
-
+    public static float RADIUS =  Proton.RADIUS * (float)Math.sqrt(3);
     public float lifeSpan = 5;
 
     public Helion(float x, float y){
         this.pos = new Vector2(x,y);
-        this.radius = 60;
+        this.radius = RADIUS;
         this.color = new float[] {0,0,.5f,1};
     }
 

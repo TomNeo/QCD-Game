@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
@@ -148,7 +147,7 @@ public class MyGdxGame extends ApplicationAdapter {
         float distance = 0;
         for(Circles circle: allCircles){
             distance = (float)Math.sqrt(Math.pow(pos.x - circle.getPosition().x,2)+Math.pow(pos.y - circle.getPosition().y,2));
-            if(distance < (Proton.SMALLEST_RADIUS + circle.getRadius())){
+            if(distance < (Proton.RADIUS + circle.getRadius())){
                 return false;
             }
         }

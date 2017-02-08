@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -28,6 +29,14 @@ public abstract class Circles {
     }
     public float[] getColorInt(){
         return color;
+    }
+
+    /***
+     * This is called in the main loop between draw and 
+     * @param shapeRenderer
+     */
+    public void renderCircle(ShapeRenderer shapeRenderer){
+
     }
 
 }

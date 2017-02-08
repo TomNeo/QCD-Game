@@ -7,12 +7,12 @@ import com.badlogic.gdx.math.Vector2;
  */
 
 public class Helium extends Circles {
-
+    public static float RADIUS = Proton.RADIUS * 2;
     public float lifeSpan = 12;
 
     public Helium(float x, float y){
         this.pos = new Vector2(x,y);
-        this.radius = 80;
+        this.radius = RADIUS;
         this.color = new float[] {.2f,1,.3f,1};
     }
 
