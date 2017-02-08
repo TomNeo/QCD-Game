@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -23,7 +24,18 @@ public class Deuterium extends Circles {
             kill = true;
         }
         lifeSpan = lifeSpan - deltaTime;
-        color[3] = lifeSpan/10f;
+        color[1] = 1 - ((lifeSpan / 5f) * .8f);
+        color[2] = 1 - ((lifeSpan / 5f) * .5f);
+
     }
+
+    @Override
+    public void renderCircle(ShapeRenderer shapeRenderer){
+        shapeRenderer.setColor(color[0], color[1], color[2], color[3]);
+        shapeRenderer.circle(pos.x, pos.y, radius);
+        shapeRenderer.setColor(.1f, .1f, .1f, 1f);
+        shapeRenderer.circle(pos.x, pos.y, Proton.RADIUS);
+    }
+
 
 }

@@ -23,7 +23,7 @@ public class Helion extends Circles {
             kill = true;
         }
         lifeSpan = lifeSpan - deltaTime;
-        color[3] = lifeSpan/5f;
+        color[2] = 1 - ((lifeSpan/5f) * .5f);
     }
 
 }

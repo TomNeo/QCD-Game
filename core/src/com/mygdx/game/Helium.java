@@ -18,11 +18,14 @@ public class Helium extends Circles {
 
     @Override
     public void tick(float deltaTime){
+        boolean justOnce = false;
         if(lifeSpan<0){
             kill = true;
+        }else if(lifeSpan < 1 && !justOnce){
+            justOnce = true;
+            color = new float[] {.4f, 1, .6f,1};
         }
         lifeSpan = lifeSpan - deltaTime;
-        color[3] = lifeSpan/12f;
     }
 
 }

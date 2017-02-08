@@ -32,11 +32,12 @@ public abstract class Circles {
     }
 
     /***
-     * This is called in the main loop between draw and 
+     *
      * @param shapeRenderer
      */
     public void renderCircle(ShapeRenderer shapeRenderer){
-
+        shapeRenderer.setColor(color[0], color[1], color[2], color[3]);
+        shapeRenderer.circle(pos.x, pos.y, radius);
     }
 
 }

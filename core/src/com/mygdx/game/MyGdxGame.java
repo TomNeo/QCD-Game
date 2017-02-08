@@ -2,9 +2,11 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
@@ -14,6 +16,7 @@ import java.util.ArrayList;
 public class MyGdxGame extends ApplicationAdapter {
 
 	SpriteBatch batch;
+    public BitmapFont font;
     Texture img;
     OrthographicCamera camera;
     ArrayList<Circles> allCircles;
@@ -25,6 +28,8 @@ public class MyGdxGame extends ApplicationAdapter {
     Vector3 initialPress = new Vector3();
     Vector3 lastPress = new Vector3();
     static float TOUCH_TIME_OUT = .3f;
+    long currentScore = 5000;
+    long highScore = 5000;
 	
 	@Override
 	public void create () {
@@ -36,21 +41,33 @@ public class MyGdxGame extends ApplicationAdapter {
         img = new Texture("Hex-grid.png");
         allCircles = new ArrayList<Circles>();
         shapeRenderer = new ShapeRenderer();
+        font = new BitmapFont();
+        font.setColor(Color.YELLOW);
 	}
 
 	@Override
 	public void render () {
+
         float deltaTime = Gdx.graphics.getDeltaTime();
         newClick(deltaTime);
         tick(deltaTime);
-        //checkClick();
-		Gdx.gl.glClearColor(1, 0, 0, 1);
+
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(camera.combined);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
-        drawCircles();
+        if(currentScore > 0) {
+            batch.begin();
+            batch.draw(img, 0, 0);
+            batch.end();
+            drawCircles();
+            batch.begin();
+            font.draw(batch, "Score: " + currentScore, 0, 20);
+            batch.end();
+        }else{
+            batch.begin();
+            font.draw(batch, "You Lost. Highest Score: " + highScore, width/2, height/2);
+            batch.end();
+        }
 
 	}
 
@@ -66,33 +83,19 @@ public class MyGdxGame extends ApplicationAdapter {
             allCircles.remove(circle);
         }
         killList.clear();
+        if(currentScore > highScore){
+            highScore = currentScore;
+        }
+        currentScore = (long)(currentScore - (150 * deltaTime));
     }
 
     private void drawCircles(){
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.setProjectionMatrix(camera.combined);
         for (Circles circle : allCircles) {
-            setCircleColor(circle.getColorInt());
-            shapeRenderer.circle(circle.getPosition().x, circle.getPosition().y, circle.getRadius());
+            circle.renderCircle(shapeRenderer);
         }
         shapeRenderer.end();
-    }
-
-    private void setCircleColor(float[] type){
-        shapeRenderer.setColor(type[0], type[1], type[2], type[3]);
-    }
-
-    private void checkClick(){
-        if (Gdx.input.justTouched()){
-            Vector3 touchPos = new Vector3();
-            touchPos.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            camera.unproject(touchPos);
-            if(touchedOpenSpace(touchPos)) {
-                allCircles.add(new Proton(touchPos.x, touchPos.y));
-            }else{
-
-            }
-        }
     }
 
     private void newClick(float deltaTime){
@@ -111,6 +114,7 @@ public class MyGdxGame extends ApplicationAdapter {
                 stillTouched = false;
                 if(touchedOpenSpace(lastPress) && touchedFor < TOUCH_TIME_OUT) {
                     allCircles.add(new Proton(lastPress.x, lastPress.y));
+                    currentScore = currentScore - 100;
                 }else{
                     fuzePoints(initialPress,lastPress);
                 }
@@ -127,11 +131,13 @@ public class MyGdxGame extends ApplicationAdapter {
                 initialCircle.kill = true;
                 lastCircle.kill = true;
                 allCircles.add(new Deuterium((initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f));
+                currentScore = currentScore + 500;
             }
             if((initialCircle.getClass().equals(Proton.class) && lastCircle.getClass().equals(Deuterium.class))||(initialCircle.getClass().equals(Deuterium.class) && lastCircle.getClass().equals(Proton.class))){
                 initialCircle.kill = true;
                 lastCircle.kill = true;
                 allCircles.add(new Helion((initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f));
+                currentScore = currentScore + 750;
             }
             if(initialCircle.getClass().equals(Helion.class) && lastCircle.getClass().equals(Helion.class)){
                 initialCircle.kill = true;
@@ -139,6 +145,7 @@ public class MyGdxGame extends ApplicationAdapter {
                 allCircles.add(new Helium((initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f));
                 allCircles.add(new Proton(initialPress.x,initialPress.y));
                 allCircles.add(new Proton(lastPress.x,lastPress.y));
+                currentScore = currentScore + 1000;
             }
         }
     }
