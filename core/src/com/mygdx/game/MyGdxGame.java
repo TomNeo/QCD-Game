@@ -28,8 +28,8 @@ public class MyGdxGame extends ApplicationAdapter {
     Vector3 initialPress = new Vector3();
     Vector3 lastPress = new Vector3();
     static float TOUCH_TIME_OUT = .3f;
-    long currentScore = 15 * 210;
-    long highScore = 15 * 210;
+    long currentScore = 15 * 200;
+    long highScore = 15 * 200;
 	
 	@Override
 	public void create () {
@@ -111,7 +111,7 @@ public class MyGdxGame extends ApplicationAdapter {
         if(currentScore > highScore){
             highScore = currentScore;
         }
-        currentScore = (long)(currentScore - (210 * deltaTime));
+        currentScore = (long)(currentScore - (200 * deltaTime));
     }
 
     private void drawCircles(){
