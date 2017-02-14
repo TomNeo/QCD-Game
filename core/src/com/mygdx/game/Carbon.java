@@ -9,11 +9,13 @@ import com.badlogic.gdx.math.Vector2;
 public class Carbon extends Circles {
 
     public static float RADIUS =  Proton.RADIUS / .1547f;
-    public float lifeSpan = 4;
+    public float lifeSpan = 6;
+    private float aliveFor = 0f;
 
-    public Carbon(float x, float y){
+    public Carbon(MyGdxGame main, float x, float y){
+        super(main);
         this.pos = new Vector2(x,y);
-        this.radius = RADIUS;
+        this.radius = Helium.RADIUS;
         this.color = new float[] {1,0,0,1};
     }
 
@@ -22,8 +24,15 @@ public class Carbon extends Circles {
         if(lifeSpan<0){
             kill = true;
         }
+        radius =  Helium.RADIUS + (RADIUS - Helium.RADIUS)*(aliveFor/6f);
         lifeSpan = lifeSpan - deltaTime;
+        aliveFor = aliveFor + deltaTime;
         color[2] = lifeSpan/4f;
         color[0] = (4 - lifeSpan)/4f;
     }
+
+
+    public void collided(){
+    }
+
 }

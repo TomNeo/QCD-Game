@@ -9,8 +9,10 @@ import com.badlogic.gdx.math.Vector2;
 public class Helium extends Circles {
     public static float RADIUS = Proton.RADIUS * 2;
     public float lifeSpan = 12;
+    private float aliveFor = 0f;
 
-    public Helium(float x, float y){
+    public Helium(MyGdxGame main, float x, float y){
+        super(main);
         this.pos = new Vector2(x,y);
         this.radius = RADIUS;
         this.color = new float[] {.2f,1,.3f,1};
@@ -25,7 +27,19 @@ public class Helium extends Circles {
             justOnce = true;
             color = new float[] {.4f, 1, .6f,1};
         }
+        if(aliveFor <= 12f) {
+            this.radius = Helion.RADIUS + (RADIUS - Helion.RADIUS) * (aliveFor / 12f);
+        }
         lifeSpan = lifeSpan - deltaTime;
+        aliveFor = aliveFor + deltaTime;
     }
+
+        public void collided(){
+            if(!matchedCircle.kill) {
+                game.addToCircles.add(new Carbon(game, pos.x, pos.y));
+                matchedCircle.kill = true;
+                this.kill = true;
+            }
+        }
 
 }

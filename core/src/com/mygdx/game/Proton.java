@@ -12,7 +12,8 @@ public class Proton extends Circles{
     public float lifeSpan = 3;
     //boolean kill = false;
 
-    public  Proton(float x, float y){
+    public  Proton(MyGdxGame main, float x, float y){
+        super(main);
         this.pos = new Vector2(x,y);
         this.radius = RADIUS;
         this.color = new float[] {0,1,0,1};
@@ -26,6 +27,18 @@ public class Proton extends Circles{
         lifeSpan = lifeSpan - deltaTime;
         color[1] = lifeSpan/3f;
         color[0] = (3 - lifeSpan)/3f;
+    }
+
+    public void collided(){
+        if(!matchedCircle.kill && matchedCircle.getClass().equals(Deuterium.class)) {
+            game.addToCircles.add(new Helion(game, pos.x, pos.y));
+            matchedCircle.kill = true;
+            this.kill = true;
+        }else if(!matchedCircle.kill && matchedCircle.getClass().equals(Proton.class)){
+            game.addToCircles.add(new Deuterium(game, pos.x, pos.y));
+            matchedCircle.kill = true;
+            this.kill = true;
+        }
     }
 
 }

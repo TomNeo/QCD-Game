@@ -10,20 +10,28 @@ import com.badlogic.gdx.math.Vector2;
 public class Deuterium extends Circles {
 
     public static float RADIUS =  Proton.RADIUS * (float)Math.sqrt(2);
-    public float lifeSpan = 5;
+    public float lifeSpan = 10;
+    private float aliveFor = 0f;
 
-    public Deuterium(float x, float y){
+    public Deuterium(MyGdxGame main, float x, float y){
+        super(main);
         this.pos = new Vector2(x,y);
-        this.radius = RADIUS;
+        this.radius = Proton.RADIUS;
         this.color = new float[] {1,.2f,.5f,0};
     }
 
     @Override
     public void tick(float deltaTime){
-        if(lifeSpan<0){
+        if(lifeSpan<0) {
             kill = true;
         }
+        if(aliveFor <= 1.5f){
+            this.radius = Proton.RADIUS + (RADIUS - Proton.RADIUS)*(aliveFor/1.5f);
+        }else{
+            this.radius = RADIUS;
+        }
         lifeSpan = lifeSpan - deltaTime;
+        aliveFor = aliveFor + deltaTime;
         color[1] = 1 - ((lifeSpan / 5f) * .8f);
         color[2] = 1 - ((lifeSpan / 5f) * .5f);
     }
@@ -33,8 +41,16 @@ public class Deuterium extends Circles {
         shapeRenderer.setColor(color[0], color[1], color[2], color[3]);
         shapeRenderer.circle(pos.x, pos.y, radius);
         shapeRenderer.setColor(.1f, .1f, .1f, 1f);
-        shapeRenderer.circle(pos.x, pos.y, Proton.RADIUS);
+        shapeRenderer.circle(pos.x, pos.y, radius * (Proton.RADIUS/RADIUS));
     }
 
+
+    public void collided(){
+        if(!matchedCircle.kill) {
+            game.addToCircles.add(new Helion(game, pos.x, pos.y));
+            matchedCircle.kill = true;
+            this.kill = true;
+        }
+    }
 
 }
