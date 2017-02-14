@@ -22,7 +22,7 @@ public class Deuterium extends Circles {
 
     @Override
     public void tick(float deltaTime){
-        if(lifeSpan<0) {
+        if(lifeSpan<0 && !moving) {
             kill = true;
         }
         if(aliveFor <= 1.5f){
@@ -38,8 +38,10 @@ public class Deuterium extends Circles {
 
     @Override
     public void renderCircle(ShapeRenderer shapeRenderer){
-        shapeRenderer.setColor(color[0], color[1], color[2], color[3]);
+        shapeRenderer.setColor(1f, 1f, 1f, 1f);
         shapeRenderer.circle(pos.x, pos.y, radius);
+        shapeRenderer.setColor(color[0], color[1], color[2], color[3]);
+        shapeRenderer.circle(pos.x, pos.y, radius-2f);
         shapeRenderer.setColor(.1f, .1f, .1f, 1f);
         shapeRenderer.circle(pos.x, pos.y, radius * (Proton.RADIUS/RADIUS));
     }

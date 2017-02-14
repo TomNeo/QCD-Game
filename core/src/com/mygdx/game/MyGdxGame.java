@@ -29,8 +29,13 @@ public class MyGdxGame extends ApplicationAdapter {
     Vector3 initialPress = new Vector3();
     Vector3 lastPress = new Vector3();
     static float TOUCH_TIME_OUT = .3f;
-    long currentScore = 15 * 200;
-    long highScore = 15 * 200;
+    long startingScore = 15 * 200;
+    long currentScore = startingScore;
+    long highScore = startingScore;
+    long highestScore = startingScore;
+    float runTime = 0;
+    long totalScored = 0;
+    long Protons = 0;
 
 	
 	@Override
@@ -57,6 +62,9 @@ public class MyGdxGame extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
         if(currentScore > 0) {
             float deltaTime = Gdx.graphics.getDeltaTime();
+            if(currentScore != startingScore){
+                runTime = runTime + deltaTime;
+            }
             newClick(deltaTime);
             moveCircles(deltaTime);
             addNewCircles();
@@ -72,7 +80,8 @@ public class MyGdxGame extends ApplicationAdapter {
         }else{
             allCircles.clear();
             batch.begin();
-            font.draw(batch, "You Lost. Highest Score: " + highScore, width/2, height/2);
+            font.draw(batch, "Your high score this round: " + highScore + " . Highest Score: " + highestScore, width/2, height/2);
+            font.draw(batch, "Time: " + runTime + ". Total Points Earned: " + totalScored + " Protons paid for: " + Protons, width/2, height/2 - 20);
             batch.end();
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setProjectionMatrix(camera.combined);
@@ -85,6 +94,10 @@ public class MyGdxGame extends ApplicationAdapter {
                 float distance = (float)Math.sqrt(Math.pow(initialPress.x - width/2,2)+Math.pow(initialPress.y - (height/2 - 250),2));
                 if(distance < 200){
                     currentScore = 3000;
+                    highScore = 3000;
+                    runTime = 0;
+                    totalScored = 0;
+                    Protons = 0;
                 }
             }
         }
@@ -130,8 +143,11 @@ public class MyGdxGame extends ApplicationAdapter {
         killList.clear();
         if(currentScore > highScore){
             highScore = currentScore;
+            if(highScore > highestScore){
+                highestScore = highScore;
+            }
         }
-        currentScore = (long)(currentScore - (180 * deltaTime));
+        currentScore = (long)(currentScore - (150 + (totalScored*.002f)) * deltaTime);
     }
 
     private void drawCircles(){
@@ -159,7 +175,8 @@ public class MyGdxGame extends ApplicationAdapter {
                 stillTouched = false;
                 if(touchedOpenSpace(lastPress) && touchedFor < TOUCH_TIME_OUT) {
                     allCircles.add(new Proton(this,lastPress.x, lastPress.y));
-                    currentScore = currentScore - 200;
+                    currentScore = currentScore - 150;
+                    Protons++;
                 }else{
                     fuzePoints(initialPress,lastPress);
                 }
@@ -179,6 +196,7 @@ public class MyGdxGame extends ApplicationAdapter {
                 lastCircle.setTravelTo((initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f, initialCircle);
                 //allCircles.add(new Deuterium(this,(initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f));
                 currentScore = currentScore + 400;
+                totalScored = totalScored + 400;
             }
             if((initialCircle.getClass().equals(Proton.class) && lastCircle.getClass().equals(Deuterium.class))||(initialCircle.getClass().equals(Deuterium.class) && lastCircle.getClass().equals(Proton.class))){
                 //initialCircle.kill = true;
@@ -187,6 +205,7 @@ public class MyGdxGame extends ApplicationAdapter {
                 lastCircle.setTravelTo((initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f, initialCircle);
                 //allCircles.add(new Helion(this,(initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f));
                 currentScore = currentScore + 500;
+                totalScored = totalScored + 500;
             }
             if(initialCircle.getClass().equals(Helion.class) && lastCircle.getClass().equals(Helion.class)){
                 //initialCircle.kill = true;
@@ -197,6 +216,7 @@ public class MyGdxGame extends ApplicationAdapter {
                 //allCircles.add(new Proton(this,initialPress.x,initialPress.y));
                 //allCircles.add(new Proton(this,lastPress.x,lastPress.y));
                 currentScore = currentScore + 750;
+                totalScored = totalScored + 750;
             }
             if(initialCircle.getClass().equals(Helium.class) && lastCircle.getClass().equals(Helium.class)){
                 //initialCircle.kill = true;
@@ -205,6 +225,7 @@ public class MyGdxGame extends ApplicationAdapter {
                 lastCircle.setTravelTo((initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f, initialCircle);
                 //allCircles.add(new Carbon(this,(initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f));
                 currentScore = currentScore + 1000;
+                totalScored = totalScored + 1000;
             }
         }
     }

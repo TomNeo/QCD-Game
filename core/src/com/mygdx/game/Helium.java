@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -21,7 +22,7 @@ public class Helium extends Circles {
     @Override
     public void tick(float deltaTime){
         boolean justOnce = false;
-        if(lifeSpan<0){
+        if(lifeSpan<0 && !moving){
             kill = true;
         }else if(lifeSpan < 1 && !justOnce){
             justOnce = true;
@@ -34,7 +35,16 @@ public class Helium extends Circles {
         aliveFor = aliveFor + deltaTime;
     }
 
-        public void collided(){
+    @Override
+    public void renderCircle(ShapeRenderer shapeRenderer){
+        shapeRenderer.setColor(0f, 0f, 0f, 1f);
+        shapeRenderer.circle(pos.x, pos.y, radius);
+        shapeRenderer.setColor(color[0], color[1], color[2], color[3]);
+        shapeRenderer.circle(pos.x, pos.y, radius-2f);
+    }
+
+
+    public void collided(){
             if(!matchedCircle.kill) {
                 game.addToCircles.add(new Carbon(game, pos.x, pos.y));
                 matchedCircle.kill = true;
