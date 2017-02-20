@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 
@@ -15,8 +16,12 @@ import java.util.ArrayList;
 
 public class MyGdxGame extends ApplicationAdapter {
 
+
+    FreeTypeFontGenerator generator;
+    FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+    BitmapFont font;
 	SpriteBatch batch;
-    public BitmapFont font;
+    //public BitmapFont font;
     Texture img;
     OrthographicCamera camera;
     ArrayList<Circles> allCircles;
@@ -49,8 +54,13 @@ public class MyGdxGame extends ApplicationAdapter {
         allCircles = new ArrayList<Circles>();
         addToCircles = new ArrayList<Circles>();
         shapeRenderer = new ShapeRenderer();
-        font = new BitmapFont();
-        font.setColor(Color.YELLOW);
+
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("SecretST.ttf"));
+        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.color = Color.YELLOW;
+        parameter.size = 40;
+        font = generator.generateFont(parameter);
+
 	}
 
 	@Override
@@ -80,8 +90,8 @@ public class MyGdxGame extends ApplicationAdapter {
         }else{
             allCircles.clear();
             batch.begin();
-            font.draw(batch, "Your high score this round: " + highScore + " . Highest Score: " + highestScore, width/2, height/2);
-            font.draw(batch, "Time: " + runTime + ". Total Points Earned: " + totalScored + " Protons paid for: " + Protons, width/2, height/2 - 20);
+            font.draw(batch, "Your high score this round: " + highScore + " . Highest Score: " + highestScore, width/4, height/2+20);
+            font.draw(batch, "Time: " + runTime + ". Total Points Earned: " + totalScored + " Protons paid for: " + Protons, width/5, height/2 - 22);
             batch.end();
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setProjectionMatrix(camera.combined);
@@ -147,7 +157,7 @@ public class MyGdxGame extends ApplicationAdapter {
                 highestScore = highScore;
             }
         }
-        currentScore = (long)(currentScore - (150 + (totalScored*.002f)) * deltaTime);
+        currentScore = (long)(currentScore - (150 + (totalScored*.01f)) * deltaTime);
     }
 
     private void drawCircles(){
