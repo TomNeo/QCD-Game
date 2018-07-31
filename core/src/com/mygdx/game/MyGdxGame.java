@@ -41,7 +41,7 @@ public class MyGdxGame extends ApplicationAdapter {
     float runTime = 0;
     long totalScored = 0;
     long Protons = 0;
-
+    boolean pastFirstScreen = false;
 	
 	@Override
 	public void create () {
@@ -55,7 +55,7 @@ public class MyGdxGame extends ApplicationAdapter {
         addToCircles = new ArrayList<Circles>();
         shapeRenderer = new ShapeRenderer();
 
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("SecretST.ttf"));
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("SecretST.TTF"));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.color = Color.YELLOW;
         parameter.size = 40;
@@ -70,48 +70,50 @@ public class MyGdxGame extends ApplicationAdapter {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(camera.combined);
-        if(currentScore > 0) {
-            float deltaTime = Gdx.graphics.getDeltaTime();
-            if(currentScore != startingScore){
-                runTime = runTime + deltaTime;
-            }
-            newClick(deltaTime);
-            moveCircles(deltaTime);
-            addNewCircles();
-            tick(deltaTime);
-            batch.begin();
-            batch.draw(img, 0, 0);
-            batch.end();
-            drawCircles();
-            drawConnection();
-            batch.begin();
-            font.draw(batch, "Score: " + currentScore, 0, 20);
-            batch.end();
-        }else{
-            allCircles.clear();
-            batch.begin();
-            font.draw(batch, "Your high score this round: " + highScore + " . Highest Score: " + highestScore, width/4, height/2+20);
-            font.draw(batch, "Time: " + runTime + ". Total Points Earned: " + totalScored + " Protons paid for: " + Protons, width/5, height/2 - 22);
-            batch.end();
-            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setProjectionMatrix(camera.combined);
-            shapeRenderer.setColor(1, 0, 0, 1);
-            shapeRenderer.circle(width/2, height/2 - 250, 200);
-            shapeRenderer.end();
-            if(Gdx.input.justTouched()){
-                initialPress.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-                camera.unproject(initialPress);
-                float distance = (float)Math.sqrt(Math.pow(initialPress.x - width/2,2)+Math.pow(initialPress.y - (height/2 - 250),2));
-                if(distance < 200){
-                    currentScore = 3000;
-                    highScore = 3000;
-                    runTime = 0;
-                    totalScored = 0;
-                    Protons = 0;
+
+
+            if (currentScore > 0) {
+                float deltaTime = Gdx.graphics.getDeltaTime();
+                if (currentScore != startingScore) {
+                    runTime = runTime + deltaTime;
+                }
+                newClick(deltaTime);
+                moveCircles(deltaTime);
+                addNewCircles();
+                tick(deltaTime);
+                batch.begin();
+                batch.draw(img, 0, 0);
+                batch.end();
+                drawCircles();
+                drawConnection();
+                batch.begin();
+                font.draw(batch, "Score: " + currentScore, 0, 20);
+                batch.end();
+            } else {
+                allCircles.clear();
+                batch.begin();
+                font.draw(batch, "Your high score this round: " + highScore + " . Highest Score: " + highestScore, width / 4, height / 2 + 20);
+                font.draw(batch, "Time: " + runTime + ". Total Points Earned: " + totalScored + " Protons paid for: " + Protons, width / 5, height / 2 - 22);
+                batch.end();
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.setProjectionMatrix(camera.combined);
+                shapeRenderer.setColor(1, 0, 0, 1);
+                shapeRenderer.circle(width / 2, height / 2 - 250, 200);
+                shapeRenderer.end();
+                if (Gdx.input.justTouched()) {
+                    initialPress.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+                    camera.unproject(initialPress);
+                    float distance = (float) Math.sqrt(Math.pow(initialPress.x - width / 2, 2) + Math.pow(initialPress.y - (height / 2 - 250), 2));
+                    if (distance < 200) {
+                        currentScore = 3000;
+                        highScore = 3000;
+                        runTime = 0;
+                        totalScored = 0;
+                        Protons = 0;
+                    }
                 }
             }
-        }
-
+        
 	}
 
     private void addNewCircles() {
@@ -125,6 +127,8 @@ public class MyGdxGame extends ApplicationAdapter {
         for(Circles circle : allCircles){
             if(circle.moving){
                 circle.move(deltaTime);
+            }else{
+                circle.applyAttraction(deltaTime);
             }
         }
     }

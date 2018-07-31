@@ -11,6 +11,9 @@ public abstract class Circles {
 
 
     private static float MOVE_RATE = 1000f;
+    private static float EFFECTIVE_RANGE = 250f;
+    private static float STANDARD_FORCE = .25f;
+    protected Vector2 velocity = new Vector2();
     protected MyGdxGame game;
     protected float radius;
     protected Vector2 pos;
@@ -21,6 +24,7 @@ public abstract class Circles {
     private float travelToX = -1;
     private float travelToY = -1;
     protected Circles matchedCircle = null;
+
 
     public Circles(MyGdxGame main){
         game = main;
@@ -88,6 +92,39 @@ public abstract class Circles {
                 }
             }
 
+        }
+    }
+
+    public void applyAttraction(float deltaTime){
+        velocity.set(0,0);
+        boolean didAnything = false;
+        for(Circles otherCircle: game.allCircles){
+            if(!this.equals(otherCircle)){
+                float distanceFromEdges = (float) (Math.sqrt(Math.pow((double)Math.abs(otherCircle.getPosition().x - this.getPosition().x),2) + Math.abs(Math.pow((double)otherCircle.getPosition().y - this.getPosition().y,2))) - otherCircle.radius - this.radius);
+                if(distanceFromEdges < Circles.EFFECTIVE_RANGE && distanceFromEdges > 0){
+                    didAnything = true;
+                    boolean attractive = ((this.getClass() == Proton.class && otherCircle.getClass() == Proton.class)
+                            || (this.getClass() == Deuterium.class && otherCircle.getClass() == Proton.class)
+                            || (otherCircle.getClass() == Deuterium.class && this.getClass() == Proton.class)
+                            || (otherCircle.getClass() == Helion.class && this.getClass() == Helion.class)
+                            || (otherCircle.getClass() == Helium.class && this.getClass() == Helium.class)
+                            || (otherCircle.getClass() == Carbon.class && this.getClass() == Carbon.class));
+                    float potency = 1 - distanceFromEdges/Circles.EFFECTIVE_RANGE;
+                    float vectorRatio = (potency * STANDARD_FORCE);
+                    //float vectorRatio =  distanceFromEdges/(potency * STANDARD_FORCE);
+                    if(attractive){
+                        velocity.x += (otherCircle.getPosition().x - this.getPosition().x) * vectorRatio;
+                        velocity.y += (otherCircle.getPosition().y - this.getPosition().y) * vectorRatio;
+                    }else{
+                        velocity.x -= (otherCircle.getPosition().x - this.getPosition().x) * vectorRatio;
+                        velocity.y -= (otherCircle.getPosition().y - this.getPosition().y) * vectorRatio;
+                    }
+                }
+            }
+        }
+        if(didAnything){
+            this.getPosition().x = this.getPosition().x + (this.velocity.x * deltaTime);
+            this.getPosition().y = this.getPosition().y + (this.velocity.y * deltaTime);
         }
     }
 
