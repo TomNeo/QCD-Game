@@ -17,8 +17,8 @@ import java.util.ArrayList;
 public class MyGdxGame extends ApplicationAdapter {
 
 
-    FreeTypeFontGenerator generator;
-    FreeTypeFontGenerator.FreeTypeFontParameter parameter;
+//    FreeTypeFontGenerator generator;
+//    FreeTypeFontGenerator.FreeTypeFontParameter parameter;
     BitmapFont font;
 	SpriteBatch batch;
     //public BitmapFont font;
@@ -55,11 +55,11 @@ public class MyGdxGame extends ApplicationAdapter {
         addToCircles = new ArrayList<Circles>();
         shapeRenderer = new ShapeRenderer();
 
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("SecretST.TTF"));
-        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.color = Color.YELLOW;
-        parameter.size = 40;
-        font = generator.generateFont(parameter);
+//        generator = new FreeTypeFontGenerator(Gdx.files.internal("SecretST.TTF"));
+//        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+//        parameter.color = Color.YELLOW;
+//        parameter.size = 40;
+        font = new BitmapFont(); //generator.generateFont(parameter);
 
 	}
 
