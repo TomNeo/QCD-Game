@@ -42,7 +42,15 @@ public class MyGdxGame extends ApplicationAdapter {
     long totalScored = 0;
     long Protons = 0;
     boolean pastFirstScreen = false;
-	
+    float r = 0;
+    float g = 0;
+    float b = 0;
+    float colorTime = 0;
+    float colorLength = 3;
+    boolean colorTimeGoingUp = true;
+    int colorCounter = 0;
+	int timesChanged = 0;
+
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -60,20 +68,67 @@ public class MyGdxGame extends ApplicationAdapter {
         parameter.color = Color.YELLOW;
         parameter.size = 40;
         font = generator.generateFont(parameter);
-
 	}
 
 	@Override
 	public void render () {
 
+        float deltaTime = Gdx.graphics.getDeltaTime();
 
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+        if(colorTimeGoingUp) {
+            colorTime = colorTime + deltaTime;
+        }else{
+            colorTime = colorTime - deltaTime;
+        }
+        if(colorTime >= colorLength){
+            colorTimeGoingUp = false;
+            colorCounter++;
+        }else if(colorTime <= 0){
+            colorTimeGoingUp = true;
+            colorCounter++;
+        }
+
+        if(colorCounter == 5 && timesChanged == 0){
+            timesChanged++;
+            colorLength = 2.5f;
+            colorTimeGoingUp = true;
+            colorTime = 0;
+        }else if(colorCounter == 12 && timesChanged == 1){
+            timesChanged++;
+            colorLength = 1.5f;
+            colorTimeGoingUp = true;
+            colorTime = 0;
+        } if(colorCounter == 22 && timesChanged == 2){
+            timesChanged++;
+            colorLength = .9f;
+            colorTimeGoingUp = true;
+            colorTime = 0;
+        }
+
+        if(colorCounter < 5) {
+            r = (70f / 256f) * (colorTime / colorLength);
+            g = (30f / 256f) * (colorTime / colorLength);
+            b = (100f / 256f) * (colorTime / colorLength);
+        }else if(colorCounter < 12){
+            r = (70f + (111f * (colorTime / colorLength))) / 256f;
+            g = (30f + (66f * (colorTime / colorLength)))/ 256f;
+            b = (100f - (26f * (colorTime / colorLength)))/ 256f;
+        }else if(colorCounter < 22){
+            r = (181f + (34f * (colorTime / colorLength))) / 256f;
+            g = (96f + (66f * (colorTime / colorLength)))/ 256f;
+            b = (74f - (34f * (colorTime / colorLength)))/ 256f;
+        }else{
+            r = (215f + (15f * (colorTime / colorLength))) / 256f;
+            g = (162f + (93f * (colorTime / colorLength)))/ 256f;
+            b = (40f - (14f * (colorTime / colorLength)))/ 256f;
+        }
+
+		Gdx.gl.glClearColor(r, g, b, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.setProjectionMatrix(camera.combined);
 
 
             if (currentScore > 0) {
-                float deltaTime = Gdx.graphics.getDeltaTime();
                 if (currentScore != startingScore) {
                     runTime = runTime + deltaTime;
                 }
@@ -81,15 +136,25 @@ public class MyGdxGame extends ApplicationAdapter {
                 moveCircles(deltaTime);
                 addNewCircles();
                 tick(deltaTime);
+                /*
                 batch.begin();
                 batch.draw(img, 0, 0);
                 batch.end();
+                */
                 drawCircles();
                 drawConnection();
                 batch.begin();
                 font.draw(batch, "Score: " + currentScore, 0, 20);
                 batch.end();
             } else {
+                r = 0;
+                g = 0;
+                b = 0;
+                colorTime = 0;
+                colorLength = 3;
+                colorTimeGoingUp = true;
+                colorCounter = 0;
+                timesChanged = 0;
                 allCircles.clear();
                 batch.begin();
                 font.draw(batch, "Your high score this round: " + highScore + " . Highest Score: " + highestScore, width / 4, height / 2 + 20);
@@ -113,7 +178,7 @@ public class MyGdxGame extends ApplicationAdapter {
                     }
                 }
             }
-        
+
 	}
 
     private void addNewCircles() {
