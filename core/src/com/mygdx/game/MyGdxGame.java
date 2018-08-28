@@ -70,7 +70,7 @@ public class MyGdxGame extends ApplicationAdapter {
         parameter.color = Color.YELLOW;
         parameter.size = 40;
         font = generator.generateFont(parameter);
-        healthBar = new HealthBar(100,100);
+        healthBar = new HealthBar(106,100);
 	}
 
 	@Override
