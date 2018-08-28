@@ -50,6 +50,7 @@ public class MyGdxGame extends ApplicationAdapter {
     boolean colorTimeGoingUp = true;
     int colorCounter = 0;
 	int timesChanged = 0;
+	HealthBar healthBar;
 
 	@Override
 	public void create () {
@@ -58,7 +59,8 @@ public class MyGdxGame extends ApplicationAdapter {
         camera.position.x=width/2;
         camera.position.y = height/2;
         camera.update();
-        img = new Texture("Hex-grid.png");
+        img = new Texture("Hex-grid-transparent.png");//"Hex-grid.png");
+
         allCircles = new ArrayList<Circles>();
         addToCircles = new ArrayList<Circles>();
         shapeRenderer = new ShapeRenderer();
@@ -68,7 +70,7 @@ public class MyGdxGame extends ApplicationAdapter {
 //        parameter.color = Color.YELLOW;
 //        parameter.size = 40;
         font = new BitmapFont(); //generator.generateFont(parameter);
-
+        healthBar = new HealthBar(106,100);
 	}
 
 	@Override
@@ -137,13 +139,16 @@ public class MyGdxGame extends ApplicationAdapter {
                 moveCircles(deltaTime);
                 addNewCircles();
                 tick(deltaTime);
-                /*
+
                 batch.begin();
                 batch.draw(img, 0, 0);
                 batch.end();
-                */
+
                 drawCircles();
                 drawConnection();
+
+                drawHealthBar();
+
                 batch.begin();
                 font.draw(batch, "Score: " + currentScore, 0, 20);
                 batch.end();
@@ -181,6 +186,10 @@ public class MyGdxGame extends ApplicationAdapter {
             }
 
 	}
+
+    private void drawHealthBar() {
+        healthBar.draw(batch);
+    }
 
     private void addNewCircles() {
         for (Circles circle : addToCircles) {
@@ -228,6 +237,7 @@ public class MyGdxGame extends ApplicationAdapter {
             }
         }
         currentScore = (long)(currentScore - (150 + (totalScored*.01f)) * deltaTime);
+        healthBar.calculate(currentScore);
     }
 
     private void drawCircles(){
@@ -270,79 +280,32 @@ public class MyGdxGame extends ApplicationAdapter {
         Circles lastCircle = inWhatCircle(lastPress);
         if(initialCircle != null && lastCircle != null && !initialCircle.equals(lastCircle)){
             if(initialCircle.getClass().equals(Proton.class) && lastCircle.getClass().equals(Proton.class)){
-                //initialCircle.kill = true;
-                //lastCircle.kill = true;
                 initialCircle.setTravelTo((initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f, lastCircle);
                 lastCircle.setTravelTo((initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f, initialCircle);
-                //allCircles.add(new Deuterium(this,(initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f));
                 currentScore = currentScore + 400;
                 totalScored = totalScored + 400;
             }
             if((initialCircle.getClass().equals(Proton.class) && lastCircle.getClass().equals(Deuterium.class))||(initialCircle.getClass().equals(Deuterium.class) && lastCircle.getClass().equals(Proton.class))){
-                //initialCircle.kill = true;
-                //lastCircle.kill = true;
                 initialCircle.setTravelTo((initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f, lastCircle);
                 lastCircle.setTravelTo((initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f, initialCircle);
-                //allCircles.add(new Helion(this,(initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f));
                 currentScore = currentScore + 500;
                 totalScored = totalScored + 500;
             }
             if(initialCircle.getClass().equals(Helion.class) && lastCircle.getClass().equals(Helion.class)){
-                //initialCircle.kill = true;
-                //lastCircle.kill = true;
                 initialCircle.setTravelTo((initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f, lastCircle);
                 lastCircle.setTravelTo((initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f, initialCircle);
-                //allCircles.add(new Helium(this,(initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f));
-                //allCircles.add(new Proton(this,initialPress.x,initialPress.y));
-                //allCircles.add(new Proton(this,lastPress.x,lastPress.y));
                 currentScore = currentScore + 750;
                 totalScored = totalScored + 750;
             }
             if(initialCircle.getClass().equals(Helium.class) && lastCircle.getClass().equals(Helium.class)){
-                //initialCircle.kill = true;
-                //lastCircle.kill = true;
                 initialCircle.setTravelTo((initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f, lastCircle);
                 lastCircle.setTravelTo((initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f, initialCircle);
-                //allCircles.add(new Carbon(this,(initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f));
                 currentScore = currentScore + 1000;
                 totalScored = totalScored + 1000;
             }
         }
     }
-/*
-    private void fuzePoints1(Vector3 initialPress, Vector3 lastPress) {
-        Circles initialCircle = inWhatCircle(initialPress);
-        Circles lastCircle = inWhatCircle(lastPress);
-        if(initialCircle != null && lastCircle != null && !initialCircle.equals(lastCircle)){
-            if(initialCircle.getClass().equals(Proton.class) && lastCircle.getClass().equals(Proton.class)){
-                initialCircle.kill = true;
-                lastCircle.kill = true;
-                allCircles.add(new Deuterium((initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f));
-                currentScore = currentScore + 400;
-            }
-            if((initialCircle.getClass().equals(Proton.class) && lastCircle.getClass().equals(Deuterium.class))||(initialCircle.getClass().equals(Deuterium.class) && lastCircle.getClass().equals(Proton.class))){
-                initialCircle.kill = true;
-                lastCircle.kill = true;
-                allCircles.add(new Helion((initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f));
-                currentScore = currentScore + 500;
-            }
-            if(initialCircle.getClass().equals(Helion.class) && lastCircle.getClass().equals(Helion.class)){
-                initialCircle.kill = true;
-                lastCircle.kill = true;
-                allCircles.add(new Helium((initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f));
-                allCircles.add(new Proton(initialPress.x,initialPress.y));
-                allCircles.add(new Proton(lastPress.x,lastPress.y));
-                currentScore = currentScore + 750;
-            }
-            if(initialCircle.getClass().equals(Helium.class) && lastCircle.getClass().equals(Helium.class)){
-                initialCircle.kill = true;
-                lastCircle.kill = true;
-                allCircles.add(new Carbon((initialPress.x + lastPress.x)/2f,(initialPress.y + lastPress.y)/2f));
-                currentScore = currentScore + 1000;
-            }
-        }
-    }
-*/
+
     private boolean touchedOpenSpace(Vector3 pos){
         float distance = 0;
         for(Circles circle: allCircles){
