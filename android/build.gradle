@@ -1,6 +1,6 @@
 android {
-    buildToolsVersion "25.0.1"
-    compileSdkVersion 25
+    buildToolsVersion "28.0.3"
+    compileSdkVersion 27
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -11,16 +11,14 @@ android {
             assets.srcDirs = ['assets']
             jniLibs.srcDirs = ['libs']
         }
-
-        instrumentTest.setRoot('tests')
     }
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
     defaultConfig {
         applicationId "com.mygdx.game"
-        minSdkVersion 8
-        targetSdkVersion 25
+        minSdkVersion 14
+        targetSdkVersion 27
     }
 }
 
