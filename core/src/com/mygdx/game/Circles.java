@@ -25,6 +25,7 @@ public abstract class Circles {
     private float travelToY = -1;
     protected Circles matchedCircle = null;
 
+    private boolean highlighted = false;
 
     public Circles(MyGdxGame main){
         game = main;
@@ -34,6 +35,13 @@ public abstract class Circles {
 
     }
 
+    public boolean getHighlighted(){
+        return highlighted;
+    }
+
+    public void setHighlighted(boolean value){
+        highlighted = value;
+    }
     public float getRadius(){
         return radius;
     }
@@ -47,8 +55,10 @@ public abstract class Circles {
      * @param shapeRenderer
      */
     public void renderCircle(ShapeRenderer shapeRenderer){
-        shapeRenderer.setColor(color[0], color[1], color[2], color[3]);
-        shapeRenderer.circle(pos.x, pos.y, radius);
+        if(getHighlighted()) {
+            shapeRenderer.setColor(0, .8f, .8f, .5f);
+            shapeRenderer.circle(pos.x, pos.y, radius + 8);
+        }
     }
 
     public void setTravelTo(float x, float y, Circles circle){

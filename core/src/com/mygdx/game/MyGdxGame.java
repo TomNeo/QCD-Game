@@ -51,6 +51,7 @@ public class MyGdxGame extends ApplicationAdapter {
     int colorCounter = 0;
 	int timesChanged = 0;
 	HealthBar healthBar;
+	Circles highlightedCircle = null;
 
 	@Override
 	public void create () {
@@ -250,6 +251,7 @@ public class MyGdxGame extends ApplicationAdapter {
     }
 
     private void newClick(float deltaTime){
+	    /** This is the code for the drawing a line to fuze circles
         if(Gdx.input.isTouched()){
             touchedFor = touchedFor + deltaTime;
             if(Gdx.input.justTouched()){
@@ -271,6 +273,68 @@ public class MyGdxGame extends ApplicationAdapter {
                     fuzePoints(initialPress,lastPress);
                 }
                 touchedFor = 0;
+            }
+        }
+         **/
+
+        if(Gdx.input.isTouched()){
+            if(Gdx.input.justTouched()) {
+                initialPress.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+                camera.unproject(initialPress);
+                Circles temp = inWhatCircle(initialPress);
+                if(temp == null){
+                    allCircles.add(new Proton(this,initialPress.x, initialPress.y));
+                    currentScore = currentScore - 150;
+                    Protons++;
+                    if(highlightedCircle != null){
+                        highlightedCircle.setHighlighted(false);
+                        highlightedCircle = null;
+                    }
+                }else{
+                    if(highlightedCircle == null){
+                        highlightedCircle = temp;
+                        temp.setHighlighted(true);
+                    }else{
+                        if(highlightedCircle != temp){
+                            temp.setHighlighted(false);
+                            highlightedCircle.setHighlighted(false);
+                            fuzePoints(highlightedCircle,temp);
+                            highlightedCircle = null;
+                        }else{
+                            highlightedCircle.setHighlighted(false);
+                            highlightedCircle = null;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void fuzePoints(Circles initialCircle, Circles lastCircle) {
+        if(initialCircle != null && lastCircle != null && !initialCircle.equals(lastCircle)){
+            if(initialCircle.getClass().equals(Proton.class) && lastCircle.getClass().equals(Proton.class)){
+                initialCircle.setTravelTo((initialCircle.pos.x + lastCircle.pos.x)/2f,(initialCircle.pos.y + lastCircle.pos.y)/2f, lastCircle);
+                lastCircle.setTravelTo((initialCircle.pos.x + lastCircle.pos.x)/2f,(initialCircle.pos.y + lastCircle.pos.y)/2f, initialCircle);
+                currentScore = currentScore + 400;
+                totalScored = totalScored + 400;
+            }
+            if((initialCircle.getClass().equals(Proton.class) && lastCircle.getClass().equals(Deuterium.class))||(initialCircle.getClass().equals(Deuterium.class) && lastCircle.getClass().equals(Proton.class))){
+                initialCircle.setTravelTo((initialCircle.pos.x + lastCircle.pos.x)/2f,(initialCircle.pos.y + lastCircle.pos.y)/2f, lastCircle);
+                lastCircle.setTravelTo((initialCircle.pos.x + lastCircle.pos.x)/2f,(initialCircle.pos.y + lastCircle.pos.y)/2f, initialCircle);
+                currentScore = currentScore + 500;
+                totalScored = totalScored + 500;
+            }
+            if(initialCircle.getClass().equals(Helion.class) && lastCircle.getClass().equals(Helion.class)){
+                initialCircle.setTravelTo((initialCircle.pos.x + lastCircle.pos.x)/2f,(initialCircle.pos.y + lastCircle.pos.y)/2f, lastCircle);
+                lastCircle.setTravelTo((initialCircle.pos.x + lastCircle.pos.x)/2f,(initialCircle.pos.y + lastCircle.pos.y)/2f, initialCircle);
+                currentScore = currentScore + 750;
+                totalScored = totalScored + 750;
+            }
+            if(initialCircle.getClass().equals(Helium.class) && lastCircle.getClass().equals(Helium.class)){
+                initialCircle.setTravelTo((initialCircle.pos.x + lastCircle.pos.x)/2f,(initialCircle.pos.y + lastCircle.pos.y)/2f, lastCircle);
+                lastCircle.setTravelTo((initialCircle.pos.x + lastCircle.pos.x)/2f,(initialCircle.pos.y + lastCircle.pos.y)/2f, initialCircle);
+                currentScore = currentScore + 1000;
+                totalScored = totalScored + 1000;
             }
         }
     }

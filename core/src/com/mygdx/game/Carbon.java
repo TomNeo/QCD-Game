@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 
 /**
@@ -31,6 +32,13 @@ public class Carbon extends Circles {
         color[0] = (4 - lifeSpan)/4f;
     }
 
+
+    @Override
+    public void renderCircle(ShapeRenderer shapeRenderer) {
+        super.renderCircle(shapeRenderer);
+        shapeRenderer.setColor(color[0], color[1], color[2], color[3]);
+        shapeRenderer.circle(pos.x, pos.y, radius);
+    }
 
     public void collided(){
     }

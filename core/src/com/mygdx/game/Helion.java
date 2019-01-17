@@ -40,6 +40,7 @@ public class Helion extends Circles {
 
     @Override
     public void renderCircle(ShapeRenderer shapeRenderer){
+        super.renderCircle(shapeRenderer);
         shapeRenderer.setColor(1f, 1f, 1f, 1f);
         shapeRenderer.circle(pos.x, pos.y, radius);
         shapeRenderer.setColor(color[0], color[1], color[2], color[3]);
