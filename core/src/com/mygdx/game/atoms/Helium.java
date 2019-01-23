@@ -43,6 +43,10 @@ public class Helium extends Circles {
         shapeRenderer.circle(pos.x, pos.y, radius);
         shapeRenderer.setColor(color[0], color[1], color[2], color[3]);
         shapeRenderer.circle(pos.x, pos.y, radius-2f);
+        if(game.highlightedCircle != null && game.highlightedCircle.getClass() == Helium.class && !this.equals(game.highlightedCircle)){
+            shapeRenderer.setColor(1f, 1f, 1f, 1f);
+            shapeRenderer.circle(pos.x, pos.y, 6);
+        }
     }
 
 

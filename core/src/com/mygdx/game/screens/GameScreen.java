@@ -22,7 +22,7 @@ public class GameScreen implements Screen {
     private MyGdxGame game;
     private boolean colorTimeGoingUp = true;
     private boolean stillTouched = false;
-    private Circles highlightedCircle = null;
+    //private Circles highlightedCircle = null;
     private float colorLength = 3;
     private float colorTime = 0;
     private float runTime = 0;
@@ -146,6 +146,7 @@ public class GameScreen implements Screen {
             game.font.draw(game.batch, "Score: " + currentScore, 0, 20);
             game.batch.end();
         } else {
+            game.highlightedCircle = null;
             game.setScreen(new GameOverScreen(
                     game, highScore, highestScore, totalScored, Protons, runTime));
             dispose();
@@ -189,23 +190,23 @@ public class GameScreen implements Screen {
                     game.allCircles.add(new Proton(game, initialPress.x, initialPress.y));
                     currentScore = currentScore - 150;
                     Protons++;
-                    if(highlightedCircle != null){
-                        highlightedCircle.setHighlighted(false);
-                        highlightedCircle = null;
+                    if(game.highlightedCircle != null){
+                        game.highlightedCircle.setHighlighted(false);
+                        game.highlightedCircle = null;
                     }
                 }else{
-                    if(highlightedCircle == null){
-                        highlightedCircle = temp;
+                    if(game.highlightedCircle == null){
+                        game.highlightedCircle = temp;
                         temp.setHighlighted(true);
                     }else{
-                        if(highlightedCircle != temp){
+                        if(game.highlightedCircle != temp){
                             temp.setHighlighted(false);
-                            highlightedCircle.setHighlighted(false);
-                            fuzePoints(highlightedCircle,temp);
-                            highlightedCircle = null;
+                            game.highlightedCircle.setHighlighted(false);
+                            fuzePoints(game.highlightedCircle,temp);
+                            game.highlightedCircle = null;
                         }else{
-                            highlightedCircle.setHighlighted(false);
-                            highlightedCircle = null;
+                            game.highlightedCircle.setHighlighted(false);
+                            game.highlightedCircle = null;
                         }
                     }
                 }

@@ -46,6 +46,10 @@ public class Deuterium extends Circles {
         shapeRenderer.circle(pos.x, pos.y, radius-2f);
         shapeRenderer.setColor(.1f, .1f, .1f, 1f);
         shapeRenderer.circle(pos.x, pos.y, radius * (Proton.RADIUS/RADIUS));
+        if(game.highlightedCircle != null && game.highlightedCircle.getClass() == Proton.class && !this.equals(game.highlightedCircle)){
+            shapeRenderer.setColor(1f, 1f, 1f, 1f);
+            shapeRenderer.circle(pos.x, pos.y, 6);
+        }
     }
 
 

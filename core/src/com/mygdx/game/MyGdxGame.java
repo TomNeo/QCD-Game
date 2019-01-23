@@ -20,6 +20,7 @@ public class MyGdxGame extends Game {
     public BitmapFont font;
 	public SpriteBatch batch;
     public ShapeRenderer shapeRenderer;
+    public Circles highlightedCircle = null;
 
 	@Override
 	public void create () {
