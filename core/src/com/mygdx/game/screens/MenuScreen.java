@@ -44,7 +44,7 @@ public class MenuScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (event.getType() == InputEvent.Type.touchUp) {
-                    game.setScreen(new GameScreen(game));
+                    game.setScreen(new GameScreen(game, 0));
                     dispose();
                 }
             }

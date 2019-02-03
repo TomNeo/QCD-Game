@@ -5,7 +5,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -21,12 +20,12 @@ public class GameOverScreen implements Screen {
     private float width = 1980f;
     private float height = 1080f;
     private Image imgHome, imgReplay;
-    private long highScore, highestScore, totalScored, Protons;
+    private long peakLife, highestScore, totalScored, Protons;
     private OrthographicCamera camera;
     private Stage stageUI;
 
-    GameOverScreen(final MyGdxGame game, long highScore, long highestScore, long totalScored,
-                          long Protons, float runTime) {
+    GameOverScreen(final MyGdxGame game, long peakLife, final long highestScore, long totalScored,
+                   long Protons, float runTime) {
         this.game = game;
 
         camera = new OrthographicCamera(width, height);
@@ -53,7 +52,7 @@ public class GameOverScreen implements Screen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (event.getType() == InputEvent.Type.touchUp) {
-                    game.setScreen(new GameScreen(game));
+                    game.setScreen(new GameScreen(game, highestScore));
                     dispose();
                 }
             }
@@ -66,7 +65,7 @@ public class GameOverScreen implements Screen {
 
         stageUI.addActor(btnTable);
 
-        this.highScore = highScore;
+        this.peakLife = peakLife;
         this.highestScore = highestScore;
         this.totalScored = totalScored;
         this.Protons = Protons;
@@ -84,16 +83,11 @@ public class GameOverScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Your high score this round: " + highScore + " . Highest Score: " + highestScore,
+        game.font.draw(game.batch, "Your highest health this round: " + peakLife + "Current Highest Score: " + highestScore,
                 width / 4, height / 2 + 20);
-        game.font.draw(game.batch, "Time: " + runTime + ". Total Points Earned: " + totalScored + " Protons paid for: " + Protons,
+        game.font.draw(game.batch, "Time: " + runTime + ". Score this Round: " + totalScored + " Protons paid for: " + Protons,
                 width / 5, height / 2 - 22);
         game.batch.end();
-//        game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-//        game.shapeRenderer.setProjectionMatrix(camera.combined);
-//        game.shapeRenderer.setColor(1, 0, 0, 1);
-//        game.shapeRenderer.circle(width / 2, height / 2 - 250, 200);
-//        game.shapeRenderer.end();
 
         stageUI.act();
         stageUI.draw();

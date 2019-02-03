@@ -24,6 +24,8 @@ public abstract class Circles {
     private float travelToX = -1;
     private float travelToY = -1;
     protected Circles matchedCircle = null;
+    protected float timerX = 0;
+    protected float timerY = 0;
 
     private boolean highlighted = false;
 
@@ -32,7 +34,7 @@ public abstract class Circles {
     }
 
     public void tick(float deltaTime){
-
+        calculateTimerPositions();
     }
 
     public boolean getHighlighted(){
@@ -118,7 +120,7 @@ public abstract class Circles {
                             || (otherCircle.getClass() == Deuterium.class && this.getClass() == Proton.class)
                             || (otherCircle.getClass() == Helion.class && this.getClass() == Helion.class)
                             || (otherCircle.getClass() == Helium.class && this.getClass() == Helium.class)
-                            || (otherCircle.getClass() == Carbon.class && this.getClass() == Carbon.class));
+                            || (otherCircle.getClass() == Beryllium.class && this.getClass() == Beryllium.class));
                     float potency = 1 - distanceFromEdges/Circles.EFFECTIVE_RANGE;
                     float vectorRatio = (potency * STANDARD_FORCE);
                     //float vectorRatio =  distanceFromEdges/(potency * STANDARD_FORCE);
@@ -139,5 +141,6 @@ public abstract class Circles {
     }
 
     protected abstract void collided();
+    protected abstract void calculateTimerPositions();
 
 }
