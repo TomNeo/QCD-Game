@@ -1,7 +1,9 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -21,6 +23,7 @@ public class MyGdxGame extends Game {
 	public SpriteBatch batch;
     public ShapeRenderer shapeRenderer;
     public Circles highlightedCircle = null;
+    public Sound soundEffect;
 
 	@Override
 	public void create () {
@@ -33,6 +36,13 @@ public class MyGdxGame extends Game {
         parameter.color = Color.YELLOW;
         parameter.size = 40;
         font = generator.generateFont(parameter);
+
+        if (Gdx.app.getType() == Application.ApplicationType.Android ||
+				Gdx.app.getType() == Application.ApplicationType.Desktop) {
+			soundEffect = Gdx.audio.newSound(Gdx.files.internal(Variables.SFX_CREATE_ATOM + ".ogg"));
+		} else if (Gdx.app.getType() == Application.ApplicationType.iOS) {
+			soundEffect = Gdx.audio.newSound(Gdx.files.internal(Variables.SFX_CREATE_ATOM + ".mp3"));
+		}
 
         setScreen(new MenuScreen(this));
 	}
