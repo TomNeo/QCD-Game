@@ -73,6 +73,8 @@ public class Deuterium extends Circles {
             game.addToCircles.add(new Helion(game, pos.x, pos.y));
             matchedCircle.kill = true;
             this.kill = true;
+            game.soundEffect.play();
+
         }
     }
 

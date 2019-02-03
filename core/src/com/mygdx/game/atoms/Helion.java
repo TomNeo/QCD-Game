@@ -94,6 +94,7 @@ public class Helion extends Circles {
             game.addToCircles.add(new Proton(game,tempHelium.pos.x + tempX,tempHelium.pos.y + tempY));
             matchedCircle.kill = true;
             this.kill = true;
+            game.soundEffect.play();
         }
     }
 

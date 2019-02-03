@@ -73,6 +73,8 @@ public class Helium extends Circles {
             matchedCircle.kill = true;
             this.kill = true;
         }
-        }
+        game.soundEffect.play();
+
+    }
 
 }
