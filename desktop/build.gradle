@@ -4,7 +4,7 @@ sourceCompatibility = 1.6
 sourceSets.main.java.srcDirs = [ "src/" ]
 
 project.ext.mainClassName = "com.mygdx.game.desktop.DesktopLauncher"
-project.ext.assetsDir = new File("../android/assets");
+project.ext.assetsDir = new File("../android/adAssets");
 
 task run(dependsOn: classes, type: JavaExec) {
     main = project.mainClassName
@@ -30,14 +30,14 @@ dist.dependsOn classes
 eclipse {
     project {
         name = appName + "-desktop"
-        linkedResource name: 'assets', type: '2', location: 'PARENT-1-PROJECT_LOC/android/assets'
+        linkedResource name: 'assets', type: '2', location: 'PARENT-1-PROJECT_LOC/android/adAssets'
     }
 }
 
 task afterEclipseImport(description: "Post processing after project generation", group: "IDE") {
   doLast {
     def classpath = new XmlParser().parse(file(".classpath"))
-    new Node(classpath, "classpathentry", [ kind: 'src', path: 'assets' ]);
+    new Node(classpath, "classpathentry", [ kind: 'src', path: 'adAssets' ]);
     def writer = new FileWriter(file(".classpath"))
     def printer = new XmlNodePrinter(new PrintWriter(writer))
     printer.setPreserveWhitespace(true)
