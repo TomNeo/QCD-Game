@@ -45,10 +45,14 @@ public class Carbon extends Circles {
         super.renderCircle(shapeRenderer);
         //Draw the main circle
         shapeRenderer.setColor(color[0], color[1], color[2], color[3]);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.circle(pos.x, pos.y, radius);
+        shapeRenderer.end();
         //Draw the timer line
         shapeRenderer.setColor(1, 1, 1, 1);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.line(pos.x, pos.y,this.timerX,this.timerY);
+        shapeRenderer.end();
     }
 
     public void collided(){

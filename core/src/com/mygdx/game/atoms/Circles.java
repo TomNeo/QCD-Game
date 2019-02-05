@@ -59,7 +59,9 @@ public abstract class Circles {
     public void renderCircle(ShapeRenderer shapeRenderer){
         if(getHighlighted()) {
             shapeRenderer.setColor(0, .8f, .8f, .5f);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.circle(pos.x, pos.y, radius + 8);
+            shapeRenderer.end();
         }
     }
 

@@ -4,7 +4,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.Variables;
-import com.sun.org.apache.xpath.internal.operations.Variable;
 
 /**
  * Created by User on 1/19/2017.
@@ -28,20 +27,34 @@ public class Proton extends Circles{
     @Override
     public void renderCircle(ShapeRenderer shapeRenderer){
         super.renderCircle(shapeRenderer);
+
         //Draw outline
         shapeRenderer.setColor(0f, 0f, 0f, 1f);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.circle(pos.x, pos.y, radius);
+        shapeRenderer.end();
         //Draw main colored circle
         shapeRenderer.setColor(color[0], color[1], color[2], color[3]);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.circle(pos.x, pos.y, radius-2f);
+        shapeRenderer.end();
         //Draw the timer line
-        shapeRenderer.setColor(1, 1, 1, 1);
+        shapeRenderer.setColor(1, 0, 0, 1);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.line(pos.x, pos.y,this.timerX,this.timerY);
+        shapeRenderer.end();
 
-        if(game.highlightedCircle != null && (game.highlightedCircle.getClass() == Proton.class || game.highlightedCircle.getClass() == Deuterium.class) && !this.equals(game.highlightedCircle)){
-            shapeRenderer.setColor(Variables.MATCH_INDICATOR_COLOR[0], Variables.MATCH_INDICATOR_COLOR[1],Variables.MATCH_INDICATOR_COLOR[2],Variables.MATCH_INDICATOR_COLOR[3]);
+        if(game.highlightedCircle != null &&
+                (game.highlightedCircle.getClass() == Proton.class ||
+                        game.highlightedCircle.getClass() == Deuterium.class) &&
+                !this.equals(game.highlightedCircle)) {
+            shapeRenderer.setColor(Variables.MATCH_INDICATOR_COLOR[0], Variables.MATCH_INDICATOR_COLOR[1],
+                    Variables.MATCH_INDICATOR_COLOR[2], Variables.MATCH_INDICATOR_COLOR[3]);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.circle(pos.x, pos.y, Variables.MATCH_INDICATOR_RADIUS);
+            shapeRenderer.end();
         }
+
     }
 
     @Override

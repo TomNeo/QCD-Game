@@ -234,12 +234,16 @@ public class GameScreen implements Screen {
     }
 
     private void drawCircles(){
-        game.shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        Gdx.gl.glLineWidth(Variables.CIRCLE_LINE_WIDTH);
         game.shapeRenderer.setProjectionMatrix(camera.combined);
         for (Circles circle : game.allCircles) {
             circle.renderCircle(game.shapeRenderer);
         }
-        game.shapeRenderer.end();
+
+        Gdx.gl.glLineWidth(1f);
+        Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 
     private Circles inWhatCircle(Vector3 pos){

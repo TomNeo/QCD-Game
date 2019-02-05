@@ -19,7 +19,7 @@ public class Deuterium extends Circles {
         super(main);
         this.pos = new Vector2(x,y);
         this.radius = Variables.PROTON_RADIUS;
-        this.color = new float[] {1,.2f,.5f,0};
+        this.color = new float[] {1,.2f,.5f,1};
     }
 
     @Override
@@ -50,20 +50,30 @@ public class Deuterium extends Circles {
 
         //Draw the outline
         shapeRenderer.setColor(1f, 1f, 1f, 1f);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.circle(pos.x, pos.y, radius);
+        shapeRenderer.end();
         //Draw the colored pink part
         shapeRenderer.setColor(color[0], color[1], color[2], color[3]);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.circle(pos.x, pos.y, radius-2f);
+        shapeRenderer.end();
         //Draw the timer line
         shapeRenderer.setColor(1, 1, 1, 1);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.line(pos.x, pos.y,this.timerX,this.timerY);
+        shapeRenderer.end();
         //Draw the blank void meant to represent where a proton goes
         shapeRenderer.setColor(.1f, .1f, .1f, 1f);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.circle(pos.x, pos.y, radius * (Variables.PROTON_RADIUS/Variables.DEUTERIUM_RADIUS));
+        shapeRenderer.end();
         //If the highlighted circle is a match, draw the indicator circle
         if(game.highlightedCircle != null && game.highlightedCircle.getClass() == Proton.class && !this.equals(game.highlightedCircle)){
             shapeRenderer.setColor(Variables.MATCH_INDICATOR_COLOR[0], Variables.MATCH_INDICATOR_COLOR[1],Variables.MATCH_INDICATOR_COLOR[2],Variables.MATCH_INDICATOR_COLOR[3]);
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.circle(pos.x, pos.y, Variables.MATCH_INDICATOR_RADIUS);
+            shapeRenderer.end();
         }
     }
 
