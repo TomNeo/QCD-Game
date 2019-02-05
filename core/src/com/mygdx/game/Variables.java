@@ -33,6 +33,7 @@ public class Variables {
 
     public static float MATCH_INDICATOR_RADIUS = 6;
     public static float[] MATCH_INDICATOR_COLOR = new float[] {1,1,1,1};
+    public static final float CIRCLE_LINE_WIDTH = 5f;
 
     /** Game play Mechanics **/
 
