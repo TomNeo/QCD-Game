@@ -62,6 +62,7 @@ public class Beryllium extends Circles {
             game.addToCircles.add(new Carbon(game, pos.x, pos.y));
             matchedCircle.kill = true;
             this.kill = true;
+            game.soundEffect.play();
         }
     }
 

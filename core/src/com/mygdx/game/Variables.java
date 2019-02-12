@@ -51,5 +51,7 @@ public class Variables {
     public static float TIER_4_VALUE = 3000;
     public static float TIER_5_VALUE = 3000;
 
+    /** sfx paths **/
+    public static final String SFX_CREATE_ATOM = "sfx/MegaBuster";
 
 }

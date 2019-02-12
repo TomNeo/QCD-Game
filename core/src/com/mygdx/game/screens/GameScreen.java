@@ -1,7 +1,9 @@
 package com.mygdx.game.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -41,11 +43,11 @@ public class GameScreen implements Screen {
     private long totalScored = 0;
     private long highestScore;
     private long Protons = 0;
+    private Music bgMusic;
     private OrthographicCamera camera;
     private Texture img;
     private Vector3 initialPress = new Vector3();
     private Vector3 lastPress = new Vector3();
-
 
     GameScreen(MyGdxGame gam, long highScore) {
         game = gam;
@@ -60,6 +62,16 @@ public class GameScreen implements Screen {
         game.allCircles = new ArrayList<Circles>();
         game.addToCircles = new ArrayList<Circles>();
         healthBar = new HealthBar(106,100);
+
+        if (Gdx.app.getType() == Application.ApplicationType.Android ||
+                Gdx.app.getType() == Application.ApplicationType.Desktop) {
+            bgMusic = Gdx.audio.newMusic(Gdx.files.internal("sfx/mm5napalm.ogg"));
+        } else if (Gdx.app.getType() == Application.ApplicationType.iOS) {
+            bgMusic = Gdx.audio.newMusic(Gdx.files.internal("sfx/mm5napalm.mp3"));
+        }
+        if (bgMusic != null) {
+            bgMusic.play();
+        }
     }
 
     @Override
@@ -145,6 +157,7 @@ public class GameScreen implements Screen {
             game.batch.end();
         } else {
             game.highlightedCircle = null;
+            bgMusic.stop();
             game.setScreen(new GameOverScreen(
                     game, peakHealth, highestScore, totalScored, Protons, runTime));
             dispose();
@@ -166,6 +179,8 @@ public class GameScreen implements Screen {
                         game.highlightedCircle.setHighlighted(false);
                         game.highlightedCircle = null;
                     }
+                    // play sound for circle creation by touch
+                    game.soundEffect.play();
                 }else{
                     if(game.highlightedCircle == null){
                         game.highlightedCircle = temp;
@@ -187,9 +202,7 @@ public class GameScreen implements Screen {
     }
 
     private void addNewCircles() {
-        for (Circles circle : game.addToCircles) {
-            game.allCircles.add(circle);
-        }
+        game.allCircles.addAll(game.addToCircles);
         game.addToCircles.clear();
     }
 
@@ -312,5 +325,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         img.dispose();
+        bgMusic.dispose();
     }
 }
