@@ -120,7 +120,10 @@ public abstract class Circles {
                             || (otherCircle.getClass() == Deuterium.class && this.getClass() == Proton.class)
                             || (otherCircle.getClass() == Helion.class && this.getClass() == Helion.class)
                             || (otherCircle.getClass() == Helium.class && this.getClass() == Helium.class)
-                            || (otherCircle.getClass() == Beryllium.class && this.getClass() == Beryllium.class));
+                            || (otherCircle.getClass() == Helium.class && this.getClass() == Beryllium.class)
+                            || (otherCircle.getClass() == Beryllium.class && this.getClass() == Helium.class)
+                            || (otherCircle.getClass() == Carbon.class && this.getClass() == Proton.class)
+                            || (otherCircle.getClass() == Proton.class && this.getClass() == Carbon.class));
                     float potency = 1 - distanceFromEdges/Circles.EFFECTIVE_RANGE;
                     float vectorRatio = (potency * STANDARD_FORCE);
                     //float vectorRatio =  distanceFromEdges/(potency * STANDARD_FORCE);

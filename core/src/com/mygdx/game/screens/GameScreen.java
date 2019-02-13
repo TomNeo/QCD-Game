@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.Variables;
 import com.mygdx.game.atoms.Beryllium;
+import com.mygdx.game.atoms.Carbon;
 import com.mygdx.game.atoms.Circles;
 import com.mygdx.game.atoms.Deuterium;
 import com.mygdx.game.HealthBar;
@@ -234,9 +235,9 @@ public class GameScreen implements Screen {
         killList.clear();
         if(currentHealth > peakHealth){
             peakHealth = currentHealth;
-            if(totalScored > highestScore){
-                highestScore = totalScored;
-            }
+        }
+        if(totalScored > highestScore){
+            highestScore = totalScored;
         }
         currentHealth = (long)(currentHealth - (Variables.HEALTH_DECREASE_CONSTANT + (totalScored * Variables.HEALTH_DECREASE_SCORE_MODIFIER) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)) * deltaTime);
         healthBar.calculate(currentHealth);
@@ -298,6 +299,16 @@ public class GameScreen implements Screen {
                 lastCircle.setTravelTo((initialCircle.pos.x + lastCircle.pos.x)/2f,(initialCircle.pos.y + lastCircle.pos.y)/2f, initialCircle);
                 currentHealth = currentHealth + Variables.HELIUM_BERYLLIUM_SCORE;
                 totalScored = totalScored + Variables.HELIUM_BERYLLIUM_SCORE;
+            }
+            if((initialCircle.getClass().equals(Proton.class) && lastCircle.getClass().equals(Carbon.class))){
+                initialCircle.setTravelTo(lastCircle.pos.x,lastCircle.pos.y, lastCircle);
+                currentHealth = currentHealth + Variables.PROTON_CARBON_SCORE;
+                totalScored = totalScored + Variables.PROTON_CARBON_SCORE;
+            }
+            if((initialCircle.getClass().equals(Carbon.class) && lastCircle.getClass().equals(Proton.class))){
+                lastCircle.setTravelTo(initialCircle.pos.x,initialCircle.pos.y, initialCircle);
+                currentHealth = currentHealth + Variables.PROTON_CARBON_SCORE;
+                totalScored = totalScored + Variables.PROTON_CARBON_SCORE;
             }
         }
     }

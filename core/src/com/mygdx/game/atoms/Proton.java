@@ -38,7 +38,7 @@ public class Proton extends Circles{
         shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.line(pos.x, pos.y,this.timerX,this.timerY);
 
-        if(game.highlightedCircle != null && (game.highlightedCircle.getClass() == Proton.class || game.highlightedCircle.getClass() == Deuterium.class) && !this.equals(game.highlightedCircle)){
+        if(game.highlightedCircle != null && (game.highlightedCircle.getClass() == Proton.class || game.highlightedCircle.getClass() == Deuterium.class || game.highlightedCircle.getClass() == Carbon.class) && !this.equals(game.highlightedCircle)){
             shapeRenderer.setColor(Variables.MATCH_INDICATOR_COLOR[0], Variables.MATCH_INDICATOR_COLOR[1],Variables.MATCH_INDICATOR_COLOR[2],Variables.MATCH_INDICATOR_COLOR[3]);
             shapeRenderer.circle(pos.x, pos.y, Variables.MATCH_INDICATOR_RADIUS);
         }
@@ -68,6 +68,9 @@ public class Proton extends Circles{
         }else if(!matchedCircle.kill && matchedCircle.getClass().equals(Proton.class)){
             game.addToCircles.add(new Deuterium(game, pos.x, pos.y));
             matchedCircle.kill = true;
+            this.kill = true;
+        }else if(!matchedCircle.kill && matchedCircle.getClass().equals(Carbon.class)){
+            ((Carbon)matchedCircle).captureProton();
             this.kill = true;
         }
         game.soundEffect.play();
