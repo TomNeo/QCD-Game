@@ -308,7 +308,7 @@ public class GameScreen implements Screen {
             if((initialCircle.getClass().equals(Carbon.class) && lastCircle.getClass().equals(Proton.class))){
                 lastCircle.setTravelTo(initialCircle.pos.x,initialCircle.pos.y, initialCircle);
                 currentHealth = currentHealth + Variables.PROTON_CARBON_SCORE;
-                totalScored = totalScored + Variables.PROTON_CARBON_SCORE;
+                totalScored = totalScored + Variables.PROTON_CARBON_SCORE * ((Carbon)initialCircle).getProtons();
             }
         }
     }

@@ -55,7 +55,18 @@ public class Carbon extends Circles {
         //Draw the timer line
         shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.line(pos.x, pos.y,this.timerX,this.timerY);
-
+        if(protons >= 1){
+            shapeRenderer.setColor(1, 1, 1, .4f);
+            shapeRenderer.circle(pos.x, pos.y + radius/2, Variables.PROTON_RADIUS);
+        }
+        if(protons >= 2){
+            shapeRenderer.setColor(1, 1, 1, .4f);
+            shapeRenderer.circle(pos.x - radius/ 4 * (float)Math.sqrt(2), pos.y - radius / 4 *(float)Math.sqrt(2), Variables.PROTON_RADIUS);
+        }
+        if(protons >= 3){
+            shapeRenderer.setColor(1, 1, 1, .4f);
+            shapeRenderer.circle(pos.x + radius/ 4 * (float)Math.sqrt(2), pos.y - radius / 4 *(float)Math.sqrt(2), Variables.PROTON_RADIUS);
+        }
         if(game.highlightedCircle != null && (game.highlightedCircle.getClass() == Proton.class) && !this.equals(game.highlightedCircle)){
             shapeRenderer.setColor(Variables.MATCH_INDICATOR_COLOR[0], Variables.MATCH_INDICATOR_COLOR[1],Variables.MATCH_INDICATOR_COLOR[2],Variables.MATCH_INDICATOR_COLOR[3]);
             shapeRenderer.circle(pos.x, pos.y, Variables.MATCH_INDICATOR_RADIUS);
@@ -87,5 +98,9 @@ public class Carbon extends Circles {
             game.soundEffect.play();
             protons = 0;
         }
+    }
+
+    public int getProtons(){
+        return protons;
     }
 }
