@@ -13,21 +13,27 @@ public abstract class Circles {
     private static float MOVE_RATE = 1000f;
     private static float EFFECTIVE_RANGE = 250f;
     private static float STANDARD_FORCE = .25f;
-    protected Vector2 velocity = new Vector2();
+
     protected MyGdxGame game;
-    protected float radius;
-    public Vector2 pos;
-    //protected int colorInt;
-    protected float[] color = {0,0,0,0};
+
     public boolean kill = false;
     public boolean moving = false;
+    private boolean highlighted = false;
+
+    Circles matchedCircle = null;
+
+    float lifeSpan;
+    float radius;
+    float timerX = 0;
+    float timerY = 0;
     private float travelToX = -1;
     private float travelToY = -1;
-    protected Circles matchedCircle = null;
-    protected float timerX = 0;
-    protected float timerY = 0;
+    protected float[] color = {0,0,0,0};
 
-    private boolean highlighted = false;
+    //protected int colorInt;
+
+    public Vector2 pos;
+    private Vector2 velocity = new Vector2();
 
     public Circles(MyGdxGame main){
         game = main;

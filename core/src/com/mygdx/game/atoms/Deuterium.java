@@ -12,14 +12,14 @@ import com.mygdx.game.Variables;
 public class Deuterium extends Circles {
 
     //public static float RADIUS = Variables.DEUTERIUM_RADIUS;
-    public float lifeSpan = Variables.DEUTERIUM_LIFESPAN;
     private float aliveFor = 0f;
 
-    public Deuterium(MyGdxGame main, float x, float y){
+    Deuterium(MyGdxGame main, float x, float y){
         super(main);
         this.pos = new Vector2(x,y);
         this.radius = Variables.PROTON_RADIUS;
         this.color = new float[] {1,.2f,.5f,1};
+        this.lifeSpan = Variables.DEUTERIUM_LIFESPAN;
     }
 
     @Override

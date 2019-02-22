@@ -11,14 +11,14 @@ import com.mygdx.game.Variables;
 
 public class Helium extends Circles {
     //public static float RADIUS = Variables.HELIUM_RADIUS;
-    public float lifeSpan = Variables.HELIUM_LIFESPAN;
     private float aliveFor = 0f;
 
-    public Helium(MyGdxGame main, float x, float y){
+    Helium(MyGdxGame main, float x, float y){
         super(main);
         this.pos = new Vector2(x,y);
         this.radius = Variables.HELIUM_RADIUS;
         this.color = new float[] {.2f,1,.3f,1};
+        this.lifeSpan = Variables.HELIUM_LIFESPAN;
     }
 
     @Override

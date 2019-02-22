@@ -11,15 +11,15 @@ import com.mygdx.game.Variables;
 
 public class Beryllium extends Circles {
 
-    public float lifeSpan = Variables.BERYLLIUM_LIFESPAN;
     private float aliveFor = 0f;
     private float initialLifespan;
 
-    public Beryllium(MyGdxGame main, float x, float y){
+    Beryllium(MyGdxGame main, float x, float y){
         super(main);
         this.pos = new Vector2(x,y);
         this.radius = Variables.HELIUM_RADIUS;
         this.color = new float[] {1,0,0,1};
+        this.lifeSpan = Variables.BERYLLIUM_LIFESPAN;
         initialLifespan = lifeSpan;
     }
 

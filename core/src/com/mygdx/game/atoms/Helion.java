@@ -14,15 +14,15 @@ import java.util.Random;
 public class Helion extends Circles {
 
     //public static float RADIUS = Variables.HELION_RADIUS;
-    public float lifeSpan = Variables.HELION_LIFESPAN;
     private float aliveFor = 0f;
     private Random random = new Random();
 
-    public Helion(MyGdxGame main, float x, float y){
+    Helion(MyGdxGame main, float x, float y){
         super(main);
         this.pos = new Vector2(x,y);
         this.radius = Variables.DEUTERIUM_RADIUS;
         this.color = new float[] {0,0,.3f,1};
+        this.lifeSpan = Variables.HELION_LIFESPAN;
     }
 
     @Override

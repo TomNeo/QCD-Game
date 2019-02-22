@@ -12,8 +12,6 @@ import com.mygdx.game.Variables;
 public class Proton extends Circles{
 
     //public static float RADIUS = 50f;
-    public float lifeSpan = Variables.PROTON_LIFESPAN;
-
     //boolean kill = false;
 
     public Proton(MyGdxGame main, float x, float y){
@@ -21,7 +19,7 @@ public class Proton extends Circles{
         this.pos = new Vector2(x,y);
         this.radius = Variables.PROTON_RADIUS;
         this.color = new float[] {0,1,0,1};
-
+        this.lifeSpan = Variables.PROTON_LIFESPAN;
     }
 
     @Override

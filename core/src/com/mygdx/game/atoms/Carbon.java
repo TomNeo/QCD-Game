@@ -7,15 +7,15 @@ import com.mygdx.game.Variables;
 
 public class Carbon extends Circles {
 
-    public float lifeSpan = Variables.CARBON_LIFESPAN;
     private float aliveFor = 0f;
     private float initialLifespan;
 
-    public Carbon(MyGdxGame main, float x, float y){
+    Carbon(MyGdxGame main, float x, float y){
         super(main);
         this.pos = new Vector2(x,y);
         this.radius = Variables.BERYLLIUM_RADIUS;
         this.color = new float[] {1,0,1,.5f};
+        this.lifeSpan = Variables.CARBON_LIFESPAN;
         initialLifespan = lifeSpan;
     }
 
