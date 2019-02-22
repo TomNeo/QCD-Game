@@ -83,10 +83,10 @@ public class GameOverScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         game.batch.begin();
-        game.font.draw(game.batch, "Your highest health this round: " + peakLife + "Current Highest Score: " + highestScore,
-                width / 4, height / 2 + 20);
+        game.font.draw(game.batch, "Your highest health this round: " + peakLife + "    Current Highest Score: " + highestScore,
+                width / 7, 3*height / 4 + 20);
         game.font.draw(game.batch, "Time: " + runTime + ". Score this Round: " + totalScored + " Protons paid for: " + Protons,
-                width / 5, height / 2 - 22);
+                width / 7, height /4 - 22);
         game.batch.end();
 
         stageUI.act();

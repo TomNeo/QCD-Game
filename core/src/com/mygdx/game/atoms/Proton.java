@@ -80,7 +80,12 @@ public class Proton extends Circles{
             game.addToCircles.add(new Deuterium(game, pos.x, pos.y));
             matchedCircle.kill = true;
             this.kill = true;
+        }else if(!matchedCircle.kill && matchedCircle.getClass().equals(Carbon.class)){
+            ((Carbon)matchedCircle).captureProton();
+            this.kill = true;
         }
+        game.soundEffect.play();
+
     }
 
 }

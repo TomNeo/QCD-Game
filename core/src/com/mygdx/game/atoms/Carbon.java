@@ -5,10 +5,16 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.Variables;
 
+import java.util.Random;
+
+import static com.mygdx.game.Variables.PROTON_CAPTURE_LIFESPAN_BUMP;
+
 public class Carbon extends Circles {
 
     private float aliveFor = 0f;
     private float initialLifespan;
+    private int protons = 0;
+    private Random random = new Random();
 
     Carbon(MyGdxGame main, float x, float y){
         super(main);
@@ -53,9 +59,52 @@ public class Carbon extends Circles {
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.line(pos.x, pos.y,this.timerX,this.timerY);
         shapeRenderer.end();
+        if(protons >= 1){
+            shapeRenderer.setColor(1, 1, 1, .4f);
+            shapeRenderer.circle(pos.x, pos.y + radius/2, Variables.PROTON_RADIUS);
+        }
+        if(protons >= 2){
+            shapeRenderer.setColor(1, 1, 1, .4f);
+            shapeRenderer.circle(pos.x - radius/ 4 * (float)Math.sqrt(2), pos.y - radius / 4 *(float)Math.sqrt(2), Variables.PROTON_RADIUS);
+        }
+        if(protons >= 3){
+            shapeRenderer.setColor(1, 1, 1, .4f);
+            shapeRenderer.circle(pos.x + radius/ 4 * (float)Math.sqrt(2), pos.y - radius / 4 *(float)Math.sqrt(2), Variables.PROTON_RADIUS);
+        }
+        if(game.highlightedCircle != null && (game.highlightedCircle.getClass() == Proton.class) && !this.equals(game.highlightedCircle)){
+            shapeRenderer.setColor(Variables.MATCH_INDICATOR_COLOR[0], Variables.MATCH_INDICATOR_COLOR[1],Variables.MATCH_INDICATOR_COLOR[2],Variables.MATCH_INDICATOR_COLOR[3]);
+            shapeRenderer.circle(pos.x, pos.y, Variables.MATCH_INDICATOR_RADIUS);
+        }
     }
 
     public void collided(){
     }
 
+    public void captureProton(){
+        protons++;
+        if(lifeSpan + Variables.PROTON_CAPTURE_LIFESPAN_BUMP > Variables.CARBON_LIFESPAN){
+            lifeSpan = Variables.CARBON_LIFESPAN;
+        }else{
+            lifeSpan = lifeSpan + Variables.PROTON_CAPTURE_LIFESPAN_BUMP;
+        }
+        if(protons >= 4){
+            float distance = this.radius + Variables.HELIUM_RADIUS + 1;
+            float angle = (float)(Math.random() * 90f);
+            float tempX = (float)(Math.sin(Math.PI/180 * angle)* distance);
+            if(random.nextBoolean()){
+                tempX = -tempX;
+            }
+            float tempY = (float)(Math.sin(Math.PI/180 * (90 - angle))* distance);
+            if(random.nextBoolean()){
+                tempY = -tempY;
+            }
+            game.addToCircles.add(new Helium(game,this.pos.x + tempX,this.pos.y + tempY));
+            game.soundEffect.play();
+            protons = 0;
+        }
+    }
+
+    public int getProtons(){
+        return protons;
+    }
 }
