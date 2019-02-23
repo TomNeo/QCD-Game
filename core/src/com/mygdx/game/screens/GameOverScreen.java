@@ -2,25 +2,26 @@ package com.mygdx.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.MyGdxGame;
 
 public class GameOverScreen implements Screen {
 
     private final MyGdxGame game;
-    private float runTime;
     private float width = 1980f;
     private float height = 1080f;
     private Image imgHome, imgReplay;
-    private long peakLife, highestScore, totalScored, Protons;
     private OrthographicCamera camera;
     private Stage stageUI;
 
@@ -58,18 +59,33 @@ public class GameOverScreen implements Screen {
             }
         });
 
-        Table btnTable = new Table();
-        btnTable.setSize(960, 540);
-        btnTable.add(imgHome).prefSize(128, 128).padRight(48);
-        btnTable.add(imgReplay).prefSize(128, 128).padLeft(48).row();
+        Table table = new Table();
+        table.setSize(960, 540);
 
-        stageUI.addActor(btnTable);
+        Label label1 = new Label("Your highest health this round: " + peakLife, game.skin, "font", Color.YELLOW);
+        label1.setAlignment(Align.center);
+        table.add(label1).padBottom(20).colspan(2).row();
 
-        this.peakLife = peakLife;
-        this.highestScore = highestScore;
-        this.totalScored = totalScored;
-        this.Protons = Protons;
-        this.runTime = runTime;
+        Label label2 = new Label("Current Highest Score: " + highestScore, game.skin, "font", Color.YELLOW);
+        label2.setAlignment(Align.center);
+        table.add(label2).padBottom(20).colspan(2).row();
+
+        Label label3 = new Label("Time: " + runTime, game.skin, "font", Color.YELLOW);
+        label3.setAlignment(Align.center);
+        table.add(label3).padBottom(20).colspan(2).row();
+
+        Label label4 = new Label("Score this Round: " + totalScored, game.skin, "font", Color.YELLOW);
+        label4.setAlignment(Align.center);
+        table.add(label4).padBottom(20).colspan(2).row();
+
+        Label label5 = new Label("Protons paid for: " + Protons, game.skin, "font", Color.YELLOW);
+        label5.setAlignment(Align.center);
+        table.add(label5).padBottom(20).colspan(2).row();
+
+        table.add(imgHome).prefSize(128, 128).padRight(48);
+        table.add(imgReplay).prefSize(128, 128).padLeft(48).row();
+
+        stageUI.addActor(table);
     }
 
     @Override
@@ -81,13 +97,6 @@ public class GameOverScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        game.batch.begin();
-        game.font.draw(game.batch, "Your highest health this round: " + peakLife + "    Current Highest Score: " + highestScore,
-                width / 7, 3*height / 4 + 20);
-        game.font.draw(game.batch, "Time: " + runTime + ". Score this Round: " + totalScored + " Protons paid for: " + Protons,
-                width / 7, height /4 - 22);
-        game.batch.end();
 
         stageUI.act();
         stageUI.draw();
