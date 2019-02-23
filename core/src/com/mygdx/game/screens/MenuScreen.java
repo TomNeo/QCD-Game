@@ -5,6 +5,10 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -19,6 +23,7 @@ public class MenuScreen implements Screen {
     private OrthographicCamera camera;
     private Image imgExit, imgPlay;
     private Stage stageUI;
+    private ParticleEffect effect;
 
     public MenuScreen(MyGdxGame gam) {
         game = gam;
@@ -56,6 +61,16 @@ public class MenuScreen implements Screen {
         btnTable.add(imgPlay).prefSize(128, 128).padLeft(48).row();
 
         stageUI.addActor(btnTable);
+
+        TextureAtlas particleAtlas = new TextureAtlas(); //<-load some atlas with your particle assets in
+        TextureRegion ppNeutron = new TextureRegion(new Texture("particles/Hallucinogen/pp_neutron.png"));
+        TextureRegion ppNeutronFull = new TextureRegion(new Texture("particles/Hallucinogen/pp_neutron-full.png"));
+        particleAtlas.addRegion("pp_neutron", ppNeutron);
+        particleAtlas.addRegion("pp_neutron-full", ppNeutronFull);
+        effect = new ParticleEffect();
+        effect.load(Gdx.files.internal("particles/Hallucinogen/hallucinogen_full.p"), particleAtlas);
+        effect.setPosition(1366/2f, 600f);
+        effect.start();
     }
 
     @Override
@@ -70,6 +85,13 @@ public class MenuScreen implements Screen {
 
         stageUI.act();
         stageUI.draw();
+
+        game.batch.begin();
+        //Updating and Drawing the particle effect
+        //Delta being the time to progress the particle effect by, usually you pass in Gdx.graphics.getDeltaTime();
+        effect.draw(game.batch, delta);
+
+        game.batch.end();
     }
 
     @Override
