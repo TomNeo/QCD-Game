@@ -142,6 +142,16 @@ public abstract class Circles {
                         velocity.x -= (otherCircle.getPosition().x - this.getPosition().x) * vectorRatio;
                         velocity.y -= (otherCircle.getPosition().y - this.getPosition().y) * vectorRatio;
                     }
+                }else if(distanceFromEdges < 0){
+                    velocity.set(0,0);
+                    float BigSideA = otherCircle.getPosition().x - this.getPosition().x;
+                    float BigSideB = otherCircle.getPosition().y - this.getPosition().y;
+                    float BigSideC = (float)Math.sqrt(BigSideA*BigSideA + BigSideB*BigSideB);
+                    float smallC = BigSideC - (this.radius + otherCircle.radius);
+                    float smallA = smallC/BigSideC * BigSideA;
+                    float smallB = smallC/BigSideC * BigSideB;
+                    this.getPosition().x = this.getPosition().x + smallA + .01f;
+                    this.getPosition().y = this.getPosition().y + smallB + .01f;
                 }
             }
         }
