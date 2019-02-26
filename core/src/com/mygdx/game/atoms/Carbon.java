@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.Variables;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import static com.mygdx.game.Variables.PROTON_CAPTURE_LIFESPAN_BUMP;
