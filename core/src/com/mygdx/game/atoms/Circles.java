@@ -3,6 +3,7 @@ package com.mygdx.game.atoms;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.MyGdxGame;
+import com.mygdx.game.Variables;
 
 /**
  * Created by User on 1/28/2017.
@@ -52,10 +53,6 @@ public abstract class Circles {
     }
     public float getRadius(){
         return radius;
-    }
-
-    public Vector2 getPosition(){
-        return pos;
     }
 
     /***
@@ -120,7 +117,7 @@ public abstract class Circles {
         boolean didAnything = false;
         for(Circles otherCircle: game.allCircles){
             if(!this.equals(otherCircle)){
-                float distanceFromEdges = (float) (Math.sqrt(Math.pow((double)Math.abs(otherCircle.getPosition().x - this.getPosition().x),2) + Math.abs(Math.pow((double)otherCircle.getPosition().y - this.getPosition().y,2))) - otherCircle.radius - this.radius);
+                float distanceFromEdges = (float) (Math.sqrt(Math.pow((double)Math.abs(otherCircle.pos.x - this.pos.x),2) + Math.abs(Math.pow((double)otherCircle.pos.y - this.pos.y,2))) - otherCircle.radius - this.radius);
                 if(distanceFromEdges < Circles.EFFECTIVE_RANGE && distanceFromEdges > 0){
                     didAnything = true;
                     boolean attractive = ((this.getClass() == Proton.class && otherCircle.getClass() == Proton.class)
@@ -134,30 +131,31 @@ public abstract class Circles {
                             || (otherCircle.getClass() == Proton.class && this.getClass() == Carbon.class));
                     float potency = 1 - distanceFromEdges/Circles.EFFECTIVE_RANGE;
                     float vectorRatio = (potency * STANDARD_FORCE);
-                    //float vectorRatio =  distanceFromEdges/(potency * STANDARD_FORCE);
                     if(attractive){
-                        velocity.x += (otherCircle.getPosition().x - this.getPosition().x) * vectorRatio;
-                        velocity.y += (otherCircle.getPosition().y - this.getPosition().y) * vectorRatio;
+                        velocity.x += (otherCircle.pos.x - this.pos.x) * vectorRatio;
+                        velocity.y += (otherCircle.pos.y - this.pos.y) * vectorRatio;
                     }else{
-                        velocity.x -= (otherCircle.getPosition().x - this.getPosition().x) * vectorRatio;
-                        velocity.y -= (otherCircle.getPosition().y - this.getPosition().y) * vectorRatio;
+                        velocity.x -= (otherCircle.pos.x - this.pos.x) * vectorRatio;
+                        velocity.y -= (otherCircle.pos.y - this.pos.y) * vectorRatio;
                     }
                 }else if(distanceFromEdges < 0){
-                    velocity.set(0,0);
-                    float BigSideA = otherCircle.getPosition().x - this.getPosition().x;
-                    float BigSideB = otherCircle.getPosition().y - this.getPosition().y;
-                    float BigSideC = (float)Math.sqrt(BigSideA*BigSideA + BigSideB*BigSideB);
-                    float smallC = BigSideC - (this.radius + otherCircle.radius);
-                    float smallA = smallC/BigSideC * BigSideA;
-                    float smallB = smallC/BigSideC * BigSideB;
-                    this.getPosition().x = this.getPosition().x + smallA + .01f;
-                    this.getPosition().y = this.getPosition().y + smallB + .01f;
+                    if(this.getClass() != Carbon.class){
+                        velocity.set(0, 0);
+                        float BigSideA = otherCircle.pos.x - this.pos.x;
+                        float BigSideB = otherCircle.pos.y - this.pos.y;
+                        float BigSideC = (float) Math.sqrt(BigSideA * BigSideA + BigSideB * BigSideB);
+                        float smallC = BigSideC - (this.radius + otherCircle.radius);
+                        float smallA = smallC / BigSideC * BigSideA;
+                        float smallB = smallC / BigSideC * BigSideB;
+                        this.pos.x = this.pos.x + smallA;
+                        this.pos.y = this.pos.y + smallB;
+                    }
                 }
             }
         }
         if(didAnything){
-            this.getPosition().x = this.getPosition().x + (this.velocity.x * deltaTime);
-            this.getPosition().y = this.getPosition().y + (this.velocity.y * deltaTime);
+            this.pos.x = this.pos.x + (this.velocity.x * deltaTime);
+            this.pos.y = this.pos.y + (this.velocity.y * deltaTime);
         }
     }
 

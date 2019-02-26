@@ -16,6 +16,7 @@ public class Carbon extends Circles {
     private float aliveFor = 0f;
     private float initialLifespan;
     private int protons = 0;
+    public ArrayList<Proton> matchedProtons = new ArrayList<Proton>();
     private Random random = new Random();
 
     Carbon(MyGdxGame main, float x, float y){
@@ -30,7 +31,7 @@ public class Carbon extends Circles {
     @Override
     public void tick(float deltaTime){
         super.tick(deltaTime);
-        if(lifeSpan<0){
+        if(lifeSpan<0 && matchedProtons.size() == 0){
             kill = true;
         }
         if(aliveFor > 1) {
@@ -90,7 +91,8 @@ public class Carbon extends Circles {
     public void collided(){
     }
 
-    void captureProton(){
+    void captureProton(Proton capturedProton){
+        matchedProtons.remove(capturedProton);
         protons++;
         if(lifeSpan + Variables.PROTON_CAPTURE_LIFESPAN_BUMP > Variables.CARBON_LIFESPAN){
             lifeSpan = Variables.CARBON_LIFESPAN;

@@ -27,7 +27,7 @@ public class Variables {
     public static long STARTING_HEALTH = 3000;
     public static long COST_OF_CREATING_PROTON = 150;
     public static float HEALTH_DECREASE_CONSTANT = 150;
-    public static float HEALTH_DECREASE_SCORE_MODIFIER = .01f;
+    public static float HEALTH_DECREASE_SCORE_MODIFIER = .0025f;
     public static float HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER = 0;
 
     /** Combination Score Bonuses **/
@@ -36,8 +36,8 @@ public class Variables {
     public static long PROTON_DEUTERIUM_SCORE = 500;
     public static long HELION_HELION_SCORE = 750;
     public static long HELIUM_HELIUM_SCORE = 1000;
-    public static long HELIUM_BERYLLIUM_SCORE = 1200;
-    public static long PROTON_CARBON_SCORE = COST_OF_CREATING_PROTON/3;
+    public static long HELIUM_BERYLLIUM_SCORE = 2000;
+    public static long PROTON_CARBON_SCORE = COST_OF_CREATING_PROTON*2/3;
 
     /** Other Visual things **/
 

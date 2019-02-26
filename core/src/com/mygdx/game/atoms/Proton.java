@@ -81,7 +81,7 @@ public class Proton extends Circles{
             matchedCircle.kill = true;
             this.kill = true;
         }else if(!matchedCircle.kill && matchedCircle.getClass().equals(Carbon.class)){
-            ((Carbon)matchedCircle).captureProton();
+            ((Carbon)matchedCircle).captureProton(this);
             this.kill = true;
         }
         game.soundEffect.play();

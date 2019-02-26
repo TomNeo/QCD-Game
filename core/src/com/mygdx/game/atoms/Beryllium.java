@@ -26,7 +26,7 @@ public class Beryllium extends Circles {
     @Override
     public void tick(float deltaTime){
         super.tick(deltaTime);
-        if(lifeSpan<0){
+        if(lifeSpan<0 && !moving){
             kill = true;
         }
         radius =  Variables.HELIUM_RADIUS + (Variables.BERYLLIUM_RADIUS - Variables.HELIUM_RADIUS)*(aliveFor/initialLifespan);
