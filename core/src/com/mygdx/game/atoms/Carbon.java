@@ -49,7 +49,7 @@ public class Carbon extends Circles {
         this.timerY = this.pos.y + (float)(radius * Math.cos(Math.toRadians(360) * (lifeSpan/Variables.CARBON_LIFESPAN)));
     }
 
-    
+
     @Override
     public void renderCircle(ShapeRenderer shapeRenderer) {
         super.renderCircle(shapeRenderer);
