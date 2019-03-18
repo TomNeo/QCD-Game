@@ -7,7 +7,7 @@ public class Variables {
 
     public static float PROTON_RADIUS = 50f;
     public static float DEUTERIUM_RADIUS =  PROTON_RADIUS * (float)Math.sqrt(2);
-    public static float HELION_RADIUS = PROTON_RADIUS * (float)Math.sqrt(3);;
+    public static float HELION_RADIUS = PROTON_RADIUS * (float)Math.sqrt(3);
     public static float HELIUM_RADIUS = PROTON_RADIUS * 2;
     public static float BERYLLIUM_RADIUS = PROTON_RADIUS / .1547f;
     public static float CARBON_RADIUS = PROTON_RADIUS / .13f;
