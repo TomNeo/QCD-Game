@@ -39,7 +39,6 @@ public abstract class Circles extends Actor {
 
     ShapeRenderer shapeRenderer;
 
-    public Vector2 pos;
     private Vector2 velocity = new Vector2();
 
     public Circles(MyGdxGame main){
@@ -103,7 +102,7 @@ public abstract class Circles extends Actor {
         if(getHighlighted()) {
             shapeRenderer.setColor(0, .8f, .8f, .5f);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.circle(pos.x, pos.y, radius + 8);
+            shapeRenderer.circle(getX(), getY(), radius + 8);
             shapeRenderer.end();
         }
     }
@@ -116,36 +115,36 @@ public abstract class Circles extends Actor {
     }
 
     private void move(float deltaTime){
-        if(pos.x == travelToX && pos.y == travelToY){
+        if(getX() == travelToX && getY() == travelToY){
             collided();
         }else{
-            float h = (float)Math.sqrt((pos.x - travelToX)*(pos.x - travelToX)+(pos.y - travelToY)*(pos.y - travelToY));
+            float h = (float)Math.sqrt((getX() - travelToX)*(getX() - travelToX)+(getY() - travelToY)*(getY() - travelToY));
             float translationRatio = deltaTime*MOVE_RATE/h;
-            if(pos.x > travelToX){
-                if(pos.x - ((pos.x - travelToX)*translationRatio) <= travelToX){
-                    pos.x = travelToX;
+            if(getX() > travelToX){
+                if(getX() - ((getX() - travelToX)*translationRatio) <= travelToX){
+                    setX(travelToX);
                 }else{
-                    pos.x = pos.x - ((pos.x - travelToX)*translationRatio);
+                    setX(getX() - ((getX() - travelToX)*translationRatio));
                 }
-            }else if(pos.x < travelToX){
-                if(pos.x + ((travelToX - pos.x)*translationRatio) >= travelToX){
-                    pos.x = travelToX;
+            }else if(getX() < travelToX){
+                if(getX() + ((travelToX - getX())*translationRatio) >= travelToX){
+                    setX(travelToX);
                 }else{
-                    pos.x = pos.x + ((travelToX - pos.x)*translationRatio);
+                    setX(getX() + ((travelToX - getX())*translationRatio));
                 }
             }
 
-            if(pos.y > travelToY){
-                if(pos.y - ((pos.y - travelToY)*translationRatio) <= travelToY){
-                    pos.y = travelToY;
+            if(getY() > travelToY){
+                if(getY() - ((getY() - travelToY)*translationRatio) <= travelToY){
+                    setY(travelToY);
                 }else{
-                    pos.y = pos.y - ((pos.y - travelToY)*translationRatio);
+                    setY(getY() - ((getY() - travelToY)*translationRatio));
                 }
-            }else if(pos.y < travelToY){
-                if(pos.y + ((travelToY - pos.y)*translationRatio) >= travelToY){
-                    pos.y = travelToY;
+            }else if(getY() < travelToY){
+                if(getY() + ((travelToY - getY())*translationRatio) >= travelToY){
+                    setY(travelToY);
                 }else{
-                    pos.y = pos.y + ((travelToY - pos.y)*translationRatio);
+                    setY(getY() + ((travelToY - getY())*translationRatio));
                 }
             }
 
@@ -157,7 +156,7 @@ public abstract class Circles extends Actor {
         boolean didAnything = false;
         for(Circles otherCircle: game.allCircles){
             if(!this.equals(otherCircle)){
-                float distanceFromEdges = (float) (Math.sqrt(Math.pow((double)Math.abs(otherCircle.pos.x - this.pos.x),2) + Math.abs(Math.pow((double)otherCircle.pos.y - this.pos.y,2))) - otherCircle.radius - this.radius);
+                float distanceFromEdges = (float) (Math.sqrt(Math.pow((double)Math.abs(otherCircle.getX() - this.getX()),2) + Math.abs(Math.pow((double)otherCircle.getY() - this.getY(),2))) - otherCircle.radius - this.radius);
                 if(distanceFromEdges < Circles.EFFECTIVE_RANGE && distanceFromEdges > 0){
                     didAnything = true;
                     boolean attractive = ((this.getClass() == Proton.class && otherCircle.getClass() == Proton.class)
@@ -172,30 +171,30 @@ public abstract class Circles extends Actor {
                     float potency = 1 - distanceFromEdges/Circles.EFFECTIVE_RANGE;
                     float vectorRatio = (potency * STANDARD_FORCE);
                     if(attractive){
-                        velocity.x += (otherCircle.pos.x - this.pos.x) * vectorRatio;
-                        velocity.y += (otherCircle.pos.y - this.pos.y) * vectorRatio;
+                        velocity.x += (otherCircle.getX() - this.getX()) * vectorRatio;
+                        velocity.y += (otherCircle.getY() - this.getY()) * vectorRatio;
                     }else{
-                        velocity.x -= (otherCircle.pos.x - this.pos.x) * vectorRatio;
-                        velocity.y -= (otherCircle.pos.y - this.pos.y) * vectorRatio;
+                        velocity.x -= (otherCircle.getX() - this.getX()) * vectorRatio;
+                        velocity.y -= (otherCircle.getY() - this.getY()) * vectorRatio;
                     }
                 }else if(distanceFromEdges < 0){
                     if(this.getClass() != Carbon.class){
                         velocity.set(0, 0);
-                        float BigSideA = otherCircle.pos.x - this.pos.x;
-                        float BigSideB = otherCircle.pos.y - this.pos.y;
+                        float BigSideA = otherCircle.getX() - this.getX();
+                        float BigSideB = otherCircle.getY() - this.getY();
                         float BigSideC = (float) Math.sqrt(BigSideA * BigSideA + BigSideB * BigSideB);
                         float smallC = BigSideC - (this.radius + otherCircle.radius);
                         float smallA = smallC / BigSideC * BigSideA;
                         float smallB = smallC / BigSideC * BigSideB;
-                        this.pos.x = this.pos.x + smallA;
-                        this.pos.y = this.pos.y + smallB;
+                        setX(this.getX() + smallA);
+                        setY(this.getY() + smallB);
                     }
                 }
             }
         }
         if(didAnything){
-            this.pos.x = this.pos.x + (this.velocity.x * deltaTime);
-            this.pos.y = this.pos.y + (this.velocity.y * deltaTime);
+            setX(this.getX() + (this.velocity.x * deltaTime));
+            setY(this.getY() + (this.velocity.y * deltaTime));
         }
     }
 

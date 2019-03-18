@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.Variables;
 
@@ -22,7 +21,7 @@ public class Helion extends Circles {
 
     Helion(MyGdxGame main, float x, float y){
         super(main);
-        this.pos = new Vector2(x,y);
+        setPosition(x, y);
         this.radius = Variables.DEUTERIUM_RADIUS;
         setColor(0, 0, 0.3f, 1);
         this.lifeSpan = Variables.HELION_LIFESPAN;
@@ -58,23 +57,23 @@ public class Helion extends Circles {
         //Draw outline
         shapeRenderer.setColor(1f, 1f, 1f, 1f);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.circle(pos.x, pos.y, radius);
+        shapeRenderer.circle(getX(), getY(), radius);
         shapeRenderer.end();
         //Draw main colored circle
         shapeRenderer.setColor(getColor());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.circle(pos.x, pos.y, radius-2f);
+        shapeRenderer.circle(getX(), getY(), radius-2f);
         shapeRenderer.end();
         //Draw the timer line
         shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.line(pos.x, pos.y,this.timerX,this.timerY);
+        shapeRenderer.line(getX(), getY(),this.timerX,this.timerY);
         shapeRenderer.end();
         //If the highlighted circle is a match, draw the indicator circle
         if(game.highlightedCircle != null && game.highlightedCircle.getClass() == Helion.class && !this.equals(game.highlightedCircle)){
             shapeRenderer.setColor(Variables.MATCH_INDICATOR_COLOR[0], Variables.MATCH_INDICATOR_COLOR[1],Variables.MATCH_INDICATOR_COLOR[2],Variables.MATCH_INDICATOR_COLOR[3]);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.circle(pos.x, pos.y, Variables.MATCH_INDICATOR_RADIUS);
+            shapeRenderer.circle(getX(), getY(), Variables.MATCH_INDICATOR_RADIUS);
             shapeRenderer.end();
         }
 
@@ -84,14 +83,14 @@ public class Helion extends Circles {
     }
 
     protected void calculateTimerPositions(){
-        this.timerX = this.pos.x + (float)(radius * Math.sin(Math.toRadians(360) * (lifeSpan/Variables.HELION_LIFESPAN)));
-        this.timerY = this.pos.y + (float)(radius * Math.cos(Math.toRadians(360) * (lifeSpan/Variables.HELION_LIFESPAN)));
+        this.timerX = this.getX() + (float)(radius * Math.sin(Math.toRadians(360) * (lifeSpan/Variables.HELION_LIFESPAN)));
+        this.timerY = this.getY() + (float)(radius * Math.cos(Math.toRadians(360) * (lifeSpan/Variables.HELION_LIFESPAN)));
     }
 
     public void collided(){
         if(!matchedCircle.kill) {
-            Helium tempHelium = new Helium(game, pos.x, pos.y);
-            Helium h = new Helium(game, pos.x, pos.y);
+            Helium tempHelium = new Helium(game, getX(), getY());
+            Helium h = new Helium(game, getX(), getY());
             game.stageShapeRenderer.addActor(h);
             game.addToCircles.add(h);
             float distance = tempHelium.radius + Variables.PROTON_RADIUS + 1;
@@ -104,7 +103,7 @@ public class Helion extends Circles {
             if(random.nextBoolean()){
                 tempY = -tempY;
             }
-            Proton p1 = new Proton(game,tempHelium.pos.x + tempX,tempHelium.pos.y + tempY);
+            Proton p1 = new Proton(game,tempHelium.getX() + tempX,tempHelium.getY() + tempY);
             game.stageShapeRenderer.addActor(p1);
             game.addToCircles.add(p1);
             angle = (float)(Math.random() * 90f);
@@ -116,7 +115,7 @@ public class Helion extends Circles {
             if(random.nextBoolean()){
                 tempY = -tempY;
             }
-            Proton p2 = new Proton(game,tempHelium.pos.x + tempX,tempHelium.pos.y + tempY);
+            Proton p2 = new Proton(game,tempHelium.getX() + tempX,tempHelium.getY() + tempY);
             game.stageShapeRenderer.addActor(p2);
             game.addToCircles.add(p2);
             matchedCircle.kill = true;

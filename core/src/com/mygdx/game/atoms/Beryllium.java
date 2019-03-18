@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.Variables;
 
@@ -19,7 +18,7 @@ public class Beryllium extends Circles {
 
     Beryllium(MyGdxGame main, float x, float y){
         super(main);
-        this.pos = new Vector2(x,y);
+        setPosition(x, y);
         this.radius = Variables.HELIUM_RADIUS;
         setColor(1, 0, 0, 1);
         this.lifeSpan = Variables.BERYLLIUM_LIFESPAN;
@@ -42,8 +41,8 @@ public class Beryllium extends Circles {
     }
 
     protected void calculateTimerPositions(){
-        this.timerX = this.pos.x + (float)(radius * Math.sin(Math.toRadians(360) * (lifeSpan/Variables.BERYLLIUM_LIFESPAN)));
-        this.timerY = this.pos.y + (float)(radius * Math.cos(Math.toRadians(360) * (lifeSpan/Variables.BERYLLIUM_LIFESPAN)));
+        this.timerX = this.getX() + (float)(radius * Math.sin(Math.toRadians(360) * (lifeSpan/Variables.BERYLLIUM_LIFESPAN)));
+        this.timerY = this.getY() + (float)(radius * Math.cos(Math.toRadians(360) * (lifeSpan/Variables.BERYLLIUM_LIFESPAN)));
     }
 
     @Override
@@ -57,17 +56,17 @@ public class Beryllium extends Circles {
         //Draw the main circle
         shapeRenderer.setColor(getColor());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.circle(pos.x, pos.y, radius);
+        shapeRenderer.circle(getX(), getY(), radius);
         shapeRenderer.end();
         //Draw the timer line
         shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.line(pos.x, pos.y,this.timerX,this.timerY);
+        shapeRenderer.line(getX(), getY(),this.timerX,this.timerY);
         shapeRenderer.end();
         if(game.highlightedCircle != null && game.highlightedCircle.getClass() == Helium.class && !this.equals(game.highlightedCircle)){
             shapeRenderer.setColor(Variables.MATCH_INDICATOR_COLOR[0], Variables.MATCH_INDICATOR_COLOR[1],Variables.MATCH_INDICATOR_COLOR[2],Variables.MATCH_INDICATOR_COLOR[3]);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.circle(pos.x, pos.y, Variables.MATCH_INDICATOR_RADIUS);
+            shapeRenderer.circle(getX(), getY(), Variables.MATCH_INDICATOR_RADIUS);
             shapeRenderer.end();
         }
 
@@ -78,7 +77,7 @@ public class Beryllium extends Circles {
 
     public void collided(){
         if(!matchedCircle.kill) {
-            Carbon c = new Carbon(game, pos.x, pos.y);
+            Carbon c = new Carbon(game, getX(), getY());
             game.stageShapeRenderer.addActor(c);
             game.addToCircles.add(c);
             matchedCircle.kill = true;

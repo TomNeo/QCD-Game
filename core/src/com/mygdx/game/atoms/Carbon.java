@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.Variables;
 
@@ -21,7 +20,7 @@ public class Carbon extends Circles {
 
     Carbon(MyGdxGame main, float x, float y){
         super(main);
-        this.pos = new Vector2(x,y);
+        setPosition(x, y);
         this.radius = Variables.BERYLLIUM_RADIUS;
         setColor(1, 0, 1, 0.5f);
         this.lifeSpan = Variables.CARBON_LIFESPAN;
@@ -47,8 +46,8 @@ public class Carbon extends Circles {
     }
 
     protected void calculateTimerPositions(){
-        this.timerX = this.pos.x + (float)(radius * Math.sin(Math.toRadians(360) * (lifeSpan/Variables.CARBON_LIFESPAN)));
-        this.timerY = this.pos.y + (float)(radius * Math.cos(Math.toRadians(360) * (lifeSpan/Variables.CARBON_LIFESPAN)));
+        this.timerX = this.getX() + (float)(radius * Math.sin(Math.toRadians(360) * (lifeSpan/Variables.CARBON_LIFESPAN)));
+        this.timerY = this.getY() + (float)(radius * Math.cos(Math.toRadians(360) * (lifeSpan/Variables.CARBON_LIFESPAN)));
     }
 
     @Override
@@ -61,35 +60,35 @@ public class Carbon extends Circles {
 
         shapeRenderer.setColor(getColor());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.circle(pos.x, pos.y, radius);
+        shapeRenderer.circle(getX(), getY(), radius);
         shapeRenderer.end();
         //Draw the timer line
         shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.line(pos.x, pos.y,this.timerX,this.timerY);
+        shapeRenderer.line(getX(), getY(),this.timerX,this.timerY);
         shapeRenderer.end();
         if(protons >= 1){
             shapeRenderer.setColor(1, 1, 1, .4f);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.circle(pos.x, pos.y + radius/2, Variables.PROTON_RADIUS);
+            shapeRenderer.circle(getX(), getY() + radius/2, Variables.PROTON_RADIUS);
             shapeRenderer.end();
         }
         if (protons >= 2){
             shapeRenderer.setColor(1, 1, 1, .4f);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.circle(pos.x - radius/ 4 * (float)Math.sqrt(2), pos.y - radius / 4 *(float)Math.sqrt(2), Variables.PROTON_RADIUS);
+            shapeRenderer.circle(getX() - radius/ 4 * (float)Math.sqrt(2), getY() - radius / 4 *(float)Math.sqrt(2), Variables.PROTON_RADIUS);
             shapeRenderer.end();
         }
         if (protons >= 3){
             shapeRenderer.setColor(1, 1, 1, .4f);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.circle(pos.x + radius/ 4 * (float)Math.sqrt(2), pos.y - radius / 4 *(float)Math.sqrt(2), Variables.PROTON_RADIUS);
+            shapeRenderer.circle(getX() + radius/ 4 * (float)Math.sqrt(2), getY() - radius / 4 *(float)Math.sqrt(2), Variables.PROTON_RADIUS);
             shapeRenderer.end();
         }
         if(game.highlightedCircle != null && (game.highlightedCircle.getClass() == Proton.class) && !this.equals(game.highlightedCircle)){
             shapeRenderer.setColor(Variables.MATCH_INDICATOR_COLOR[0], Variables.MATCH_INDICATOR_COLOR[1],Variables.MATCH_INDICATOR_COLOR[2],Variables.MATCH_INDICATOR_COLOR[3]);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.circle(pos.x, pos.y, Variables.MATCH_INDICATOR_RADIUS);
+            shapeRenderer.circle(getX(), getY(), Variables.MATCH_INDICATOR_RADIUS);
             shapeRenderer.end();
         }
 
@@ -120,7 +119,7 @@ public class Carbon extends Circles {
             if(random.nextBoolean()){
                 tempY = -tempY;
             }
-            Helium h = new Helium(game,this.pos.x + tempX,this.pos.y + tempY);
+            Helium h = new Helium(game,this.getX() + tempX,this.getY() + tempY);
             game.stageShapeRenderer.addActor(h);
             game.addToCircles.add(h);
             game.soundEffect.play();

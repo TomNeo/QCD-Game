@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.Variables;
 
@@ -19,7 +18,7 @@ public class Deuterium extends Circles {
 
     Deuterium(MyGdxGame main, float x, float y){
         super(main);
-        this.pos = new Vector2(x,y);
+        setPosition(x, y);
         this.radius = Variables.PROTON_RADIUS;
         setColor(1, 0.2f, 0.5f, 1);
         this.lifeSpan = Variables.DEUTERIUM_LIFESPAN;
@@ -45,8 +44,8 @@ public class Deuterium extends Circles {
     }
 
     protected void calculateTimerPositions(){
-        this.timerX = this.pos.x + (float)(radius * Math.sin(Math.toRadians(360) * (lifeSpan/Variables.DEUTERIUM_LIFESPAN)));
-        this.timerY = this.pos.y + (float)(radius * Math.cos(Math.toRadians(360) * (lifeSpan/Variables.DEUTERIUM_LIFESPAN)));
+        this.timerX = this.getX() + (float)(radius * Math.sin(Math.toRadians(360) * (lifeSpan/Variables.DEUTERIUM_LIFESPAN)));
+        this.timerY = this.getY() + (float)(radius * Math.cos(Math.toRadians(360) * (lifeSpan/Variables.DEUTERIUM_LIFESPAN)));
     }
 
     @Override
@@ -60,28 +59,28 @@ public class Deuterium extends Circles {
         //Draw the outline
         shapeRenderer.setColor(1f, 1f, 1f, 1f);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.circle(pos.x, pos.y, radius);
+        shapeRenderer.circle(getX(), getY(), radius);
         shapeRenderer.end();
         //Draw the colored pink part
         shapeRenderer.setColor(getColor());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.circle(pos.x, pos.y, radius-2f);
+        shapeRenderer.circle(getX(), getY(), radius-2f);
         shapeRenderer.end();
         //Draw the timer line
         shapeRenderer.setColor(1, 1, 1, 1);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.line(pos.x, pos.y,this.timerX,this.timerY);
+        shapeRenderer.line(getX(), getY(),this.timerX,this.timerY);
         shapeRenderer.end();
         //Draw the blank void meant to represent where a proton goes
         shapeRenderer.setColor(.1f, .1f, .1f, 1f);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.circle(pos.x, pos.y, radius * (Variables.PROTON_RADIUS/Variables.DEUTERIUM_RADIUS));
+        shapeRenderer.circle(getX(), getY(), radius * (Variables.PROTON_RADIUS/Variables.DEUTERIUM_RADIUS));
         shapeRenderer.end();
         //If the highlighted circle is a match, draw the indicator circle
         if(game.highlightedCircle != null && game.highlightedCircle.getClass() == Proton.class && !this.equals(game.highlightedCircle)){
             shapeRenderer.setColor(Variables.MATCH_INDICATOR_COLOR[0], Variables.MATCH_INDICATOR_COLOR[1],Variables.MATCH_INDICATOR_COLOR[2],Variables.MATCH_INDICATOR_COLOR[3]);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.circle(pos.x, pos.y, Variables.MATCH_INDICATOR_RADIUS);
+            shapeRenderer.circle(getX(), getY(), Variables.MATCH_INDICATOR_RADIUS);
             shapeRenderer.end();
         }
 
@@ -92,7 +91,7 @@ public class Deuterium extends Circles {
 
     public void collided(){
         if(!matchedCircle.kill) {
-            Helion h = new Helion(game, pos.x, pos.y);
+            Helion h = new Helion(game, getX(), getY());
             game.stageShapeRenderer.addActor(h);
             game.addToCircles.add(h);
             matchedCircle.kill = true;
