@@ -1,15 +1,20 @@
 package com.mygdx.game.atoms;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.Variables;
+
+import java.util.ArrayList;
 
 /**
  * Created by User on 1/28/2017.
  */
 
-public abstract class Circles {
+public abstract class Circles extends Actor {
 
     private static float MOVE_RATE = 1000f;
     private static float EFFECTIVE_RANGE = 250f;
@@ -29,22 +34,57 @@ public abstract class Circles {
     float timerY = 0;
     private float travelToX = -1;
     private float travelToY = -1;
-    protected float[] color = {0,0,0,0};
 
     //protected int colorInt;
+
+    ShapeRenderer shapeRenderer;
 
     public Vector2 pos;
     private Vector2 velocity = new Vector2();
 
     public Circles(MyGdxGame main){
         game = main;
+        shapeRenderer = game.shapeRenderer;
     }
 
-    public void tick(float deltaTime){
+    @Override
+    public void act (float delta) {
+        super.act(delta);
+
+        if (moving) {
+            move(delta);
+        } else {
+            applyAttraction(delta);
+        }
+
+        game.allCircles.addAll(game.addToCircles);
+        game.addToCircles.clear();
+
+        ArrayList<Circles> killList = new ArrayList<Circles>();
+        for(Circles circle : game.allCircles){
+            if(circle.kill){
+
+                if (circle.getClass() == Carbon.class){
+                    int breakpoint = 1;
+                    int otherline = breakpoint + 1;
+                }
+                killList.add(circle);
+                if(circle.getHighlighted()){
+                    game.highlightedCircle = null;
+                    circle.setHighlighted(false);
+                }
+            }
+        }
+        for(Circles circle : killList){
+            circle.remove();
+            game.allCircles.remove(circle);
+        }
+        killList.clear();
+
         calculateTimerPositions();
     }
 
-    public boolean getHighlighted(){
+    private boolean getHighlighted(){
         return highlighted;
     }
 
@@ -55,11 +95,11 @@ public abstract class Circles {
         return radius;
     }
 
-    /***
-     *
-     * @param shapeRenderer
-     */
-    public void renderCircle(ShapeRenderer shapeRenderer){
+    void renderCircle() {
+        Gdx.gl.glEnable(GL20.GL_BLEND);
+        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        Gdx.gl.glLineWidth(Variables.CIRCLE_LINE_WIDTH);
+
         if(getHighlighted()) {
             shapeRenderer.setColor(0, .8f, .8f, .5f);
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
@@ -75,7 +115,7 @@ public abstract class Circles {
         matchedCircle = circle;
     }
 
-    public void move(float deltaTime){
+    private void move(float deltaTime){
         if(pos.x == travelToX && pos.y == travelToY){
             collided();
         }else{
@@ -112,7 +152,7 @@ public abstract class Circles {
         }
     }
 
-    public void applyAttraction(float deltaTime){
+    private void applyAttraction(float deltaTime){
         velocity.set(0,0);
         boolean didAnything = false;
         for(Circles otherCircle: game.allCircles){

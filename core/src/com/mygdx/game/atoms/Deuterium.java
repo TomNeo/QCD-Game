@@ -1,5 +1,8 @@
 package com.mygdx.game.atoms;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.MyGdxGame;
@@ -18,13 +21,16 @@ public class Deuterium extends Circles {
         super(main);
         this.pos = new Vector2(x,y);
         this.radius = Variables.PROTON_RADIUS;
-        this.color = new float[] {1,.2f,.5f,1};
+        setColor(1, 0.2f, 0.5f, 1);
         this.lifeSpan = Variables.DEUTERIUM_LIFESPAN;
+
+        calculateTimerPositions();
     }
 
     @Override
-    public void tick(float deltaTime){
-        super.tick(deltaTime);
+    public void act (float delta) {
+        super.act(delta);
+
         if(lifeSpan<0 && !moving) {
             kill = true;
         }
@@ -33,10 +39,9 @@ public class Deuterium extends Circles {
         }else{
             this.radius = Variables.DEUTERIUM_RADIUS;
         }
-        lifeSpan = lifeSpan - deltaTime;
-        aliveFor = aliveFor + deltaTime;
-        color[1] = 1 - ((lifeSpan / 5f) * .8f);
-        color[2] = 1 - ((lifeSpan / 5f) * .5f);
+        lifeSpan = lifeSpan - delta;
+        aliveFor = aliveFor + delta;
+        setColor(1, 1 - ((lifeSpan / 5f) * .8f), 1 - ((lifeSpan / 5f) * .5f), 1);
     }
 
     protected void calculateTimerPositions(){
@@ -45,8 +50,12 @@ public class Deuterium extends Circles {
     }
 
     @Override
-    public void renderCircle(ShapeRenderer shapeRenderer){
-        super.renderCircle(shapeRenderer);
+    public void draw (Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+
+        batch.end();
+
+        renderCircle();
 
         //Draw the outline
         shapeRenderer.setColor(1f, 1f, 1f, 1f);
@@ -54,7 +63,7 @@ public class Deuterium extends Circles {
         shapeRenderer.circle(pos.x, pos.y, radius);
         shapeRenderer.end();
         //Draw the colored pink part
-        shapeRenderer.setColor(color[0], color[1], color[2], color[3]);
+        shapeRenderer.setColor(getColor());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.circle(pos.x, pos.y, radius-2f);
         shapeRenderer.end();
@@ -75,16 +84,20 @@ public class Deuterium extends Circles {
             shapeRenderer.circle(pos.x, pos.y, Variables.MATCH_INDICATOR_RADIUS);
             shapeRenderer.end();
         }
-    }
 
+        Gdx.gl.glLineWidth(1f);
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+        batch.begin();
+    }
 
     public void collided(){
         if(!matchedCircle.kill) {
-            game.addToCircles.add(new Helion(game, pos.x, pos.y));
+            Helion h = new Helion(game, pos.x, pos.y);
+            game.stageShapeRenderer.addActor(h);
+            game.addToCircles.add(h);
             matchedCircle.kill = true;
             this.kill = true;
             game.soundEffect.play();
-
         }
     }
 

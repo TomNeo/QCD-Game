@@ -1,5 +1,8 @@
 package com.mygdx.game.atoms;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.MyGdxGame;
@@ -21,13 +24,16 @@ public class Helion extends Circles {
         super(main);
         this.pos = new Vector2(x,y);
         this.radius = Variables.DEUTERIUM_RADIUS;
-        this.color = new float[] {0,0,.3f,1};
+        setColor(0, 0, 0.3f, 1);
         this.lifeSpan = Variables.HELION_LIFESPAN;
+
+        calculateTimerPositions();
     }
 
     @Override
-    public void tick(float deltaTime){
-        super.tick(deltaTime);
+    public void act (float delta) {
+        super.act(delta);
+
         if(lifeSpan<0 && !moving){
             kill = true;
         }
@@ -36,21 +42,26 @@ public class Helion extends Circles {
         }else{
             this.radius = Variables.HELION_RADIUS;
         }
-        lifeSpan = lifeSpan - deltaTime;
-        aliveFor = aliveFor + deltaTime;
-        color[2] = 1 - ((lifeSpan/5f) * .7f);
+        lifeSpan = lifeSpan - delta;
+        aliveFor = aliveFor + delta;
+        setColor(0, 0, 1 - ((lifeSpan/5f) * .7f), 1);
     }
 
     @Override
-    public void renderCircle(ShapeRenderer shapeRenderer){
-        super.renderCircle(shapeRenderer);
+    public void draw (Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+
+        batch.end();
+
+        renderCircle();
+
         //Draw outline
         shapeRenderer.setColor(1f, 1f, 1f, 1f);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.circle(pos.x, pos.y, radius);
         shapeRenderer.end();
         //Draw main colored circle
-        shapeRenderer.setColor(color[0], color[1], color[2], color[3]);
+        shapeRenderer.setColor(getColor());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.circle(pos.x, pos.y, radius-2f);
         shapeRenderer.end();
@@ -66,19 +77,23 @@ public class Helion extends Circles {
             shapeRenderer.circle(pos.x, pos.y, Variables.MATCH_INDICATOR_RADIUS);
             shapeRenderer.end();
         }
-    }
 
+        Gdx.gl.glLineWidth(1f);
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+        batch.begin();
+    }
 
     protected void calculateTimerPositions(){
         this.timerX = this.pos.x + (float)(radius * Math.sin(Math.toRadians(360) * (lifeSpan/Variables.HELION_LIFESPAN)));
         this.timerY = this.pos.y + (float)(radius * Math.cos(Math.toRadians(360) * (lifeSpan/Variables.HELION_LIFESPAN)));
     }
 
-
     public void collided(){
         if(!matchedCircle.kill) {
             Helium tempHelium = new Helium(game, pos.x, pos.y);
-            game.addToCircles.add(new Helium(game, pos.x, pos.y));
+            Helium h = new Helium(game, pos.x, pos.y);
+            game.stageShapeRenderer.addActor(h);
+            game.addToCircles.add(h);
             float distance = tempHelium.radius + Variables.PROTON_RADIUS + 1;
             float angle = (float)(Math.random() * 90f);
             float tempX = (float)(Math.sin(Math.PI/180 * angle)* distance);
@@ -89,7 +104,9 @@ public class Helion extends Circles {
             if(random.nextBoolean()){
                 tempY = -tempY;
             }
-            game.addToCircles.add(new Proton(game,tempHelium.pos.x + tempX,tempHelium.pos.y + tempY));
+            Proton p1 = new Proton(game,tempHelium.pos.x + tempX,tempHelium.pos.y + tempY);
+            game.stageShapeRenderer.addActor(p1);
+            game.addToCircles.add(p1);
             angle = (float)(Math.random() * 90f);
             tempX = (float)(Math.sin(Math.PI/180 * angle)* distance);
             if(random.nextBoolean()){
@@ -99,12 +116,13 @@ public class Helion extends Circles {
             if(random.nextBoolean()){
                 tempY = -tempY;
             }
-            game.addToCircles.add(new Proton(game,tempHelium.pos.x + tempX,tempHelium.pos.y + tempY));
+            Proton p2 = new Proton(game,tempHelium.pos.x + tempX,tempHelium.pos.y + tempY);
+            game.stageShapeRenderer.addActor(p2);
+            game.addToCircles.add(p2);
             matchedCircle.kill = true;
             this.kill = true;
             game.soundEffect.play();
         }
     }
-
 
 }

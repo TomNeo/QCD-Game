@@ -1,5 +1,8 @@
 package com.mygdx.game.atoms;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.MyGdxGame;
@@ -17,37 +20,45 @@ public class Helium extends Circles {
         super(main);
         this.pos = new Vector2(x,y);
         this.radius = Variables.HELIUM_RADIUS;
-        this.color = new float[] {.2f,1,.3f,1};
+        setColor(0.2f, 1, 0.3f, 1);
         this.lifeSpan = Variables.HELIUM_LIFESPAN;
+
+        calculateTimerPositions();
     }
 
     @Override
-    public void tick(float deltaTime){
-        super.tick(deltaTime);
+    public void act (float delta) {
+        super.act(delta);
+
         boolean justOnce = false;
         if(lifeSpan<0 && !moving){
             kill = true;
         }else if(lifeSpan < 1 && !justOnce){
             justOnce = true;
-            color = new float[] {.4f, 1, .6f,1};
+            setColor(0.4f, 1, 0.6f, 1);
         }
         if(aliveFor <= 12f) {
             this.radius = Variables.HELION_RADIUS + (Variables.HELIUM_RADIUS - Variables.HELION_RADIUS) * (aliveFor / 12f);
         }
-        lifeSpan = lifeSpan - deltaTime;
-        aliveFor = aliveFor + deltaTime;
+        lifeSpan = lifeSpan - delta;
+        aliveFor = aliveFor + delta;
     }
 
     @Override
-    public void renderCircle(ShapeRenderer shapeRenderer){
-        super.renderCircle(shapeRenderer);
+    public void draw (Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+
+        batch.end();
+
+        renderCircle();
+
         //Draw outline
         shapeRenderer.setColor(0f, 0f, 0f, 1f);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.circle(pos.x, pos.y, radius);
         shapeRenderer.end();
         //Draw main colored circle
-        shapeRenderer.setColor(color[0], color[1], color[2], color[3]);
+        shapeRenderer.setColor(getColor());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.circle(pos.x, pos.y, radius-2f);
         shapeRenderer.end();
@@ -63,8 +74,11 @@ public class Helium extends Circles {
             shapeRenderer.circle(pos.x, pos.y, Variables.MATCH_INDICATOR_RADIUS);
             shapeRenderer.end();
         }
-    }
 
+        Gdx.gl.glLineWidth(1f);
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+        batch.begin();
+    }
 
     protected void calculateTimerPositions(){
         this.timerX = this.pos.x + (float)(radius * Math.sin(Math.toRadians(360) * (lifeSpan/Variables.HELIUM_LIFESPAN)));
@@ -73,16 +87,19 @@ public class Helium extends Circles {
 
     public void collided(){
         if(!matchedCircle.kill && matchedCircle.getClass().equals(Helium.class)) {
-            game.addToCircles.add(new Beryllium(game, pos.x, pos.y));
+            Beryllium b = new Beryllium(game, pos.x, pos.y);
+            game.stageShapeRenderer.addActor(b);
+            game.addToCircles.add(b);
             matchedCircle.kill = true;
             this.kill = true;
         }else if(!matchedCircle.kill && matchedCircle.getClass().equals(Beryllium.class)){
-            game.addToCircles.add(new Carbon(game, pos.x, pos.y));
+            Carbon c = new Carbon(game, pos.x, pos.y);
+            game.stageShapeRenderer.addActor(c);
+            game.addToCircles.add(c);
             matchedCircle.kill = true;
             this.kill = true;
         }
         game.soundEffect.play();
-
     }
 
 }

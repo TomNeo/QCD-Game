@@ -1,5 +1,8 @@
 package com.mygdx.game.atoms;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.MyGdxGame;
@@ -18,13 +21,19 @@ public class Proton extends Circles{
         super(main);
         this.pos = new Vector2(x,y);
         this.radius = Variables.PROTON_RADIUS;
-        this.color = new float[] {0,1,0,1};
+        setColor(0, 1, 0, 1);
         this.lifeSpan = Variables.PROTON_LIFESPAN;
+
+        calculateTimerPositions();
     }
 
     @Override
-    public void renderCircle(ShapeRenderer shapeRenderer){
-        super.renderCircle(shapeRenderer);
+    public void draw (Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+
+        batch.end();
+
+        renderCircle();
 
         //Draw outline
         shapeRenderer.setColor(0f, 0f, 0f, 1f);
@@ -32,7 +41,7 @@ public class Proton extends Circles{
         shapeRenderer.circle(pos.x, pos.y, radius);
         shapeRenderer.end();
         //Draw main colored circle
-        shapeRenderer.setColor(color[0], color[1], color[2], color[3]);
+        shapeRenderer.setColor(getColor());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.circle(pos.x, pos.y, radius-2f);
         shapeRenderer.end();
@@ -53,17 +62,21 @@ public class Proton extends Circles{
             shapeRenderer.end();
         }
 
+        Gdx.gl.glLineWidth(1f);
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+        batch.begin();
     }
 
     @Override
-    public void tick(float deltaTime){
-        super.tick(deltaTime);
+    public void act (float delta) {
+        super.act(delta);
+
         if(lifeSpan<0 && !moving){
             kill = true;
         }
-        lifeSpan = lifeSpan - deltaTime;
-        color[1] = lifeSpan/Variables.PROTON_LIFESPAN;
-        color[0] = (Variables.PROTON_LIFESPAN - lifeSpan)/Variables.PROTON_LIFESPAN;
+        lifeSpan = lifeSpan - delta;
+        setColor((Variables.PROTON_LIFESPAN - lifeSpan)/Variables.PROTON_LIFESPAN,
+                lifeSpan/Variables.PROTON_LIFESPAN, 0, 1);
     }
 
     protected void calculateTimerPositions(){
@@ -73,11 +86,15 @@ public class Proton extends Circles{
 
     public void collided(){
         if(!matchedCircle.kill && matchedCircle.getClass().equals(Deuterium.class)) {
-            game.addToCircles.add(new Helion(game, pos.x, pos.y));
+            Helion h = new Helion(game, pos.x, pos.y);
+            game.stageShapeRenderer.addActor(h);
+            game.addToCircles.add(h);
             matchedCircle.kill = true;
             this.kill = true;
         }else if(!matchedCircle.kill && matchedCircle.getClass().equals(Proton.class)){
-            game.addToCircles.add(new Deuterium(game, pos.x, pos.y));
+            Deuterium d = new Deuterium(game, pos.x, pos.y);
+            game.stageShapeRenderer.addActor(d);
+            game.addToCircles.add(d);
             matchedCircle.kill = true;
             this.kill = true;
         }else if(!matchedCircle.kill && matchedCircle.getClass().equals(Carbon.class)){
@@ -85,7 +102,6 @@ public class Proton extends Circles{
             this.kill = true;
         }
         game.soundEffect.play();
-
     }
 
 }

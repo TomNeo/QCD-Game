@@ -7,8 +7,9 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.mygdx.game.Variables;
 import com.mygdx.game.atoms.Beryllium;
 import com.mygdx.game.atoms.Carbon;
@@ -25,9 +26,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class GameScreen implements Screen {
 
@@ -58,7 +59,7 @@ public class GameScreen implements Screen {
     private Vector3 lastPress = new Vector3();
     private ArrayList<String> outputs = new ArrayList<String>();
 
-    BufferedWriter writer = null;
+    private BufferedWriter writer = null;
 
     GameScreen(MyGdxGame gam, long highScore) {
         game = gam;
@@ -68,6 +69,12 @@ public class GameScreen implements Screen {
         camera.position.x=width/2;
         camera.position.y = height/2;
         camera.update();
+
+        game.stageShapeRenderer = new Stage(new StretchViewport(1920, 1080, camera));
+
+        game.batch.setProjectionMatrix(camera.combined);
+        game.shapeRenderer.setProjectionMatrix(camera.combined);
+
         img = new Texture("Hex-grid-transparent.png");//"Hex-grid.png");
 
         game.allCircles = new ArrayList<Circles>();
@@ -144,22 +151,21 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(r, g, b, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        game.batch.setProjectionMatrix(camera.combined);
-
         if (currentHealth > 0) {
             if (currentHealth != startingHealth) {
                 runTime = runTime + delta;
             }
             newClick();
-            moveCircles(delta);
-            addNewCircles();
-            tick(delta);
 
             game.batch.begin();
             game.batch.draw(img, 0, 0);
             game.batch.end();
 
-            drawCircles();
+            game.stageShapeRenderer.act();
+            game.stageShapeRenderer.draw();
+
+            tick(delta);
+
             //drawConnection();
 
             drawHealthBar();
@@ -170,7 +176,7 @@ public class GameScreen implements Screen {
         } else {
             outputs.add("End Game Rate Of Decrease," + runTime + "," + (Variables.HEALTH_DECREASE_CONSTANT + (totalScored * Variables.HEALTH_DECREASE_SCORE_MODIFIER) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
                 try {
-                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime());
+                    String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Calendar.getInstance().getTime());
                     writer = new BufferedWriter(new OutputStreamWriter(
                             new FileOutputStream(timeStamp + ".csv"), "utf-8"));
                     for (String line : outputs) {
@@ -202,7 +208,9 @@ public class GameScreen implements Screen {
                 Circles temp = inWhatCircle(initialPress);
                 if(temp == null){
                     outputs.add("New Proton," + runTime);
-                    game.allCircles.add(new Proton(game, initialPress.x, initialPress.y));
+                    Proton p = new Proton(game, initialPress.x, initialPress.y);
+                    game.allCircles.add(p);
+                    game.stageShapeRenderer.addActor(p);
                     currentHealth = currentHealth - Variables.COST_OF_CREATING_PROTON;
                     Protons++;
                     if(game.highlightedCircle != null){
@@ -231,42 +239,7 @@ public class GameScreen implements Screen {
         }
     }
 
-    private void addNewCircles() {
-        game.allCircles.addAll(game.addToCircles);
-        game.addToCircles.clear();
-    }
-
-    private void moveCircles(float deltaTime) {
-        for(Circles circle : game.allCircles){
-            if(circle.moving){
-                circle.move(deltaTime);
-            }else{
-                circle.applyAttraction(deltaTime);
-            }
-        }
-    }
-
     private void tick(float deltaTime) {
-        ArrayList<Circles> killList = new ArrayList<Circles>();
-        for(Circles circle : game.allCircles){
-            circle.tick(deltaTime);
-            if(circle.kill){
-
-                if (circle.getClass() == Carbon.class){
-                    int breakpoint = 1;
-                    int otherline = breakpoint + 1;
-                }
-                killList.add(circle);
-                if(circle.getHighlighted()){
-                    game.highlightedCircle = null;
-                    circle.setHighlighted(false);
-                }
-            }
-        }
-        for(Circles circle : killList){
-            game.allCircles.remove(circle);
-        }
-        killList.clear();
         if(currentHealth > peakHealth){
             peakHealth = currentHealth;
             outputs.add("New peak health," + runTime + "," + peakHealth);
@@ -280,19 +253,6 @@ public class GameScreen implements Screen {
 
     private void drawHealthBar() {
         healthBar.draw(game.batch);
-    }
-
-    private void drawCircles(){
-        Gdx.gl.glEnable(GL20.GL_BLEND);
-        Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
-        Gdx.gl.glLineWidth(Variables.CIRCLE_LINE_WIDTH);
-        game.shapeRenderer.setProjectionMatrix(camera.combined);
-        for (Circles circle : game.allCircles) {
-            circle.renderCircle(game.shapeRenderer);
-        }
-
-        Gdx.gl.glLineWidth(1f);
-        Gdx.gl.glDisable(GL20.GL_BLEND);
     }
 
     private Circles inWhatCircle(Vector3 pos){
@@ -392,5 +352,6 @@ public class GameScreen implements Screen {
     public void dispose() {
         img.dispose();
         bgMusic.dispose();
+        game.stageShapeRenderer.dispose();
     }
 }

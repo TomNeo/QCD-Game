@@ -1,15 +1,15 @@
 package com.mygdx.game.atoms;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.Variables;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-
-import static com.mygdx.game.Variables.PROTON_CAPTURE_LIFESPAN_BUMP;
 
 public class Carbon extends Circles {
 
@@ -23,14 +23,17 @@ public class Carbon extends Circles {
         super(main);
         this.pos = new Vector2(x,y);
         this.radius = Variables.BERYLLIUM_RADIUS;
-        this.color = new float[] {1,0,1,.5f};
+        setColor(1, 0, 1, 0.5f);
         this.lifeSpan = Variables.CARBON_LIFESPAN;
         initialLifespan = lifeSpan;
+
+        calculateTimerPositions();
     }
 
     @Override
-    public void tick(float deltaTime){
-        super.tick(deltaTime);
+    public void act (float delta) {
+        super.act(delta);
+
         if(lifeSpan<0 && matchedProtons.size() == 0){
             kill = true;
         }
@@ -39,22 +42,24 @@ public class Carbon extends Circles {
         }else {
             radius =  Variables.BERYLLIUM_RADIUS + ((Variables.CARBON_RADIUS - Variables.BERYLLIUM_RADIUS)*(aliveFor/1));
         }
-        lifeSpan = lifeSpan - deltaTime;
-        aliveFor = aliveFor + deltaTime;
+        lifeSpan = lifeSpan - delta;
+        aliveFor = aliveFor + delta;
     }
-
 
     protected void calculateTimerPositions(){
         this.timerX = this.pos.x + (float)(radius * Math.sin(Math.toRadians(360) * (lifeSpan/Variables.CARBON_LIFESPAN)));
         this.timerY = this.pos.y + (float)(radius * Math.cos(Math.toRadians(360) * (lifeSpan/Variables.CARBON_LIFESPAN)));
     }
 
-
     @Override
-    public void renderCircle(ShapeRenderer shapeRenderer) {
-        super.renderCircle(shapeRenderer);
-        //Draw the main circle
-        shapeRenderer.setColor(color[0], color[1], color[2], color[3]);
+    public void draw (Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+
+        batch.end();
+
+        renderCircle();
+
+        shapeRenderer.setColor(getColor());
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         shapeRenderer.circle(pos.x, pos.y, radius);
         shapeRenderer.end();
@@ -87,6 +92,10 @@ public class Carbon extends Circles {
             shapeRenderer.circle(pos.x, pos.y, Variables.MATCH_INDICATOR_RADIUS);
             shapeRenderer.end();
         }
+
+        Gdx.gl.glLineWidth(1f);
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+        batch.begin();
     }
 
     public void collided(){
@@ -111,7 +120,9 @@ public class Carbon extends Circles {
             if(random.nextBoolean()){
                 tempY = -tempY;
             }
-            game.addToCircles.add(new Helium(game,this.pos.x + tempX,this.pos.y + tempY));
+            Helium h = new Helium(game,this.pos.x + tempX,this.pos.y + tempY);
+            game.stageShapeRenderer.addActor(h);
+            game.addToCircles.add(h);
             game.soundEffect.play();
             protons = 0;
         }
