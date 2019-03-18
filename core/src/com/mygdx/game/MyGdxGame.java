@@ -5,10 +5,14 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.game.atoms.Circles;
 import com.mygdx.game.screens.MenuScreen;
@@ -26,6 +30,8 @@ public class MyGdxGame extends Game {
     public Circles highlightedCircle = null;
     public Skin skin;
     public Sound soundEffect;
+	public Stage stageShapeRenderer;
+	public TextureAtlas particleAtlas;
 
 	@Override
 	public void create () {
@@ -49,7 +55,13 @@ public class MyGdxGame extends Game {
 			soundEffect = Gdx.audio.newSound(Gdx.files.internal(Variables.SFX_CREATE_ATOM + ".mp3"));
 		}
 
-        setScreen(new MenuScreen(this));
+		particleAtlas = new TextureAtlas();
+		TextureRegion ppNeutron = new TextureRegion(new Texture("particles/Hallucinogen/pp_neutron.png"));
+		TextureRegion ppNeutronFull = new TextureRegion(new Texture("particles/Hallucinogen/pp_neutron-full.png"));
+		particleAtlas.addRegion("pp_neutron", ppNeutron);
+		particleAtlas.addRegion("pp_neutron-full", ppNeutronFull);
+
+		setScreen(new MenuScreen(this));
 	}
 
 	@Override
@@ -70,6 +82,7 @@ public class MyGdxGame extends Game {
 		font.dispose();
 		generator.dispose();
 		shapeRenderer.dispose();
+		particleAtlas.dispose();
 	}
 
 }

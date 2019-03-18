@@ -5,10 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -20,21 +17,19 @@ import com.mygdx.game.MyGdxGame;
 public class MenuScreen implements Screen {
 
     private MyGdxGame game;
-    private OrthographicCamera camera;
-    private Image imgExit, imgPlay;
     private Stage stageUI;
     private ParticleEffect effect;
 
     public MenuScreen(MyGdxGame gam) {
         game = gam;
 
-        camera = new OrthographicCamera();
+        OrthographicCamera camera = new OrthographicCamera();
 
         stageUI = new Stage(new StretchViewport(960, 540, camera));
         Gdx.input.setInputProcessor(stageUI);
 
-        imgExit = new Image(new Texture("exit.png"));
-        imgPlay = new Image(new Texture("play.png"));
+        Image imgExit = new Image(new Texture("exit.png"));
+        Image imgPlay = new Image(new Texture("play.png"));
 
         imgExit.addListener(new ClickListener() {
             @Override
@@ -62,14 +57,11 @@ public class MenuScreen implements Screen {
 
         stageUI.addActor(btnTable);
 
-        TextureAtlas particleAtlas = new TextureAtlas(); //<-load some atlas with your particle assets in
-        TextureRegion ppNeutron = new TextureRegion(new Texture("particles/Hallucinogen/pp_neutron.png"));
-        TextureRegion ppNeutronFull = new TextureRegion(new Texture("particles/Hallucinogen/pp_neutron-full.png"));
-        particleAtlas.addRegion("pp_neutron", ppNeutron);
-        particleAtlas.addRegion("pp_neutron-full", ppNeutronFull);
+        game.batch.setProjectionMatrix(camera.combined);
+
         effect = new ParticleEffect();
-        effect.load(Gdx.files.internal("particles/Hallucinogen/hallucinogen_full.p"), particleAtlas);
-        effect.setPosition(1366/2f, 600f);
+        effect.load(Gdx.files.internal("particles/Hallucinogen/hallucinogen_full.p"), game.particleAtlas);
+        effect.setPosition(960/2f, 400f);
         effect.start();
     }
 
@@ -117,5 +109,6 @@ public class MenuScreen implements Screen {
     @Override
     public void dispose() {
         stageUI.dispose();
+        effect.dispose();
     }
 }
