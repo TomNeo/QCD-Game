@@ -70,7 +70,7 @@ public class GameScreen implements Screen {
         camera.position.y = height/2;
         camera.update();
 
-        game.stageShapeRenderer = new Stage(new StretchViewport(1920, 1080, camera));
+        game.gameStage = new Stage(new StretchViewport(1920, 1080, camera));
 
         game.batch.setProjectionMatrix(camera.combined);
         game.shapeRenderer.setProjectionMatrix(camera.combined);
@@ -80,6 +80,7 @@ public class GameScreen implements Screen {
         game.allCircles = new ArrayList<Circles>();
         game.addToCircles = new ArrayList<Circles>();
         healthBar = new HealthBar(106,100);
+        game.gameStage.addActor(healthBar);
 
         if (Gdx.app.getType() == Application.ApplicationType.Android ||
                 Gdx.app.getType() == Application.ApplicationType.Desktop) {
@@ -161,14 +162,12 @@ public class GameScreen implements Screen {
             game.batch.draw(img, 0, 0);
             game.batch.end();
 
-            game.stageShapeRenderer.act();
-            game.stageShapeRenderer.draw();
+            game.gameStage.act();
+            game.gameStage.draw();
 
             tick(delta);
 
             //drawConnection();
-
-            drawHealthBar();
 
             game.batch.begin();
             game.font.draw(game.batch, "Score: " + totalScored, 0, 20);
@@ -210,7 +209,7 @@ public class GameScreen implements Screen {
                     outputs.add("New Proton," + runTime);
                     Proton p = new Proton(game, initialPress.x, initialPress.y);
                     game.allCircles.add(p);
-                    game.stageShapeRenderer.addActor(p);
+                    game.gameStage.addActor(p);
                     currentHealth = currentHealth - Variables.COST_OF_CREATING_PROTON;
                     Protons++;
                     if(game.highlightedCircle != null){
@@ -248,11 +247,7 @@ public class GameScreen implements Screen {
             highestScore = totalScored;
         }
         currentHealth = (long)(currentHealth - (Variables.HEALTH_DECREASE_CONSTANT + (totalScored * Variables.HEALTH_DECREASE_SCORE_MODIFIER) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)) * deltaTime);
-        healthBar.calculate(currentHealth);
-    }
-
-    private void drawHealthBar() {
-        healthBar.draw(game.batch);
+        healthBar.setValue(currentHealth);
     }
 
     private Circles inWhatCircle(Vector3 pos){
@@ -352,6 +347,6 @@ public class GameScreen implements Screen {
     public void dispose() {
         img.dispose();
         bgMusic.dispose();
-        game.stageShapeRenderer.dispose();
+        game.gameStage.dispose();
     }
 }
