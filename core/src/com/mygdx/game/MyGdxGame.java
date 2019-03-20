@@ -30,7 +30,7 @@ public class MyGdxGame extends Game {
     public Circles highlightedCircle = null;
     public Skin skin;
     public Sound soundEffect;
-	public Stage stageShapeRenderer;
+	public Stage gameStage;
 	public TextureAtlas particleAtlas;
 
 	@Override

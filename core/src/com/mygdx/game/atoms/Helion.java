@@ -91,7 +91,7 @@ public class Helion extends Circles {
         if(!matchedCircle.kill) {
             Helium tempHelium = new Helium(game, getX(), getY());
             Helium h = new Helium(game, getX(), getY());
-            game.stageShapeRenderer.addActor(h);
+            game.gameStage.addActor(h);
             game.addToCircles.add(h);
             float distance = tempHelium.radius + Variables.PROTON_RADIUS + 1;
             float angle = (float)(Math.random() * 90f);
@@ -104,7 +104,7 @@ public class Helion extends Circles {
                 tempY = -tempY;
             }
             Proton p1 = new Proton(game,tempHelium.getX() + tempX,tempHelium.getY() + tempY);
-            game.stageShapeRenderer.addActor(p1);
+            game.gameStage.addActor(p1);
             game.addToCircles.add(p1);
             angle = (float)(Math.random() * 90f);
             tempX = (float)(Math.sin(Math.PI/180 * angle)* distance);
@@ -116,7 +116,7 @@ public class Helion extends Circles {
                 tempY = -tempY;
             }
             Proton p2 = new Proton(game,tempHelium.getX() + tempX,tempHelium.getY() + tempY);
-            game.stageShapeRenderer.addActor(p2);
+            game.gameStage.addActor(p2);
             game.addToCircles.add(p2);
             matchedCircle.kill = true;
             this.kill = true;

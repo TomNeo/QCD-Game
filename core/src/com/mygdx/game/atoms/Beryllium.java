@@ -78,7 +78,7 @@ public class Beryllium extends Circles {
     public void collided(){
         if(!matchedCircle.kill) {
             Carbon c = new Carbon(game, getX(), getY());
-            game.stageShapeRenderer.addActor(c);
+            game.gameStage.addActor(c);
             game.addToCircles.add(c);
             matchedCircle.kill = true;
             this.kill = true;

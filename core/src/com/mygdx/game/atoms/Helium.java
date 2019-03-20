@@ -87,13 +87,13 @@ public class Helium extends Circles {
     public void collided(){
         if(!matchedCircle.kill && matchedCircle.getClass().equals(Helium.class)) {
             Beryllium b = new Beryllium(game, getX(), getY());
-            game.stageShapeRenderer.addActor(b);
+            game.gameStage.addActor(b);
             game.addToCircles.add(b);
             matchedCircle.kill = true;
             this.kill = true;
         }else if(!matchedCircle.kill && matchedCircle.getClass().equals(Beryllium.class)){
             Carbon c = new Carbon(game, getX(), getY());
-            game.stageShapeRenderer.addActor(c);
+            game.gameStage.addActor(c);
             game.addToCircles.add(c);
             matchedCircle.kill = true;
             this.kill = true;

@@ -92,7 +92,7 @@ public class Deuterium extends Circles {
     public void collided(){
         if(!matchedCircle.kill) {
             Helion h = new Helion(game, getX(), getY());
-            game.stageShapeRenderer.addActor(h);
+            game.gameStage.addActor(h);
             game.addToCircles.add(h);
             matchedCircle.kill = true;
             this.kill = true;

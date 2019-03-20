@@ -86,13 +86,13 @@ public class Proton extends Circles{
     public void collided(){
         if(!matchedCircle.kill && matchedCircle.getClass().equals(Deuterium.class)) {
             Helion h = new Helion(game, getX(), getY());
-            game.stageShapeRenderer.addActor(h);
+            game.gameStage.addActor(h);
             game.addToCircles.add(h);
             matchedCircle.kill = true;
             this.kill = true;
         }else if(!matchedCircle.kill && matchedCircle.getClass().equals(Proton.class)){
             Deuterium d = new Deuterium(game, getX(), getY());
-            game.stageShapeRenderer.addActor(d);
+            game.gameStage.addActor(d);
             game.addToCircles.add(d);
             matchedCircle.kill = true;
             this.kill = true;

@@ -120,7 +120,7 @@ public class Carbon extends Circles {
                 tempY = -tempY;
             }
             Helium h = new Helium(game,this.getX() + tempX,this.getY() + tempY);
-            game.stageShapeRenderer.addActor(h);
+            game.gameStage.addActor(h);
             game.addToCircles.add(h);
             game.soundEffect.play();
             protons = 0;
