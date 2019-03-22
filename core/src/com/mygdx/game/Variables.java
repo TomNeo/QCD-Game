@@ -32,9 +32,9 @@ public class Variables {
         }else if(Game_Score_Tier == 2){
             return 150f;
         }else if(Game_Score_Tier == 3){
-            return 300f;
+            return 225f;
         }if(Game_Score_Tier == 4){
-            return 400f;
+            return 350f;
         }
         return  150;
     }
@@ -84,7 +84,7 @@ public class Variables {
     public static float HEALTH_TIER_2_VALUE = 2000;
     public static float HEALTH_TIER_3_VALUE = 3000;
     public static float HEALTH_TIER_4_VALUE = 3000;
-    public static float HEALTH_TIER_5_VALUE = 6000;
+    public static float HEALTH_TIER_5_VALUE = 3000;
     public static float MAX_HEALTH = HEALTH_TIER_1_VALUE + HEALTH_TIER_2_VALUE + HEALTH_TIER_3_VALUE + HEALTH_TIER_4_VALUE + HEALTH_TIER_5_VALUE;
 
     /** sfx paths **/
