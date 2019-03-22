@@ -47,7 +47,7 @@ public class GameScreen implements Screen {
     private int colorCounter = 0;
     private int timesChanged = 0;
     private long startingHealth = Variables.STARTING_HEALTH;
-    private long currentHealth = startingHealth;
+    private float currentHealth = startingHealth;
     private long peakHealth = startingHealth;
     private long totalScored = 0;
     private long highestScore;
@@ -58,6 +58,7 @@ public class GameScreen implements Screen {
     private Vector3 initialPress = new Vector3();
     private Vector3 lastPress = new Vector3();
     private ArrayList<String> outputs = new ArrayList<String>();
+    Variables variables = new Variables();
 
     private BufferedWriter writer = null;
 
@@ -131,15 +132,15 @@ public class GameScreen implements Screen {
             colorTime = 0;
         }
 
-        if(colorCounter < 5) {
+        if(variables.Game_Score_Tier == 1) {
             r = (70f / 256f) * (colorTime / colorLength);
             g = (30f / 256f) * (colorTime / colorLength);
             b = (100f / 256f) * (colorTime / colorLength);
-        }else if(colorCounter < 12){
+        }else if(variables.Game_Score_Tier == 2){
             r = (70f + (111f * (colorTime / colorLength))) / 256f;
             g = (30f + (66f * (colorTime / colorLength)))/ 256f;
             b = (100f - (26f * (colorTime / colorLength)))/ 256f;
-        }else if(colorCounter < 22){
+        }else if(variables.Game_Score_Tier == 3){
             r = (181f + (34f * (colorTime / colorLength))) / 256f;
             g = (96f + (66f * (colorTime / colorLength)))/ 256f;
             b = (74f - (34f * (colorTime / colorLength)))/ 256f;
@@ -163,9 +164,9 @@ public class GameScreen implements Screen {
             game.batch.end();
 
             game.gameStage.act();
+            tick(delta);
             game.gameStage.draw();
 
-            tick(delta);
 
             //drawConnection();
 
@@ -173,7 +174,7 @@ public class GameScreen implements Screen {
             game.font.draw(game.batch, "Score: " + totalScored, 0, 20);
             game.batch.end();
         } else {
-            outputs.add("End Game Rate Of Decrease," + runTime + "," + (Variables.HEALTH_DECREASE_CONSTANT + (totalScored * Variables.HEALTH_DECREASE_SCORE_MODIFIER) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
+            outputs.add("End Game Rate Of Decrease," + runTime + "," + (variables.HEALTH_DECREASE_CONSTANT() + (totalScored * variables.HEALTH_DECREASE_SCORE_MODIFIER()) + (Math.round(runTime) * variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
                 try {
                     String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Calendar.getInstance().getTime());
                     writer = new BufferedWriter(new OutputStreamWriter(
@@ -210,7 +211,7 @@ public class GameScreen implements Screen {
                     Proton p = new Proton(game, initialPress.x, initialPress.y);
                     game.allCircles.add(p);
                     game.gameStage.addActor(p);
-                    currentHealth = currentHealth - Variables.COST_OF_CREATING_PROTON;
+                    currentHealth = currentHealth - variables.COST_OF_CREATING_PROTON;
                     Protons++;
                     if(game.highlightedCircle != null){
                         game.highlightedCircle.setHighlighted(false);
@@ -240,14 +241,20 @@ public class GameScreen implements Screen {
 
     private void tick(float deltaTime) {
         if(currentHealth > peakHealth){
-            peakHealth = currentHealth;
+            peakHealth = (long)currentHealth;
             outputs.add("New peak health," + runTime + "," + peakHealth);
         }
         if(totalScored > highestScore){
             highestScore = totalScored;
         }
-        currentHealth = (long)(currentHealth - (Variables.HEALTH_DECREASE_CONSTANT + (totalScored * Variables.HEALTH_DECREASE_SCORE_MODIFIER) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)) * deltaTime);
+        currentHealth = (long)(currentHealth - (variables.HEALTH_DECREASE_CONSTANT() + (totalScored * variables.HEALTH_DECREASE_SCORE_MODIFIER()) + (Math.round(runTime) * variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)) * deltaTime);
         healthBar.setValue(currentHealth);
+        healthBar.setZIndex(healthBar.getParent().getChildren().size + 1);
+        variables.inputs(currentHealth, totalScored, runTime);
+        if(variables.StarMan){
+            currentHealth = Variables.MAX_HEALTH /2;
+            variables.StarMan = false;
+        }
     }
 
     private Circles inWhatCircle(Vector3 pos){
@@ -270,7 +277,7 @@ public class GameScreen implements Screen {
                 currentHealth = currentHealth + Variables.PROTON_PROTON_SCORE;
                 totalScored = totalScored + Variables.PROTON_PROTON_SCORE;
                 outputs.add("Protons Fused," + runTime);
-                outputs.add("Scored," + runTime + "," + Variables.PROTON_PROTON_SCORE + "," + (Variables.HEALTH_DECREASE_CONSTANT + (totalScored * Variables.HEALTH_DECREASE_SCORE_MODIFIER) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
+                outputs.add("Scored," + runTime + "," + Variables.PROTON_PROTON_SCORE + "," + (variables.HEALTH_DECREASE_CONSTANT() + (totalScored * variables.HEALTH_DECREASE_SCORE_MODIFIER()) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
             }
             if((initialCircle.getClass().equals(Proton.class) && lastCircle.getClass().equals(Deuterium.class))||(initialCircle.getClass().equals(Deuterium.class) && lastCircle.getClass().equals(Proton.class))){
                 initialCircle.setTravelTo((initialCircle.getX() + lastCircle.getX())/2f,(initialCircle.getY() + lastCircle.getY())/2f, lastCircle);
@@ -278,7 +285,7 @@ public class GameScreen implements Screen {
                 currentHealth = currentHealth + Variables.PROTON_DEUTERIUM_SCORE;
                 totalScored = totalScored + Variables.PROTON_DEUTERIUM_SCORE;
                 outputs.add("Proton-Deuterium Fused," + runTime);
-                outputs.add("Scored," + runTime + "," + Variables.PROTON_DEUTERIUM_SCORE+ "," + (Variables.HEALTH_DECREASE_CONSTANT + (totalScored * Variables.HEALTH_DECREASE_SCORE_MODIFIER) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
+                outputs.add("Scored," + runTime + "," + Variables.PROTON_DEUTERIUM_SCORE+ "," + (variables.HEALTH_DECREASE_CONSTANT() + (totalScored * variables.HEALTH_DECREASE_SCORE_MODIFIER()) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
             }
             if(initialCircle.getClass().equals(Helion.class) && lastCircle.getClass().equals(Helion.class)){
                 initialCircle.setTravelTo((initialCircle.getX() + lastCircle.getX())/2f,(initialCircle.getY() + lastCircle.getY())/2f, lastCircle);
@@ -286,7 +293,7 @@ public class GameScreen implements Screen {
                 currentHealth = currentHealth + Variables.HELION_HELION_SCORE;
                 totalScored = totalScored + Variables.HELION_HELION_SCORE;
                 outputs.add("Helions Fused," + runTime);
-                outputs.add("Scored," + runTime + "," + Variables.HELION_HELION_SCORE+ "," + (Variables.HEALTH_DECREASE_CONSTANT + (totalScored * Variables.HEALTH_DECREASE_SCORE_MODIFIER) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
+                outputs.add("Scored," + runTime + "," + Variables.HELION_HELION_SCORE+ "," + (variables.HEALTH_DECREASE_CONSTANT() + (totalScored * variables.HEALTH_DECREASE_SCORE_MODIFIER()) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
             }
             if(initialCircle.getClass().equals(Helium.class) && lastCircle.getClass().equals(Helium.class)){
                 initialCircle.setTravelTo((initialCircle.getX() + lastCircle.getX())/2f,(initialCircle.getY() + lastCircle.getY())/2f, lastCircle);
@@ -294,7 +301,7 @@ public class GameScreen implements Screen {
                 currentHealth = currentHealth + Variables.HELIUM_HELIUM_SCORE;
                 totalScored = totalScored + Variables.HELIUM_HELIUM_SCORE;
                 outputs.add("Heliums Fused," + runTime);
-                outputs.add("Scored," + runTime + "," + Variables.HELIUM_HELIUM_SCORE+ "," + (Variables.HEALTH_DECREASE_CONSTANT + (totalScored * Variables.HEALTH_DECREASE_SCORE_MODIFIER) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
+                outputs.add("Scored," + runTime + "," + Variables.HELIUM_HELIUM_SCORE+ "," + (variables.HEALTH_DECREASE_CONSTANT() + (totalScored * variables.HEALTH_DECREASE_SCORE_MODIFIER()) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
             }
             if((initialCircle.getClass().equals(Beryllium.class) && lastCircle.getClass().equals(Helium.class))||(initialCircle.getClass().equals(Helium.class) && lastCircle.getClass().equals(Beryllium.class))){
                 initialCircle.setTravelTo((initialCircle.getX() + lastCircle.getX())/2f,(initialCircle.getY() + lastCircle.getY())/2f, lastCircle);
@@ -302,23 +309,23 @@ public class GameScreen implements Screen {
                 currentHealth = currentHealth + Variables.HELIUM_BERYLLIUM_SCORE;
                 totalScored = totalScored + Variables.HELIUM_BERYLLIUM_SCORE;
                 outputs.add("HELIUM-BERYLLIUM Fused," + runTime);
-                outputs.add("Scored," + runTime + "," + Variables.HELIUM_BERYLLIUM_SCORE+ "," + (Variables.HEALTH_DECREASE_CONSTANT + (totalScored * Variables.HEALTH_DECREASE_SCORE_MODIFIER) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
+                outputs.add("Scored," + runTime + "," + Variables.HELIUM_BERYLLIUM_SCORE+ "," + (variables.HEALTH_DECREASE_CONSTANT() + (totalScored * variables.HEALTH_DECREASE_SCORE_MODIFIER()) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
             }
             if((initialCircle.getClass().equals(Proton.class) && lastCircle.getClass().equals(Carbon.class))){
                 initialCircle.setTravelTo(lastCircle.getX(),lastCircle.getY(), lastCircle);
                 ((Carbon)lastCircle).matchedProtons.add((Proton)initialCircle);
-                currentHealth = currentHealth + Variables.PROTON_CARBON_SCORE;
-                totalScored = totalScored + Variables.PROTON_CARBON_SCORE * (1 + ((Carbon)lastCircle).getProtons());
+                currentHealth = currentHealth + variables.PROTON_CARBON_SCORE((1 + ((Carbon)lastCircle).getProtons()));
+                totalScored = totalScored + variables.PROTON_CARBON_SCORE((1 + ((Carbon)lastCircle).getProtons())) ;
                 outputs.add("Carbon Absorbs Proton," + runTime);
-                outputs.add("Scored," + runTime + "," + Variables.PROTON_CARBON_SCORE * (1 + ((Carbon)lastCircle).getProtons())+ "," + (Variables.HEALTH_DECREASE_CONSTANT + (totalScored * Variables.HEALTH_DECREASE_SCORE_MODIFIER) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
+                outputs.add("Scored," + runTime + "," + variables.PROTON_CARBON_SCORE((1 + ((Carbon)lastCircle).getProtons()))+ "," + (variables.HEALTH_DECREASE_CONSTANT() + (totalScored * variables.HEALTH_DECREASE_SCORE_MODIFIER()) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
             }
             if((initialCircle.getClass().equals(Carbon.class) && lastCircle.getClass().equals(Proton.class))){
                 lastCircle.setTravelTo(initialCircle.getX(),initialCircle.getY(), initialCircle);
                 ((Carbon)initialCircle).matchedProtons.add((Proton)lastCircle);
-                currentHealth = currentHealth + Variables.PROTON_CARBON_SCORE;
-                totalScored = totalScored + Variables.PROTON_CARBON_SCORE * (1 + ((Carbon)initialCircle).getProtons());
+                currentHealth = currentHealth + variables.PROTON_CARBON_SCORE((1 + ((Carbon)initialCircle).getProtons()));
+                totalScored = totalScored + variables.PROTON_CARBON_SCORE((1 + ((Carbon)initialCircle).getProtons()));
                 outputs.add("Carbon Absorbs Proton," + runTime);
-                outputs.add("Scored," + runTime + "," + Variables.PROTON_CARBON_SCORE * (1 + ((Carbon)initialCircle).getProtons())+ "," + (Variables.HEALTH_DECREASE_CONSTANT + (totalScored * Variables.HEALTH_DECREASE_SCORE_MODIFIER) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
+                outputs.add("Scored," + runTime + "," + variables.PROTON_CARBON_SCORE((1 + ((Carbon)initialCircle).getProtons()))+ "," + (variables.HEALTH_DECREASE_CONSTANT() + (totalScored * variables.HEALTH_DECREASE_SCORE_MODIFIER()) + (Math.round(runTime) * Variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
             }
         }
     }

@@ -24,7 +24,7 @@ public class HealthBar extends Actor {
 
     private ArrayList<VisualComponent> visualsList;
 
-    private long value;
+    private float value;
 
     public HealthBar(float x, float y){
         setPosition(x, y);
@@ -34,7 +34,7 @@ public class HealthBar extends Actor {
         visualsList = new ArrayList<VisualComponent>();
     }
 
-    public void setValue(long value) {
+    public void setValue(float value) {
         this.value = value;
     }
 
@@ -52,41 +52,41 @@ public class HealthBar extends Actor {
 
         visualsList.clear();
 
-        if(value < Variables.TIER_1_VALUE) {
-            for (int i = 0; i < ((value/Variables.TIER_1_VALUE) * getWidth() / red25.getRegionWidth()); i++) {
+        if(value < Variables.HEALTH_TIER_1_VALUE) {
+            for (int i = 0; i < ((value/Variables.HEALTH_TIER_1_VALUE) * getWidth() / red25.getRegionWidth()); i++) {
                 VisualComponent coloredSection = new VisualComponent(red25, backEnd.pos.x + borderOffset + (i * red25.getRegionWidth()), backEnd.pos.y + borderOffset);
                 visualsList.add(coloredSection);
             }
-        }else if(value < (Variables.TIER_1_VALUE + Variables.TIER_2_VALUE)){
+        }else if(value < (Variables.HEALTH_TIER_1_VALUE + Variables.HEALTH_TIER_2_VALUE)){
             for (int i = 0; i < 68; i++) {
                 VisualComponent coloredSection = new VisualComponent(red25, backEnd.pos.x + borderOffset + (i * red25.getRegionWidth()), backEnd.pos.y + borderOffset);
                 visualsList.add(coloredSection);
             }
-            for (int i = 0; i < ((value - Variables.TIER_1_VALUE) / Variables.TIER_2_VALUE * getWidth() / yellow25.getRegionWidth()); i++) {
+            for (int i = 0; i < ((value - Variables.HEALTH_TIER_1_VALUE) / Variables.HEALTH_TIER_2_VALUE * getWidth() / yellow25.getRegionWidth()); i++) {
                 VisualComponent coloredSection = new VisualComponent(yellow25, backEnd.pos.x + borderOffset + (i * red25.getRegionWidth()), backEnd.pos.y + borderOffset);
                 visualsList.add(coloredSection);
             }
-        }else if(value < (Variables.TIER_1_VALUE + Variables.TIER_2_VALUE + Variables.TIER_3_VALUE)){
+        }else if(value < (Variables.HEALTH_TIER_1_VALUE + Variables.HEALTH_TIER_2_VALUE + Variables.HEALTH_TIER_3_VALUE)){
             for (int i = 0; i < 68; i++) {
                 VisualComponent coloredSection = new VisualComponent(yellow25, backEnd.pos.x + borderOffset + (i * red25.getRegionWidth()), backEnd.pos.y + borderOffset);
                 visualsList.add(coloredSection);
-            }for (int i = 0; i < ((value - (Variables.TIER_1_VALUE + Variables.TIER_2_VALUE)) / Variables.TIER_3_VALUE * getWidth() / green25.getRegionWidth()); i++) {
+            }for (int i = 0; i < ((value - (Variables.HEALTH_TIER_1_VALUE + Variables.HEALTH_TIER_2_VALUE)) / Variables.HEALTH_TIER_3_VALUE * getWidth() / green25.getRegionWidth()); i++) {
                 VisualComponent coloredSection = new VisualComponent(green25, backEnd.pos.x + borderOffset + (i * red25.getRegionWidth()), backEnd.pos.y + borderOffset);
                 visualsList.add(coloredSection);
             }
-        }else if(value < Variables.TIER_1_VALUE + Variables.TIER_2_VALUE + Variables.TIER_3_VALUE + Variables.TIER_4_VALUE){
+        }else if(value < Variables.HEALTH_TIER_1_VALUE + Variables.HEALTH_TIER_2_VALUE + Variables.HEALTH_TIER_3_VALUE + Variables.HEALTH_TIER_4_VALUE){
             for (int i = 0; i < 68; i++) {
                 VisualComponent coloredSection = new VisualComponent(green25, backEnd.pos.x + borderOffset + (i * red25.getRegionWidth()), backEnd.pos.y + borderOffset);
                 visualsList.add(coloredSection);
-            }for (int i = 0; i < ((value - (Variables.TIER_1_VALUE + Variables.TIER_2_VALUE + Variables.TIER_3_VALUE)) / Variables.TIER_4_VALUE * getWidth() / blue25.getRegionWidth()); i++) {
+            }for (int i = 0; i < ((value - (Variables.HEALTH_TIER_1_VALUE + Variables.HEALTH_TIER_2_VALUE + Variables.HEALTH_TIER_3_VALUE)) / Variables.HEALTH_TIER_4_VALUE * getWidth() / blue25.getRegionWidth()); i++) {
                 VisualComponent coloredSection = new VisualComponent(blue25, backEnd.pos.x + borderOffset + (i * red25.getRegionWidth()), backEnd.pos.y + borderOffset);
                 visualsList.add(coloredSection);
             }
-        }else if(value < Variables.TIER_1_VALUE + Variables.TIER_2_VALUE + Variables.TIER_3_VALUE + Variables.TIER_4_VALUE + Variables.TIER_5_VALUE){
+        }else if(value < Variables.HEALTH_TIER_1_VALUE + Variables.HEALTH_TIER_2_VALUE + Variables.HEALTH_TIER_3_VALUE + Variables.HEALTH_TIER_4_VALUE + Variables.HEALTH_TIER_5_VALUE){
             for (int i = 0; i < 68; i++) {
                 VisualComponent coloredSection = new VisualComponent(blue25, backEnd.pos.x + borderOffset + (i * red25.getRegionWidth()), backEnd.pos.y + borderOffset);
                 visualsList.add(coloredSection);
-            }for (int i = 0; i < ((value - (Variables.TIER_1_VALUE + Variables.TIER_2_VALUE + Variables.TIER_3_VALUE + Variables.TIER_4_VALUE)) / Variables.TIER_5_VALUE * getWidth() / purple25.getRegionWidth()); i++) {
+            }for (int i = 0; i < ((value - (Variables.HEALTH_TIER_1_VALUE + Variables.HEALTH_TIER_2_VALUE + Variables.HEALTH_TIER_3_VALUE + Variables.HEALTH_TIER_4_VALUE)) / Variables.HEALTH_TIER_5_VALUE * getWidth() / purple25.getRegionWidth()); i++) {
                 VisualComponent coloredSection = new VisualComponent(purple25, backEnd.pos.x + borderOffset + (i * red25.getRegionWidth()), backEnd.pos.y + borderOffset);
                 visualsList.add(coloredSection);
             }
