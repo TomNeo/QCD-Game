@@ -226,6 +226,7 @@ public class MenuScreen implements Screen {
 
         game.shapeRenderer.setColor(0f, 1f, 0f, 1);
 
+        
         for(int i = 0; i < circlePath.length; i++){
             for(int j = 0; j < segments; ++j){
                 float t = j /segments;
