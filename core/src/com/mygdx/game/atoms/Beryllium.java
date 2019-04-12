@@ -25,6 +25,8 @@ public class Beryllium extends Circles {
         initialLifespan = lifeSpan;
 
         calculateTimerPositions();
+
+        borders.add(new WavyBorder(this));
     }
 
     @Override

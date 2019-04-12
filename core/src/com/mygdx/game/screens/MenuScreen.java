@@ -25,7 +25,7 @@ public class MenuScreen implements Screen {
     private Stage stageUI;
     private ParticleEffect effect;
     float currentDegrees = 0;
-    int radiusFlux = 0;
+    int radiusFlux = -5;
     int radiusChange = 0;
 
     float P0x = 40;
@@ -183,10 +183,10 @@ public class MenuScreen implements Screen {
 
         }
 */
-        if(radiusFlux == 0){
+        if(radiusFlux == -5){
             radiusChange = 1;
         }
-        if(radiusFlux > 10){
+        if(radiusFlux > 5){
             radiusChange = -1;
         }
         radiusFlux = radiusFlux + radiusChange;
@@ -194,11 +194,11 @@ public class MenuScreen implements Screen {
         int waveFrequency = 9;
         float OriginX = 800;
         float OriginY = 200;
-        float radius = Variables.HELIUM_RADIUS + radiusFlux;
+        float radius1 = Variables.HELIUM_RADIUS + radiusFlux;
         float tempCureentDegrees = currentDegrees;
-        currentDegrees = currentDegrees + 2;
+        currentDegrees = currentDegrees + 1;
         float nextDegrees;
-        float amplitude = radius/6f;
+        float amplitude1 = radius1/20f;
         float segments = 10;
 
         circlePath = new Bezier[waveFrequency * 2];
@@ -206,17 +206,17 @@ public class MenuScreen implements Screen {
         for(int i = 0; i < (waveFrequency * 2);i++){
             nextDegrees = tempCureentDegrees + (360/(waveFrequency * 2));
             Vector2[] currentPositions = new Vector2[3];
-            currentPositions[0] = new Vector2((float)Math.cos(Math.toRadians(tempCureentDegrees))*radius+OriginX,(float)Math.sin(Math.toRadians(tempCureentDegrees))*radius+OriginY);
-            currentPositions[2] = new Vector2((float)Math.cos(Math.toRadians(nextDegrees))*radius+OriginX,(float)Math.sin(Math.toRadians(nextDegrees))*radius+OriginY);
+            currentPositions[0] = new Vector2((float)Math.cos(Math.toRadians(tempCureentDegrees))*radius1+OriginX,(float)Math.sin(Math.toRadians(tempCureentDegrees))*radius1+OriginY);
+            currentPositions[2] = new Vector2((float)Math.cos(Math.toRadians(nextDegrees))*radius1+OriginX,(float)Math.sin(Math.toRadians(nextDegrees))*radius1+OriginY);
 
             float midPointX = (currentPositions[0].x + currentPositions[2].x)/2;
             float midPointY = (currentPositions[0].y + currentPositions[2].y)/2;
             float midPointDistance = (float)Math.sqrt((midPointX - OriginX)*(midPointX - OriginX) + (midPointY - OriginY)*(midPointY - OriginY));
-            float bezierDistance = (radius - midPointDistance) + radius;
+            float bezierDistance = (radius1 - midPointDistance) + radius1;
             if(i%2 == 0){
-                bezierDistance = 2 * (radius - midPointDistance) + radius + amplitude;
+                bezierDistance = 2 * (radius1 - midPointDistance) + radius1 + amplitude1;
             }else{
-                bezierDistance = radius - (radius - midPointDistance)*2 - amplitude;
+                bezierDistance = radius1 - (radius1 - midPointDistance)*2 - amplitude1;
             }
 
             currentPositions[1] = new Vector2((float)Math.cos(Math.toRadians((tempCureentDegrees + nextDegrees)/2))*bezierDistance+OriginX,(float)Math.sin(Math.toRadians((tempCureentDegrees + nextDegrees)/2))*bezierDistance+OriginY);
@@ -225,8 +225,9 @@ public class MenuScreen implements Screen {
         }
 
         game.shapeRenderer.setColor(0f, 1f, 0f, 1);
+        float radius2 = Variables.HELIUM_RADIUS - radiusFlux;
+        float amplitude2 = radius1/10f;
 
-        
         for(int i = 0; i < circlePath.length; i++){
             for(int j = 0; j < segments; ++j){
                 float t = j /segments;
@@ -245,17 +246,17 @@ public class MenuScreen implements Screen {
         for(int i = 0; i < (waveFrequency * 2);i++){
             nextDegrees = tempCureentDegrees + (360/(waveFrequency * 2));
             Vector2[] currentPositions = new Vector2[3];
-            currentPositions[0] = new Vector2((float)Math.cos(Math.toRadians(tempCureentDegrees))*radius+OriginX,(float)Math.sin(Math.toRadians(tempCureentDegrees))*radius+OriginY);
-            currentPositions[2] = new Vector2((float)Math.cos(Math.toRadians(nextDegrees))*radius+OriginX,(float)Math.sin(Math.toRadians(nextDegrees))*radius+OriginY);
+            currentPositions[0] = new Vector2((float)Math.cos(Math.toRadians(tempCureentDegrees))*radius2+OriginX,(float)Math.sin(Math.toRadians(tempCureentDegrees))*radius2+OriginY);
+            currentPositions[2] = new Vector2((float)Math.cos(Math.toRadians(nextDegrees))*radius2+OriginX,(float)Math.sin(Math.toRadians(nextDegrees))*radius2+OriginY);
 
             float midPointX = (currentPositions[0].x + currentPositions[2].x)/2;
             float midPointY = (currentPositions[0].y + currentPositions[2].y)/2;
             float midPointDistance = (float)Math.sqrt((midPointX - OriginX)*(midPointX - OriginX) + (midPointY - OriginY)*(midPointY - OriginY));
-            float bezierDistance = (radius - midPointDistance) + radius;
+            float bezierDistance = (radius2 - midPointDistance) + radius2;
             if(i%2 == 0){
-                bezierDistance = 2 * (radius - midPointDistance) + radius + amplitude;
+                bezierDistance = 2 * (radius2 - midPointDistance) + radius2 + amplitude2;
             }else{
-                bezierDistance = radius - (radius - midPointDistance)*2 - amplitude;
+                bezierDistance = radius2 - (radius2 - midPointDistance)*2 - amplitude2;
             }
 
             currentPositions[1] = new Vector2((float)Math.cos(Math.toRadians((tempCureentDegrees + nextDegrees)/2))*bezierDistance+OriginX,(float)Math.sin(Math.toRadians((tempCureentDegrees + nextDegrees)/2))*bezierDistance+OriginY);
@@ -276,7 +277,8 @@ public class MenuScreen implements Screen {
             }
         }
 
-
+        game.shapeRenderer.circle(OriginX, OriginY, radius1);
+        game.shapeRenderer.circle(OriginX, OriginY, radius2);
         game.shapeRenderer.end();
     }
 

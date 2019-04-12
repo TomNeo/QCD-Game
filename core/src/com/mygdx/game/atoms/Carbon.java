@@ -27,6 +27,8 @@ public class Carbon extends Circles {
         initialLifespan = lifeSpan;
 
         calculateTimerPositions();
+
+        borders.add(new WavyBorder(this));
     }
 
     @Override

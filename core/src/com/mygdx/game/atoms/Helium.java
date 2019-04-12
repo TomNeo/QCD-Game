@@ -23,6 +23,7 @@ public class Helium extends Circles {
         this.lifeSpan = Variables.HELIUM_LIFESPAN;
 
         calculateTimerPositions();
+        borders.add(new WavyBorder(this));
     }
 
     @Override
@@ -76,6 +77,7 @@ public class Helium extends Circles {
 
         Gdx.gl.glLineWidth(1f);
         Gdx.gl.glDisable(GL20.GL_BLEND);
+
         batch.begin();
     }
 

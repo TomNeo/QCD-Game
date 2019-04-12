@@ -24,6 +24,8 @@ public class Proton extends Circles{
         this.lifeSpan = Variables.PROTON_LIFESPAN;
 
         calculateTimerPositions();
+
+        borders.add(new WavyBorder(this));
     }
 
     @Override

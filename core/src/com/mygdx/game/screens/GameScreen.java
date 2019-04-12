@@ -173,6 +173,27 @@ public class GameScreen implements Screen {
             game.batch.begin();
             game.font.draw(game.batch, "Score: " + totalScored, 0, 20);
             game.batch.end();
+
+            game.allCircles.addAll(game.addToCircles);
+            game.addToCircles.clear();
+
+            ArrayList<Circles> killList = new ArrayList<Circles>();
+            for(Circles circle : game.allCircles){
+                if(circle.kill){
+
+                    killList.add(circle);
+                    if(circle.getHighlighted()){
+                        game.highlightedCircle = null;
+                        circle.setHighlighted(false);
+                    }
+                }
+            }
+            for(Circles circle : killList){
+                circle.remove();
+                game.allCircles.remove(circle);
+            }
+            killList.clear();
+
         } else {
             outputs.add("End Game Rate Of Decrease," + runTime + "," + (variables.HEALTH_DECREASE_CONSTANT() + (totalScored * variables.HEALTH_DECREASE_SCORE_MODIFIER()) + (Math.round(runTime) * variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
                 try {
