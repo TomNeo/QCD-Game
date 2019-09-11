@@ -102,58 +102,59 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if(colorTimeGoingUp) {
-            colorTime += delta;
-        }else{
-            colorTime -= delta;
-        }
-        if(colorTime >= colorLength){
-            colorTimeGoingUp = false;
-            colorCounter++;
-        }else if(colorTime <= 0){
-            colorTimeGoingUp = true;
-            colorCounter++;
-        }
-
-        if(colorCounter == 5 && timesChanged == 0){
-            timesChanged++;
-            colorLength = 2.5f;
-            colorTimeGoingUp = true;
-            colorTime = 0;
-        }else if(colorCounter == 12 && timesChanged == 1){
-            timesChanged++;
-            colorLength = 1.5f;
-            colorTimeGoingUp = true;
-            colorTime = 0;
-        } if(colorCounter == 22 && timesChanged == 2){
-            timesChanged++;
-            colorLength = .9f;
-            colorTimeGoingUp = true;
-            colorTime = 0;
-        }
-
-        if(variables.Game_Score_Tier == 1) {
-            r = (70f / 256f) * (colorTime / colorLength);
-            g = (30f / 256f) * (colorTime / colorLength);
-            b = (100f / 256f) * (colorTime / colorLength);
-        }else if(variables.Game_Score_Tier == 2){
-            r = (70f + (111f * (colorTime / colorLength))) / 256f;
-            g = (30f + (66f * (colorTime / colorLength)))/ 256f;
-            b = (100f - (26f * (colorTime / colorLength)))/ 256f;
-        }else if(variables.Game_Score_Tier == 3){
-            r = (181f + (34f * (colorTime / colorLength))) / 256f;
-            g = (96f + (66f * (colorTime / colorLength)))/ 256f;
-            b = (74f - (34f * (colorTime / colorLength)))/ 256f;
-        }else{
-            r = (215f + (15f * (colorTime / colorLength))) / 256f;
-            g = (162f + (93f * (colorTime / colorLength)))/ 256f;
-            b = (40f - (14f * (colorTime / colorLength)))/ 256f;
-        }
-
         Gdx.gl.glClearColor(r, g, b, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if (currentHealth > 0) {
+
+            if(colorTimeGoingUp) {
+                colorTime += delta;
+            }else{
+                colorTime -= delta;
+            }
+            if(colorTime >= colorLength){
+                colorTimeGoingUp = false;
+                colorCounter++;
+            }else if(colorTime <= 0){
+                colorTimeGoingUp = true;
+                colorCounter++;
+            }
+
+            if(colorCounter == 5 && timesChanged == 0){
+                timesChanged++;
+                colorLength = 2.5f;
+                colorTimeGoingUp = true;
+                colorTime = 0;
+            }else if(colorCounter == 12 && timesChanged == 1){
+                timesChanged++;
+                colorLength = 1.5f;
+                colorTimeGoingUp = true;
+                colorTime = 0;
+            } if(colorCounter == 22 && timesChanged == 2){
+                timesChanged++;
+                colorLength = .9f;
+                colorTimeGoingUp = true;
+                colorTime = 0;
+            }
+
+            if(variables.Game_Score_Tier == 1) {
+                r = (70f / 256f) * (colorTime / colorLength);
+                g = (30f / 256f) * (colorTime / colorLength);
+                b = (100f / 256f) * (colorTime / colorLength);
+            }else if(variables.Game_Score_Tier == 2){
+                r = (70f + (111f * (colorTime / colorLength))) / 256f;
+                g = (30f + (66f * (colorTime / colorLength)))/ 256f;
+                b = (100f - (26f * (colorTime / colorLength)))/ 256f;
+            }else if(variables.Game_Score_Tier == 3){
+                r = (181f + (34f * (colorTime / colorLength))) / 256f;
+                g = (96f + (66f * (colorTime / colorLength)))/ 256f;
+                b = (74f - (34f * (colorTime / colorLength)))/ 256f;
+            }else{
+                r = (215f + (15f * (colorTime / colorLength))) / 256f;
+                g = (162f + (93f * (colorTime / colorLength)))/ 256f;
+                b = (40f - (14f * (colorTime / colorLength)))/ 256f;
+            }
+
             if (currentHealth != startingHealth) {
                 runTime = runTime + delta;
             }
