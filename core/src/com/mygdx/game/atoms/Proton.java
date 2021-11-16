@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.MyGdxGame;
 import com.mygdx.game.Variables;
+import com.mygdx.game.tools.MidiTools;
+
+import javax.sound.midi.Receiver;
 
 /**
  * Created by User on 1/19/2017.
@@ -26,6 +29,7 @@ public class Proton extends Circles{
         calculateTimerPositions();
 
         borders.add(new WavyBorder(this));
+        MidiTools useless = new MidiTools();
     }
 
     @Override

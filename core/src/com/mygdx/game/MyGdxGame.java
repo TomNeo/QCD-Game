@@ -50,9 +50,9 @@ public class MyGdxGame extends Game {
 
         if (Gdx.app.getType() == Application.ApplicationType.Android ||
 				Gdx.app.getType() == Application.ApplicationType.Desktop) {
-			soundEffect = Gdx.audio.newSound(Gdx.files.internal(Variables.SFX_CREATE_ATOM + ".ogg"));
+			//soundEffect = Gdx.audio.newSound(Gdx.files.internal(Variables.SFX_CREATE_ATOM + ".ogg"));
 		} else if (Gdx.app.getType() == Application.ApplicationType.iOS) {
-			soundEffect = Gdx.audio.newSound(Gdx.files.internal(Variables.SFX_CREATE_ATOM + ".mp3"));
+			//soundEffect = Gdx.audio.newSound(Gdx.files.internal(Variables.SFX_CREATE_ATOM + ".mp3"));
 		}
 
 		particleAtlas = new TextureAtlas();

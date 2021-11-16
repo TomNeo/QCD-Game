@@ -30,6 +30,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import javax.sound.midi.Instrument;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Receiver;
+import javax.sound.midi.Sequencer;
+import javax.sound.midi.ShortMessage;
+import javax.sound.midi.Synthesizer;
+
 public class GameScreen implements Screen {
 
     private MyGdxGame game;
@@ -90,8 +97,9 @@ public class GameScreen implements Screen {
             bgMusic = Gdx.audio.newMusic(Gdx.files.internal("sfx/mm5napalm.mp3"));
         }
         if (bgMusic != null) {
-            bgMusic.play();
+           // bgMusic.play();
         }
+
         outputs.add("TYPE,RUNTIME,INFO,DECREASE RATE");
     }
 
@@ -240,7 +248,7 @@ public class GameScreen implements Screen {
                         game.highlightedCircle = null;
                     }
                     // play sound for circle creation by touch
-                    game.soundEffect.play();
+                    //game.soundEffect.play();
                 }else{
                     if(game.highlightedCircle == null){
                         game.highlightedCircle = temp;
@@ -269,7 +277,7 @@ public class GameScreen implements Screen {
         if(totalScored > highestScore){
             highestScore = totalScored;
         }
-        currentHealth = (long)(currentHealth - (variables.HEALTH_DECREASE_CONSTANT() + (totalScored * variables.HEALTH_DECREASE_SCORE_MODIFIER()) + (Math.round(runTime) * variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)) * deltaTime);
+        currentHealth = (long)(currentHealth - ((variables.HEALTH_DECREASE_CONSTANT()*.4f) + (totalScored * variables.HEALTH_DECREASE_SCORE_MODIFIER()) + (Math.round(runTime) * variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)) * deltaTime);
         healthBar.setValue(currentHealth);
         healthBar.setZIndex(healthBar.getParent().getChildren().size + 1);
         variables.inputs(currentHealth, totalScored, runTime);
