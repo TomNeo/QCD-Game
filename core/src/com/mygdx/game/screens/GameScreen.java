@@ -30,6 +30,13 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Locale;
 
+import javax.sound.midi.Instrument;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Receiver;
+import javax.sound.midi.Sequencer;
+import javax.sound.midi.ShortMessage;
+import javax.sound.midi.Synthesizer;
+
 public class GameScreen implements Screen {
 
     private MyGdxGame game;
@@ -90,8 +97,9 @@ public class GameScreen implements Screen {
             bgMusic = Gdx.audio.newMusic(Gdx.files.internal("sfx/mm5napalm.mp3"));
         }
         if (bgMusic != null) {
-            bgMusic.play();
+           // bgMusic.play();
         }
+
         outputs.add("TYPE,RUNTIME,INFO,DECREASE RATE");
     }
 
@@ -102,58 +110,59 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        if(colorTimeGoingUp) {
-            colorTime += delta;
-        }else{
-            colorTime -= delta;
-        }
-        if(colorTime >= colorLength){
-            colorTimeGoingUp = false;
-            colorCounter++;
-        }else if(colorTime <= 0){
-            colorTimeGoingUp = true;
-            colorCounter++;
-        }
-
-        if(colorCounter == 5 && timesChanged == 0){
-            timesChanged++;
-            colorLength = 2.5f;
-            colorTimeGoingUp = true;
-            colorTime = 0;
-        }else if(colorCounter == 12 && timesChanged == 1){
-            timesChanged++;
-            colorLength = 1.5f;
-            colorTimeGoingUp = true;
-            colorTime = 0;
-        } if(colorCounter == 22 && timesChanged == 2){
-            timesChanged++;
-            colorLength = .9f;
-            colorTimeGoingUp = true;
-            colorTime = 0;
-        }
-
-        if(variables.Game_Score_Tier == 1) {
-            r = (70f / 256f) * (colorTime / colorLength);
-            g = (30f / 256f) * (colorTime / colorLength);
-            b = (100f / 256f) * (colorTime / colorLength);
-        }else if(variables.Game_Score_Tier == 2){
-            r = (70f + (111f * (colorTime / colorLength))) / 256f;
-            g = (30f + (66f * (colorTime / colorLength)))/ 256f;
-            b = (100f - (26f * (colorTime / colorLength)))/ 256f;
-        }else if(variables.Game_Score_Tier == 3){
-            r = (181f + (34f * (colorTime / colorLength))) / 256f;
-            g = (96f + (66f * (colorTime / colorLength)))/ 256f;
-            b = (74f - (34f * (colorTime / colorLength)))/ 256f;
-        }else{
-            r = (215f + (15f * (colorTime / colorLength))) / 256f;
-            g = (162f + (93f * (colorTime / colorLength)))/ 256f;
-            b = (40f - (14f * (colorTime / colorLength)))/ 256f;
-        }
-
         Gdx.gl.glClearColor(r, g, b, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         if (currentHealth > 0) {
+
+            if(colorTimeGoingUp) {
+                colorTime += delta;
+            }else{
+                colorTime -= delta;
+            }
+            if(colorTime >= colorLength){
+                colorTimeGoingUp = false;
+                colorCounter++;
+            }else if(colorTime <= 0){
+                colorTimeGoingUp = true;
+                colorCounter++;
+            }
+
+            if(colorCounter == 5 && timesChanged == 0){
+                timesChanged++;
+                colorLength = 2.5f;
+                colorTimeGoingUp = true;
+                colorTime = 0;
+            }else if(colorCounter == 12 && timesChanged == 1){
+                timesChanged++;
+                colorLength = 1.5f;
+                colorTimeGoingUp = true;
+                colorTime = 0;
+            } if(colorCounter == 22 && timesChanged == 2){
+                timesChanged++;
+                colorLength = .9f;
+                colorTimeGoingUp = true;
+                colorTime = 0;
+            }
+
+            if(variables.Game_Score_Tier == 1) {
+                r = (70f / 256f) * (colorTime / colorLength);
+                g = (30f / 256f) * (colorTime / colorLength);
+                b = (100f / 256f) * (colorTime / colorLength);
+            }else if(variables.Game_Score_Tier == 2){
+                r = (70f + (111f * (colorTime / colorLength))) / 256f;
+                g = (30f + (66f * (colorTime / colorLength)))/ 256f;
+                b = (100f - (26f * (colorTime / colorLength)))/ 256f;
+            }else if(variables.Game_Score_Tier == 3){
+                r = (181f + (34f * (colorTime / colorLength))) / 256f;
+                g = (96f + (66f * (colorTime / colorLength)))/ 256f;
+                b = (74f - (34f * (colorTime / colorLength)))/ 256f;
+            }else{
+                r = (215f + (15f * (colorTime / colorLength))) / 256f;
+                g = (162f + (93f * (colorTime / colorLength)))/ 256f;
+                b = (40f - (14f * (colorTime / colorLength)))/ 256f;
+            }
+
             if (currentHealth != startingHealth) {
                 runTime = runTime + delta;
             }
@@ -173,6 +182,27 @@ public class GameScreen implements Screen {
             game.batch.begin();
             game.font.draw(game.batch, "Score: " + totalScored, 0, 20);
             game.batch.end();
+
+            game.allCircles.addAll(game.addToCircles);
+            game.addToCircles.clear();
+
+            ArrayList<Circles> killList = new ArrayList<Circles>();
+            for(Circles circle : game.allCircles){
+                if(circle.kill){
+
+                    killList.add(circle);
+                    if(circle.getHighlighted()){
+                        game.highlightedCircle = null;
+                        circle.setHighlighted(false);
+                    }
+                }
+            }
+            for(Circles circle : killList){
+                circle.remove();
+                game.allCircles.remove(circle);
+            }
+            killList.clear();
+
         } else {
             outputs.add("End Game Rate Of Decrease," + runTime + "," + (variables.HEALTH_DECREASE_CONSTANT() + (totalScored * variables.HEALTH_DECREASE_SCORE_MODIFIER()) + (Math.round(runTime) * variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)));
                 try {
@@ -218,7 +248,7 @@ public class GameScreen implements Screen {
                         game.highlightedCircle = null;
                     }
                     // play sound for circle creation by touch
-                    game.soundEffect.play();
+                    //game.soundEffect.play();
                 }else{
                     if(game.highlightedCircle == null){
                         game.highlightedCircle = temp;
@@ -247,7 +277,7 @@ public class GameScreen implements Screen {
         if(totalScored > highestScore){
             highestScore = totalScored;
         }
-        currentHealth = (long)(currentHealth - (variables.HEALTH_DECREASE_CONSTANT() + (totalScored * variables.HEALTH_DECREASE_SCORE_MODIFIER()) + (Math.round(runTime) * variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)) * deltaTime);
+        currentHealth = (long)(currentHealth - ((variables.HEALTH_DECREASE_CONSTANT()*.4f) + (totalScored * variables.HEALTH_DECREASE_SCORE_MODIFIER()) + (Math.round(runTime) * variables.HEALTH_DECREASE_COMPOUNDING_TIME_MODIFIER)) * deltaTime);
         healthBar.setValue(currentHealth);
         healthBar.setZIndex(healthBar.getParent().getChildren().size + 1);
         variables.inputs(currentHealth, totalScored, runTime);

@@ -27,6 +27,8 @@ public class Helion extends Circles {
         this.lifeSpan = Variables.HELION_LIFESPAN;
 
         calculateTimerPositions();
+
+        borders.add(new WavyBorder(this));
     }
 
     @Override

@@ -24,7 +24,7 @@ public class Variables {
 
     /** Game play Mechanics **/
 
-    public static long STARTING_HEALTH = 3000;
+    public static long STARTING_HEALTH = 5000;
     public long COST_OF_CREATING_PROTON = 150;
     public float HEALTH_DECREASE_CONSTANT(){
         if(Game_Score_Tier == 1){
@@ -88,7 +88,7 @@ public class Variables {
     public static float MAX_HEALTH = HEALTH_TIER_1_VALUE + HEALTH_TIER_2_VALUE + HEALTH_TIER_3_VALUE + HEALTH_TIER_4_VALUE + HEALTH_TIER_5_VALUE;
 
     /** sfx paths **/
-    public static final String SFX_CREATE_ATOM = "sfx/MegaBuster";
+    //public static final String SFX_CREATE_ATOM = "sfx/MegaBuster";
 
     public void inputs(float currentHealth, long totalScored, float runTime) {
         if(totalScored >= 6000){

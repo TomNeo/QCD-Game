@@ -24,6 +24,8 @@ public class Deuterium extends Circles {
         this.lifeSpan = Variables.DEUTERIUM_LIFESPAN;
 
         calculateTimerPositions();
+
+        borders.add(new WavyBorder(this));
     }
 
     @Override

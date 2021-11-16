@@ -2,6 +2,7 @@ package com.mygdx.game.atoms;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -34,6 +35,7 @@ public abstract class Circles extends Actor {
     float timerY = 0;
     private float travelToX = -1;
     private float travelToY = -1;
+    protected ArrayList<WavyBorder> borders = new ArrayList<WavyBorder>();
 
     //protected int colorInt;
 
@@ -56,34 +58,11 @@ public abstract class Circles extends Actor {
             applyAttraction(delta);
         }
 
-        game.allCircles.addAll(game.addToCircles);
-        game.addToCircles.clear();
-
-        ArrayList<Circles> killList = new ArrayList<Circles>();
-        for(Circles circle : game.allCircles){
-            if(circle.kill){
-
-                if (circle.getClass() == Carbon.class){
-                    int breakpoint = 1;
-                    int otherline = breakpoint + 1;
-                }
-                killList.add(circle);
-                if(circle.getHighlighted()){
-                    game.highlightedCircle = null;
-                    circle.setHighlighted(false);
-                }
-            }
-        }
-        for(Circles circle : killList){
-            circle.remove();
-            game.allCircles.remove(circle);
-        }
-        killList.clear();
-
         calculateTimerPositions();
+        calculateWavyBorders(delta);
     }
 
-    private boolean getHighlighted(){
+    public boolean getHighlighted(){
         return highlighted;
     }
 
@@ -195,6 +174,21 @@ public abstract class Circles extends Actor {
         if(didAnything){
             setX(this.getX() + (this.velocity.x * deltaTime));
             setY(this.getY() + (this.velocity.y * deltaTime));
+        }
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha){
+        super.draw(batch,parentAlpha);
+        for (WavyBorder border : borders) {
+            border.draw(shapeRenderer);
+        }
+
+    }
+
+    protected void calculateWavyBorders(float deltaTime){
+        for (WavyBorder border : borders) {
+            border.calculate(deltaTime);
         }
     }
 
