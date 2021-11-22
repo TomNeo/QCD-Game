@@ -26,6 +26,11 @@ public class Deuterium extends Circles {
         calculateTimerPositions();
 
         borders.add(new WavyBorder(this));
+
+        midiChannel = 1;
+        midiNote = 64;
+        noteVelocity = 90;
+        game.midiTools.startMidiChannel(midiChannel, midiNote,noteVelocity, game.midiTools.changeInsturment(7));
     }
 
     @Override

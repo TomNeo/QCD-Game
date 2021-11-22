@@ -29,6 +29,11 @@ public class Helion extends Circles {
         calculateTimerPositions();
 
         borders.add(new WavyBorder(this));
+        midiChannel = 2;
+        midiNote = 67;
+        noteVelocity = 50;
+
+        game.midiTools.startMidiChannel(midiChannel, midiNote,noteVelocity, game.midiTools.changeInsturment(20));
     }
 
     @Override

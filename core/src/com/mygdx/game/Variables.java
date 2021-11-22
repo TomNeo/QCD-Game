@@ -94,14 +94,14 @@ public class Variables {
         if(totalScored >= 6000){
             if(totalScored >= 20000){
                 if(totalScored >= 50000){
-                    COST_OF_CREATING_PROTON = 10;
+                    COST_OF_CREATING_PROTON = 100;
                     Game_Score_Tier = 4;
                 }else{
-                    COST_OF_CREATING_PROTON = 50;
+                    COST_OF_CREATING_PROTON = 200;
                     Game_Score_Tier = 3;
                 }
             }else{
-                COST_OF_CREATING_PROTON = 100;
+                COST_OF_CREATING_PROTON = 250;
                 Game_Score_Tier = 2;
             }
         }

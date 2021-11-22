@@ -85,6 +85,7 @@ public class MyGdxGame extends Game {
 		generator.dispose();
 		shapeRenderer.dispose();
 		particleAtlas.dispose();
+		midiTools.dispose();
 	}
 
 }

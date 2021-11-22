@@ -26,6 +26,9 @@ public abstract class Circles extends Actor {
     public boolean kill = false;
     public boolean moving = false;
     private boolean highlighted = false;
+    protected int midiChannel;
+    protected int midiNote;
+    protected int noteVelocity;
 
     Circles matchedCircle = null;
 
@@ -65,7 +68,15 @@ public abstract class Circles extends Actor {
     public boolean getHighlighted(){
         return highlighted;
     }
-
+    public int getMidiChannel(){
+        return midiChannel;
+    }
+    public int getNote(){
+        return midiNote;
+    }
+    public int getNoteVelocity(){
+        return noteVelocity;
+    }
     public void setHighlighted(boolean value){
         highlighted = value;
     }

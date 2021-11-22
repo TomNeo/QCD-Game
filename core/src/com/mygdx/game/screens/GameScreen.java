@@ -195,6 +195,7 @@ public class GameScreen implements Screen {
                         game.highlightedCircle = null;
                         circle.setHighlighted(false);
                     }
+                    game.midiTools.stopMidiChannel(circle.getMidiChannel(),circle.getNote(), circle.getNoteVelocity());
                 }
             }
             for(Circles circle : killList){

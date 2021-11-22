@@ -30,7 +30,13 @@ public class Proton extends Circles{
         calculateTimerPositions();
 
         borders.add(new WavyBorder(this));
-        game.midiTools.shortMessage(ShortMessage.NOTE_ON,0,60,93);
+//        game.midiTools.shortMessage(ShortMessage.NOTE_ON,0,60,93);
+
+        midiChannel = 0;
+        midiNote = 60;
+        noteVelocity = 93;
+
+        game.midiTools.startMidiChannel(midiChannel, midiNote,noteVelocity, game.midiTools.changeInsturment(1));
     }
 
     @Override

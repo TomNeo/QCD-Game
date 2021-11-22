@@ -24,6 +24,12 @@ public class Helium extends Circles {
 
         calculateTimerPositions();
         borders.add(new WavyBorder(this));
+        midiChannel = 3;
+        midiNote = 71;
+        noteVelocity = 100;
+
+        game.midiTools.startMidiChannel(midiChannel, midiNote,noteVelocity, game.midiTools.changeInsturment(1));
+        game.midiTools.startMidiChannel(3, 71,100,game.midiTools.changeInsturment(15));
     }
 
     @Override
