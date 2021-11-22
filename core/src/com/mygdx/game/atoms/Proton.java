@@ -9,6 +9,7 @@ import com.mygdx.game.Variables;
 import com.mygdx.game.tools.MidiTools;
 
 import javax.sound.midi.Receiver;
+import javax.sound.midi.ShortMessage;
 
 /**
  * Created by User on 1/19/2017.
@@ -29,7 +30,7 @@ public class Proton extends Circles{
         calculateTimerPositions();
 
         borders.add(new WavyBorder(this));
-        MidiTools useless = new MidiTools();
+        game.midiTools.shortMessage(ShortMessage.NOTE_ON,0,60,93);
     }
 
     @Override
@@ -106,7 +107,6 @@ public class Proton extends Circles{
             ((Carbon)matchedCircle).captureProton(this);
             this.kill = true;
         }
-        game.soundEffect.play();
     }
 
 }

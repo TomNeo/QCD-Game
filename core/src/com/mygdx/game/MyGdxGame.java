@@ -16,11 +16,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.mygdx.game.atoms.Circles;
 import com.mygdx.game.screens.MenuScreen;
+import com.mygdx.game.tools.MidiTools;
 
 import java.util.ArrayList;
 
 public class MyGdxGame extends Game {
 
+	public MidiTools midiTools = new MidiTools();
     private FreeTypeFontGenerator generator;
 	public ArrayList<Circles> allCircles;
 	public ArrayList<Circles> addToCircles;
