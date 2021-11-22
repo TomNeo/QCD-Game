@@ -12,26 +12,38 @@ import static javax.sound.midi.MidiSystem.getMidiDevice;
 
 public class MidiTools {
 
+    Sequencer seq; //= MidiSystem.getSequencer();
+    Synthesizer synth; //= MidiSystem.getSynthesizer();
+    Boolean notNull;
+    int deviceNum = 0;
+
     public MidiTools() {
         try {
             Sequencer seq = MidiSystem.getSequencer();
             Synthesizer synth = MidiSystem.getSynthesizer();
-            Instrument[] fish = synth.getAvailableInstruments();
+            notNull = true;
+        } catch (Exception e) {
+            notNull = false;
+        }
+    }
+
+    public void shortMessage(int messageType, int channel,int data1, int data2){
+        try {
             ShortMessage myMsg = new ShortMessage();
-            myMsg.setMessage(ShortMessage.NOTE_ON, 0, 60, 93);
+            myMsg.setMessage(messageType, channel, data1, data2);
             long timeStamp = -1;
             MidiDevice.Info[] info = MidiSystem.getMidiDeviceInfo();
-            MidiDevice device =  MidiSystem.getMidiDevice(info[2]);
-            device.open();
-            Receiver rcvr = MidiSystem.getReceiver();//device.getReceiver();
-            rcvr.send(myMsg, timeStamp);
-            device.close();
-            int goodNews = 0;
-            goodNews++;
-        } catch (Exception e) {
-            int badNews = 0;
-            badNews++;
+            Receiver receiver = MidiSystem.getReceiver();//= MidiSystem.getMidiDevice(info[deviceNum]);
+            //device.open();
+            //Receiver rcvr = device.getReceiver();//MidiSystem.getReceiver();//
+            receiver.send(myMsg, timeStamp);
+            //device.close();
+        }catch(Exception ex){
+            String breakpoint = ex.getMessage();
         }
-
+        deviceNum++;
+        if(deviceNum == 4){
+            deviceNum = 0;
+        }
     }
 }
