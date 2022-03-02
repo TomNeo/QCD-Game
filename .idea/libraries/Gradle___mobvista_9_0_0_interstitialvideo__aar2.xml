@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: :mobvista-9.0.0-interstitialvideo:@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mobvista-9.0.0-interstitialvideo.aar/77958824346c502b2121c25620c1b7d5/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mobvista-9.0.0-interstitialvideo.aar/77958824346c502b2121c25620c1b7d5/jars/libs/classes-2.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mobvista-9.0.0-interstitialvideo.aar/77958824346c502b2121c25620c1b7d5/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mobvista-9.0.0-interstitialvideo.aar/77958824346c502b2121c25620c1b7d5/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1629cd7aa94994d474ed271c67ee2f37/mobvista-9.0.0-interstitialvideo/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1629cd7aa94994d474ed271c67ee2f37/mobvista-9.0.0-interstitialvideo/jars/libs/classes-2.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1629cd7aa94994d474ed271c67ee2f37/mobvista-9.0.0-interstitialvideo/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/1629cd7aa94994d474ed271c67ee2f37/mobvista-9.0.0-interstitialvideo/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

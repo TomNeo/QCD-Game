@@ -31,7 +31,7 @@ public class MyGdxGame extends Game {
     public ShapeRenderer shapeRenderer;
     public Circles highlightedCircle = null;
     public Skin skin;
-    public Sound soundEffect;
+    //public Sound soundEffect;
 	public Stage gameStage;
 	public TextureAtlas particleAtlas;
 

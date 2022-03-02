@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/QCD-Game.iml" filepath="$PROJECT_DIR$/.idea/modules/QCD-Game.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/android/QCD-Game.android.iml" filepath="$PROJECT_DIR$/.idea/modules/android/QCD-Game.android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/QCD-Game.core.iml" filepath="$PROJECT_DIR$/.idea/modules/core/QCD-Game.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/desktop/QCD-Game.desktop.iml" filepath="$PROJECT_DIR$/.idea/modules/desktop/QCD-Game.desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/html/QCD-Game.html.iml" filepath="$PROJECT_DIR$/.idea/modules/html/QCD-Game.html.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/ios/QCD-Game.ios.iml" filepath="$PROJECT_DIR$/.idea/modules/ios/QCD-Game.ios.iml" />
+    </modules>
+  </component>
+</project>

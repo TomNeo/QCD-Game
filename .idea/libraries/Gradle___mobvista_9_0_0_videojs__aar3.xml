@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: :mobvista-9.0.0-videojs:@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ff1959401f883241bc58e2a21597647d/mobvista-9.0.0-videojs/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ff1959401f883241bc58e2a21597647d/mobvista-9.0.0-videojs/jars/libs/classes-2.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ff1959401f883241bc58e2a21597647d/mobvista-9.0.0-videojs/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/ff1959401f883241bc58e2a21597647d/mobvista-9.0.0-videojs/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

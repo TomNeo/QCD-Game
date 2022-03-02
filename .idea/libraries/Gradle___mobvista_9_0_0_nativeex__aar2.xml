@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: :mobvista-9.0.0-nativeex:@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mobvista-9.0.0-nativeex.aar/a004e3301a01ffb76258610cce108a3f/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mobvista-9.0.0-nativeex.aar/a004e3301a01ffb76258610cce108a3f/jars/libs/classes-2.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mobvista-9.0.0-nativeex.aar/a004e3301a01ffb76258610cce108a3f/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mobvista-9.0.0-nativeex.aar/a004e3301a01ffb76258610cce108a3f/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/47316ced7756f189d30354af3d4aa06d/mobvista-9.0.0-nativeex/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/47316ced7756f189d30354af3d4aa06d/mobvista-9.0.0-nativeex/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/47316ced7756f189d30354af3d4aa06d/mobvista-9.0.0-nativeex/jars/libs/classes-2.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/47316ced7756f189d30354af3d4aa06d/mobvista-9.0.0-nativeex/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

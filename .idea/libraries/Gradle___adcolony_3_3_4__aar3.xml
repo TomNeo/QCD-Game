@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: :adcolony-3.3.4:@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7e52f7cf757cb4da9186025ec5f113b7/adcolony-3.3.4/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7e52f7cf757cb4da9186025ec5f113b7/adcolony-3.3.4/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/7e52f7cf757cb4da9186025ec5f113b7/adcolony-3.3.4/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: :mobvista-9.0.0-mtgdownloads:@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mobvista-9.0.0-mtgdownloads.aar/bcb00db588ecb15a40e9d4fbb0bf8692/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mobvista-9.0.0-mtgdownloads.aar/bcb00db588ecb15a40e9d4fbb0bf8692/jars/libs/classes-2.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mobvista-9.0.0-mtgdownloads.aar/bcb00db588ecb15a40e9d4fbb0bf8692/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mobvista-9.0.0-mtgdownloads.aar/bcb00db588ecb15a40e9d4fbb0bf8692/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/de028a634991e25cee61ebe1a2429f84/mobvista-9.0.0-mtgdownloads/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/de028a634991e25cee61ebe1a2429f84/mobvista-9.0.0-mtgdownloads/jars/libs/classes-2.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/de028a634991e25cee61ebe1a2429f84/mobvista-9.0.0-mtgdownloads/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/de028a634991e25cee61ebe1a2429f84/mobvista-9.0.0-mtgdownloads/res" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

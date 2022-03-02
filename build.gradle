@@ -2,15 +2,18 @@ buildscript {
     repositories {
         mavenLocal()
         mavenCentral()
-        maven { url "https://plugins.gradle.org/m2/" }
+        gradlePluginPortal()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         jcenter()
         google()
     }
     dependencies {
-        classpath 'org.wisepersist:gwt-gradle-plugin:1.0.6'
-        classpath 'com.android.tools.build:gradle:3.1.3'
+        classpath 'org.wisepersist:gwt-gradle-plugin:1.0.13'
+        classpath 'com.android.tools.build:gradle:7.0.3'
         classpath 'org.multi-os-engine:moe-gradle:1.4.3'
+        classpath 'com.mobidevelop.robovm:robovm-gradle-plugin:2.3.12'
+        classpath 'org.gretty:gretty:3.0.2'
+
     }
 }
 
@@ -18,18 +21,20 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
-    version = '1.0'
+    version = '0.0.6'
     ext {
         appName = "QCD-game"
-        gdxVersion = '1.9.9'
-        ashleyVersion = '1.7.0'
-        aiVersion = '1.8.0'
+        gdxVersion = '1.10.0'
+        ashleyVersion = '1.7.3'
+        aiVersion = '1.8.2'
+        roboVMVersion = '2.3.12'
     }
 
     repositories {
         mavenLocal()
         mavenCentral()
         google()
+        gradlePluginPortal()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
         jcenter()
@@ -40,87 +45,62 @@ allprojects {
 }
 
 project(":desktop") {
-    apply plugin: "java"
-
+    apply plugin: "java-library"
 
     dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-        compile "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        implementation project(":core")
+        api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+        api "de.tomgrill.gdxdialogs:gdx-dialogs-desktop:1.3.0"
     }
 }
 
 project(":android") {
-    apply plugin: "android"
+    apply plugin: "com.android.application"
 
     configurations { natives }
 
     dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
-        natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
+        implementation project(":core")
+        api "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi"
+        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
         natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
-
-        // appodeal
-        compile fileTree(dir: 'libs', include: '*.jar')
-        compile 'com.android.support:multidex:1.0.3'
-        compile 'com.android.support:recyclerview-v7:26.1.0'
-        compile 'com.android.support:support-v4:26.1.0'
-        //Requesting Consent from European Users
-        //https://developers.google.com/admob/android/eu-consent
-        compile ('com.google.android.ads.consent:consent-library:1.0.3') {
-            exclude module: 'gson'
-        }
-        compile 'com.google.android.gms:play-services-ads:15.0.0'
-        compile 'com.google.android.gms:play-services-location:15.0.0'
-
-        compile name: 'adcolony-3.3.4', ext: 'aar'
-        compile name: 'mobvista-9.0.0-alphab', ext: 'aar'
-        compile name: 'mobvista-9.0.0-common', ext: 'aar'
-        compile name: 'mobvista-9.0.0-interstitial', ext: 'aar'
-        compile name: 'mobvista-9.0.0-interstitialvideo', ext: 'aar'
-        compile name: 'mobvista-9.0.0-mtgdownloads', ext: 'aar'
-        compile name: 'mobvista-9.0.0-mtgjscommon', ext: 'aar'
-        compile name: 'mobvista-9.0.0-mtgnative', ext: 'aar'
-        compile name: 'mobvista-9.0.0-nativeex', ext: 'aar'
-        compile name: 'mobvista-9.0.0-playercommon', ext: 'aar'
-        compile name: 'mobvista-9.0.0-reward', ext: 'aar'
-        compile name: 'mobvista-9.0.0-videocommon', ext: 'aar'
-        compile name: 'mobvista-9.0.0-videojs', ext: 'aar'
-        compile name: 'ogury-3.0.13', ext: 'aar'
     }
 }
 
 project(":html") {
+    apply plugin: "java-library"
     apply plugin: "gwt"
     apply plugin: "war"
+    apply plugin: "org.gretty"
 
 
     dependencies {
-        compile project(":core")
-        compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
-        compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
+        implementation project(":core")
+        api "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
+        api "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
     }
 }
 
 project(":core") {
-    apply plugin: "java"
-
+    apply plugin: "java-library"
 
     dependencies {
-        compile "com.badlogicgames.gdx:gdx:$gdxVersion"
-        compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+        api "de.tomgrill.gdxdialogs:gdx-dialogs-core:1.3.0"
+        //FreqTable deps
+        api "au.com.bytecode:opencsv:2.4"
+        api "org.apache.commons:commons-collections4:4.4"
     }
 }
 

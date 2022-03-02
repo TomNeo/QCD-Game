@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: :ogury-3.0.13:@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d215c95b2ba81c0034e21811c2f02cb5/ogury-3.0.13/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d215c95b2ba81c0034e21811c2f02cb5/ogury-3.0.13/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d215c95b2ba81c0034e21811c2f02cb5/ogury-3.0.13/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

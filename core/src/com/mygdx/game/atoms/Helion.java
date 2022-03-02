@@ -122,6 +122,7 @@ public class Helion extends Circles {
             game.addToCircles.add(p2);
             matchedCircle.kill = true;
             this.kill = true;
+            //game.soundEffect.play();
         }
     }
 

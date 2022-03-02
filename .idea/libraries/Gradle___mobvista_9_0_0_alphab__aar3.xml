@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="Gradle: :mobvista-9.0.0-alphab:@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d9f6b6aeb2225b3bd4b28d895f4dfc48/mobvista-9.0.0-alphab/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d9f6b6aeb2225b3bd4b28d895f4dfc48/mobvista-9.0.0-alphab/jars/libs/classes-2.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d9f6b6aeb2225b3bd4b28d895f4dfc48/mobvista-9.0.0-alphab/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d9f6b6aeb2225b3bd4b28d895f4dfc48/mobvista-9.0.0-alphab/AndroidManifest.xml" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

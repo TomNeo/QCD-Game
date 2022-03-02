@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="Gradle: :mobvista-9.0.0-videocommon::aar">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/android/libs/aar_repository/mobvista-9.0.0-videocommon.aar" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

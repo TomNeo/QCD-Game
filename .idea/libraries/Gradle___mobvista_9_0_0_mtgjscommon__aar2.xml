@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="Gradle: :mobvista-9.0.0-mtgjscommon:@aar">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mobvista-9.0.0-mtgjscommon.aar/31f84f57457145501bc9f6d556fcbe33/jars/classes.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mobvista-9.0.0-mtgjscommon.aar/31f84f57457145501bc9f6d556fcbe33/jars/libs/classes-2.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mobvista-9.0.0-mtgjscommon.aar/31f84f57457145501bc9f6d556fcbe33/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-1/files-1.1/mobvista-9.0.0-mtgjscommon.aar/31f84f57457145501bc9f6d556fcbe33/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/843b91464c9e4090cd0367868a855833/mobvista-9.0.0-mtgjscommon/jars/libs/classes-2.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/843b91464c9e4090cd0367868a855833/mobvista-9.0.0-mtgjscommon/AndroidManifest.xml" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/843b91464c9e4090cd0367868a855833/mobvista-9.0.0-mtgjscommon/res" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/843b91464c9e4090cd0367868a855833/mobvista-9.0.0-mtgjscommon/jars/classes.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

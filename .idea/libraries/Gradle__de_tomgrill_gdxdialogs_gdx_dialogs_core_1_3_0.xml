@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="Gradle: de.tomgrill.gdxdialogs:gdx-dialogs-core:1.3.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.tomgrill.gdxdialogs/gdx-dialogs-core/1.3.0/5c0e38da359c689b47abb43935f0decccf4e06a5/gdx-dialogs-core-1.3.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/de.tomgrill.gdxdialogs/gdx-dialogs-core/1.3.0/612ae5428b5178e84b152b2651aae6023d871d97/gdx-dialogs-core-1.3.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
